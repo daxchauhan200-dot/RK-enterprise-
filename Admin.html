@@ -375,7 +375,7 @@
     });
 
     // પ્રોડક્ટ ડિલીટ
-    function deleteProduct(id) {
+    function deleteProduct(id) 
         if (confirm('શું તમે આ પ્રોડક્ટ ડિલીટ કરવા માંગો છો?')) {
             products = products.filter(p => p.id !== id);
             localStorage.setItem(STORAGE_KEY, JSON.stringify(products));

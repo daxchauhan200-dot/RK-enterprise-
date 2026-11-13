@@ -554,6 +554,60 @@
                 toast.classList.remove('show');
             }, 3000);
         }
+        // === એડમિન પેનલ માટે ઓર્ડર લિસ્ટિંગ અને પ્રદર્શિત કરવાનો કોડ (સ્ક્રિપ્ટ ટેગમાં સૌથી છેલ્લે ઉમેરવો) ===
+(function() {
+    function loadAdminOrders() {
+        try {
+            let savedOrders = JSON.parse(localStorage.getItem("rk_enterprise_orders")) || [];
+            
+            // જો એડમિન પેનલમાં ઓર્ડર બતાવવા માટે કોઈ ડિવ કે ટેબલ હોય તો તેની આઈડી અહીં ચેક કરી લેવી
+            // ધારો કે એડમિન પેજ પર ઓર્ડર દેખાડવા માટે <div id="admin-orders-container"></div> છે
+            let container = document.getElementById("admin-orders-container");
+            
+            if (!container) {
+                // જો કન્ટેનર ન હોય તો પેજના અંતે ઓર્ડરનું લિસ્ટ આપોઆપ ઉમેરી દો
+                container = document.createElement("div");
+                container.id = "admin-orders-container";
+                container.style.css = "margin: 20px; padding: 15px; background: #f9f9f9; border: 1px solid #ccc; border-radius: 5px;";
+                document.body.appendChild(container);
+            }
+
+            if (savedOrders.length === 0) {
+                container.innerHTML = "<h3>સંચાલક ડેશબોર્ડ: હાલમાં કોઈ નવા ઓર્ડર ઉપલબ્ધ નથી.</h3>";
+                return;
+            }
+
+            let htmlContent = "<h3>ગ્રાહક ઓર્ડર યાદી (એડમિન પેનલ):</h3><ul style='list-style-type: none; padding: 0;'>";
+            
+            // નવા ઓર્ડર ઉપર આવે તે માટે રિવર્સ લૂપ ચલાવીએ
+            for (let i = savedOrders.length - 1; i >= 0; i--) {
+                let ord = savedOrders[i];
+                htmlContent += `<li style='background: #fff; margin-bottom: 10px; padding: 10px; border-left: 4px solid #4CAF50; box-shadow: 0 1px 3px rgba(0,0,0,0.1);'>` +
+                               `<strong>ઓર્ડર આઈડી:</strong> ${ord.id || 'N/A'}<br>` +
+                               `<strong>તારીખ/સમય:</strong> ${ord.date || 'N/A'}<br>` +
+                               `<strong>ગ્રાહકનું નામ:</strong> ${ord.customerName || 'N/A'}<br>` +
+                               `<strong>ફોન નંબર:</strong> ${ord.phone || 'N/A'}<br>` +
+                               `<strong>પ્રોડક્ટ વિગતો:</strong> ${ord.productDetails || 'N/A'}` +
+                               `</li>`;
+            }
+            
+            htmlContent += "</ul>";
+            container.innerHTML = htmlContent;
+            console.log("એડમિન પેનલ પર ઓર્ડર સફળતાપૂર્વક લોડ થઈ ગયા છે.");
+            
+        } catch (err) {
+            console.error("એડમિન ઓર્ડર લોડ કરવામાં ભૂલ:", err);
+        }
+    }
+
+    // પેજ લોડ થતાં જ ઓર્ડર દેખાડો
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", loadAdminOrders);
+    } else {
+        loadAdminOrders();
+    }
+})();
+        
     </script>
 </body>
 </html>

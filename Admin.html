@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RK ENTERPRISE - એડમિન ડેશબોર્ડ & CMS</title>
+    <title>RK ENTERPRISE - એડમિન ડેશબોર્ડ</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -16,9 +16,7 @@
             --text-muted: #64748b;
             --accent-green: #10b981;
             --danger-red: #ef4444;
-            --shadow-lg: 0 20px 40px rgba(0,0,0,0.15);
-            --radius: 16px;
-            --transition: all 0.3s ease;
+            --shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
         * {
@@ -35,34 +33,27 @@
             min-height: 100vh;
         }
 
-        /* Sidebar Styling */
+        /* Sidebar */
         aside {
-            width: 280px;
+            width: 260px;
             background: var(--sidebar-bg);
             color: white;
             display: flex;
             flex-direction: column;
             position: fixed;
             height: 100vh;
-            border-right: 2px solid rgba(255, 215, 0, 0.2);
         }
 
         .sidebar-brand {
             padding: 25px;
             text-align: center;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.3);
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .sidebar-brand h2 {
             color: var(--gold-primary);
             font-size: 1.5rem;
-            letter-spacing: 1px;
-        }
-
-        .sidebar-brand span {
-            font-size: 0.8rem;
-            color: var(--text-muted);
         }
 
         .menu-list {
@@ -72,135 +63,89 @@
         }
 
         .menu-item {
-            padding: 14px 18px;
+            padding: 12px 18px;
             color: #cbd5e1;
-            border-radius: 12px;
-            cursor: pointer;
+            border-radius: 10px;
             font-weight: 600;
-            margin-bottom: 8px;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .menu-item:hover, .menu-item.active {
             background: var(--gold-gradient);
             color: var(--bg-dark);
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+            margin-bottom: 10px;
         }
 
-        .back-site-btn {
+        .back-btn {
             margin: 15px;
             padding: 12px;
             background: rgba(255,255,255,0.1);
             color: white;
             text-align: center;
-            border-radius: 12px;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: 600;
-            transition: var(--transition);
             border: 1px solid rgba(255,255,255,0.2);
         }
 
-        .back-site-btn:hover {
+        .back-btn:hover {
             background: white;
             color: var(--bg-dark);
         }
 
-        /* Main Content Area */
+        /* Main Content */
         main {
-            margin-left: 280px;
+            margin-left: 260px;
             flex-grow: 1;
-            padding: 40px;
-            max-width: 1300px;
+            padding: 30px;
+            max-width: 1200px;
         }
 
-        .top-header {
+        .header-box {
+            background: white;
+            padding: 20px 25px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 35px;
-            background: white;
-            padding: 20px 30px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-lg);
         }
 
-        .top-header h1 {
-            font-size: 1.8rem;
-            color: var(--bg-dark);
-        }
-
-        /* Stats Cards */
-        .stats-grid {
+        .grid-layout {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 35px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-lg);
-            border-left: 5px solid var(--gold-primary);
-        }
-
-        .stat-card h3 {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .stat-card .value {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--bg-dark);
-        }
-
-        /* Form & Table Section */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.3fr;
-            gap: 30px;
-            align-items: start;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 25px;
         }
 
         .card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-lg);
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
         }
 
         .card h2 {
+            margin-bottom: 20px;
             font-size: 1.3rem;
             color: var(--bg-dark);
-            margin-bottom: 20px;
             border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 12px;
+            padding-bottom: 10px;
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 15px;
         }
 
         label {
             display: block;
             font-weight: 600;
-            margin-bottom: 6px;
-            font-size: 0.95rem;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
         }
 
         input, select, textarea {
             width: 100%;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: var(--transition);
+            border-radius: 10px;
+            font-size: 0.95rem;
             background: #f8fafc;
         }
 
@@ -212,167 +157,115 @@
 
         textarea {
             resize: vertical;
-            min-height: 100px;
+            min-height: 80px;
         }
 
         .btn-submit {
             background: var(--gold-gradient);
             color: var(--bg-dark);
             width: 100%;
-            padding: 15px;
+            padding: 14px;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
-            transition: var(--transition);
             margin-top: 10px;
         }
 
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 25px rgba(255, 215, 0, 0.4);
-        }
-
-        /* Products Table */
-        .table-wrap {
-            overflow-x: auto;
-        }
-
+        /* Table */
         table {
             width: 100%;
             border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
             text-align: left;
+            font-size: 0.9rem;
         }
 
         th {
             background: #f8fafc;
-            padding: 14px;
             font-weight: 700;
-            color: var(--bg-dark);
-            border-bottom: 2px solid #e2e8f0;
-        }
-
-        td {
-            padding: 14px;
-            border-bottom: 1px solid #e2e8f0;
-            vertical-align: middle;
         }
 
         .thumb {
-            width: 55px;
-            height: 55px;
+            width: 50px;
+            height: 50px;
             object-fit: contain;
             border-radius: 8px;
             background: #f8fafc;
             border: 1px solid #e2e8f0;
-            padding: 4px;
         }
 
-        .action-del {
+        .del-btn {
             background: #fee2e2;
             color: var(--danger-red);
             border: none;
-            padding: 8px 14px;
-            border-radius: 8px;
+            padding: 6px 12px;
+            border-radius: 6px;
             font-weight: 600;
             cursor: pointer;
-            transition: var(--transition);
         }
 
-        .action-del:hover {
+        .del-btn:hover {
             background: var(--danger-red);
             color: white;
         }
 
-        .preview-box {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-
         .preview-img {
-            width: 65px;
-            height: 65px;
+            width: 60px;
+            height: 60px;
             object-fit: cover;
             border-radius: 8px;
+            margin-top: 8px;
             border: 2px solid var(--gold-primary);
         }
 
-        @media (max-width: 900px) {
+        @media (max-width: 800px) {
             aside { width: 70px; }
-            .sidebar-brand h2, .sidebar-brand span, .menu-item span, .back-site-btn span { display: none; }
-            main { margin-left: 70px; padding: 20px; }
-            .dashboard-grid { grid-template-columns: 1fr; }
+            .sidebar-brand h2, .back-btn span, .menu-item span { display: none; }
+            main { margin-left: 70px; padding: 15px; }
+            .grid-layout { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-<!-- SIDEBAR -->
 <aside>
     <div class="sidebar-brand">
         <h2>RK</h2>
-        <span>એડમિન પેનલ</span>
+        <span style="font-size: 0.75rem; color: #94a3b8;">એડમિન પેનલ</span>
     </div>
     <ul class="menu-list">
-        <li class="menu-item active">
-            <span>📦</span> પ્રોડક્ટ મેનેજમેન્ટ
-        </li>
+        <li class="menu-item">📦 <span>પ્રોડક્ટ્સ</span></li>
     </ul>
-    <a href="index.html" class="back-site-btn">
-        <span>🌐 વેબસાઈટ જુઓ</span>
+    <a href="index.html" class="back-btn">
+        🌐 <span>વેબસાઈટ જુઓ</span>
     </a>
 </aside>
 
-<!-- MAIN DASHBOARD -->
 <main>
-    <div class="top-header">
-        <div>
-            <h1>પ્રોડક્ટ ડેશબોર્ડ</h1>
-            <p style="color: var(--text-muted); font-size: 0.9rem;">અહીંથી ઉમેરેલી પ્રોડક્ટ્સ સીધી વેબસાઈટ પર લાઈવ થઈ જશે.</p>
-        </div>
-        <div id="date-time" style="font-weight: 600; color: var(--bg-dark);"></div>
+    <div class="header-box">
+        <h1>એડમિન ડેશબોર્ડ</h1>
+        <p id="total-count" style="font-weight: bold; color: var(--text-muted);">કુલ પ્રોડક્ટ્સ: 0</p>
     </div>
 
-    <!-- STATS -->
-    <div class="stats-grid">
-        <div class="stat-card">
-            <h3>કુલ પ્રોડક્ટ્સ</h3>
-            <div class="value" id="stat-total">0</div>
-        </div>
-        <div class="stat-card">
-            <h3>પિત્તળ મૂર્તિઓ</h3>
-            <div class="stat-card-val">
-                <div class="value" id="stat-brass">0</div>
-            </div>
-        </div>
-        <div class="stat-card">
-            <h3>કડા / વેડલા</h3>
-            <div class="value" id="stat-ornaments">0</div>
-        </div>
-        <div class="stat-card">
-            <h3>સ્ટોક સ્ટેટસ</h3>
-            <div class="value" style="color: var(--accent-green);">ઉપલબ્ધ ✅</div>
-        </div>
-    </div>
-
-    <div class="dashboard-grid">
-        <!-- FORM CARD -->
+    <div class="grid-layout">
+        <!-- Form -->
         <div class="card">
             <h2>➕ નવી પ્રોડક્ટ ઉમેરો</h2>
             <form id="product-form">
                 <div class="form-group">
-                    <label>પ્રોડક્ટનું નામ *</label>
-                    <input type="text" id="p-name" placeholder="દા.ત. પંચમુખી હનુમાન મૂર્તિ" required>
+                    <label>પ્રોડક્ટનું નામ</label>
+                    <input type="text" id="p-name" placeholder="દા.ત. પંચમુખી હનુમાન" required>
                 </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                     <div class="form-group">
-                        <label>કેટેગરી *</label>
-                        <select id="p-category" required>
+                        <label>કેટેગરી</label>
+                        <select id="p-category">
                             <option value="મૂર્તિ">મૂર્તિઓ</option>
                             <option value="કડા">કડા</option>
                             <option value="વેડલા">વેડલા</option>
@@ -380,57 +273,53 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>ધાતુ પ્રકાર *</label>
-                        <select id="p-metal" required>
+                        <label>ધાતુ</label>
+                        <select id="p-metal">
                             <option value="પિત્તળ (Brass)">પિત્તળ (Brass)</option>
                             <option value="જર્મન સિલ્વર">જર્મન સિલ્વર</option>
                             <option value="સિલ્વર">સિલ્વર</option>
                         </select>
                     </div>
                 </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                     <div class="form-group">
-                        <label>કિંમત (₹) *</label>
-                        <input type="number" id="p-price" placeholder="2500" required>
+                        <label>કિંમત (₹)</label>
+                        <input type="number" id="p-price" placeholder="2000" required>
                     </div>
                     <div class="form-group">
                         <label>વજન / સાઈઝ</label>
                         <input type="text" id="p-weight" placeholder="દા.ત. 500 ગ્રામ">
                     </div>
                 </div>
-
                 <div class="form-group">
-                    <label>ફોટો પસંદ કરો (ફાઇલ અપલોડ) *</label>
+                    <label>ફોટો અપલોડ કરો</label>
                     <input type="file" id="p-image-file" accept="image/*" required>
                     <input type="hidden" id="p-image-url">
-                    <div class="preview-box" id="image-preview"></div>
+                    <div id="image-preview"></div>
                 </div>
-
                 <div class="form-group">
-                    <label>પ્રોડક્ટનું વિગતવાર વર્ણન *</label>
-                    <textarea id="p-desc" placeholder="પ્રોડક્ટની ખાસિયત અને કારીગરી વિશે લખો..." required></textarea>
+                    <label>વર્ણન</label>
+                    <textarea id="p-desc" placeholder="પ્રોડક્ટ વિશે માહિતી લખો..." required></textarea>
                 </div>
-
                 <button type="submit" class="btn-submit">💾 પ્રોડક્ટ સેવ કરો</button>
             </form>
         </div>
 
-        <!-- TABLE CARD -->
+        <!-- Table -->
         <div class="card">
-            <h2>📋 લિસ્ટ થયેલી પ્રોડક્ટ્સ (<span id="list-count">0</span>)</h2>
-            <div class="table-wrap">
+            <h2>📋 પ્રોડક્ટ્સ લિસ્ટ</h2>
+            <div style="overflow-x: auto;">
                 <table>
                     <thead>
                         <tr>
                             <th>ફોટો</th>
-                            <th>વિગત</th>
+                            <th>નામ & વિગત</th>
                             <th>કિંમત</th>
                             <th>એક્શન</th>
                         </tr>
                     </thead>
                     <tbody id="product-tbody">
-                        <!-- JavaScript દ્વારા ડેટા અહીં આવશે -->
+                        <tr><td colspan="4" style="text-align: center; color: #94a3b8;">ડેટા લોડ થઈ રહ્યો છે...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -447,7 +336,7 @@
     const imageUrl = document.getElementById('p-image-url');
     const imagePreview = document.getElementById('image-preview');
 
-    // ઇમેજ રીડર લોજિક (Base64 માં કન્વર્ટ કરવા માટે)
+    // ફોટો રીડર
     imageFile.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -460,65 +349,49 @@
         }
     });
 
-    // ફોર્મ સબમિટ ઇવેન્ટ
+    // ફોર્મ સબમિટ
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const name = document.getElementById('p-name').value.trim();
-        const category = document.getElementById('p-category').value;
-        const metal = document.getElementById('p-metal').value;
-        const price = parseFloat(document.getElementById('p-price').value);
-        const weight = document.getElementById('p-weight').value.trim();
-        const desc = document.getElementById('p-desc').value.trim();
-        const img = imageUrl.value || 'https://via.placeholder.com/300';
-
-        if (!name || !price || !img) {
-            alert('કૃપા કરીને બધી જરૂરી માહિતી ભરો!');
-            return;
-        }
-
         const newProd = {
             id: 'prod_' + Date.now(),
-            name: name,
-            category: category,
-            metal: metal,
-            price: price,
-            weight: weight,
-            description: desc,
-            imageUrl: img,
-            images: [img]
+            name: document.getElementById('p-name').value.trim(),
+            category: document.getElementById('p-category').value,
+            metal: document.getElementById('p-metal').value,
+            price: parseFloat(document.getElementById('p-price').value),
+            weight: document.getElementById('p-weight').value.trim(),
+            description: document.getElementById('p-desc').value.trim(),
+            imageUrl: imageUrl.value,
+            images: [imageUrl.value]
         };
 
         products.unshift(newProd);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
         
-        alert('પ્રોડક્ટ સફળતાપૂર્વક ઉમેરાઈ ગઈ છે!');
+        alert('પ્રોડક્ટ સફળતાપૂર્વક ઉમેરાઈ ગઈ!');
         form.reset();
         imagePreview.innerHTML = '';
-        renderAdmin();
+        render();
     });
 
-    // પ્રોડક્ટ ડિલીટ કરવા માટે
+    // પ્રોડક્ટ ડિલીટ
     function deleteProduct(id) {
-        if (confirm('શું તમે ખરેખર આ પ્રોડક્ટ ડિલીટ કરવા માંગો છો?')) {
+        if (confirm('શું તમે આ પ્રોડક્ટ ડિલીટ કરવા માંગો છો?')) {
             products = products.filter(p => p.id !== id);
             localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-            renderAdmin();
+            render();
         }
     }
 
-    // ડેશબોર્ડ અપડેટ અને રેન્ડર કરવા માટે
-    function renderAdmin() {
+    // રેન્ડર ફંક્શન
+    function render() {
         const tbody = document.getElementById('product-tbody');
         tbody.innerHTML = '';
 
-        document.getElementById('stat-total').innerText = products.length;
-        document.getElementById('stat-brass').innerText = products.filter(p => p.category === 'મૂર્તિ').length;
-        document.getElementById('stat-ornaments').innerText = products.filter(p => p.category !== 'મૂર્તિ').length;
-        document.getElementById('list-count').innerText = products.length;
+        document.getElementById('total-count').innerText = "કુલ પ્રોડક્ટ્સ: " + products.length;
 
         if (products.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 25px;">હાલ કોઈ પ્રોડક્ટ ઉપલબ્ધ નથી.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #94a3b8; padding: 20px;">હાલ કોઈ પ્રોડક્ટ ઉમેરેલી નથી.</td></tr>`;
             return;
         }
 
@@ -528,18 +401,18 @@
                 <td><img src="${p.imageUrl}" class="thumb"></td>
                 <td>
                     <strong>${p.name}</strong><br>
-                    <small style="color: var(--text-muted);">${p.category} • ${p.metal}</small>
+                    <small style="color: #64748b;">${p.category} • ${p.metal}</small>
                 </td>
-                <td><strong>₹ ${Number(p.price).toLocaleString('en-IN')}</strong></td>
+                <td><strong>₹${Number(p.price).toLocaleString('en-IN')}</strong></td>
                 <td>
-                    <button class="action-del" onclick="deleteProduct('${p.id}')">ડિલીટ</button>
+                    <button class="del-btn" onclick="deleteProduct('${p.id}')">ડિલીટ</button>
                 </td>
             `;
             tbody.appendChild(tr);
         });
     }
 
-    renderAdmin();
+    render();
 </script>
 
 </body>

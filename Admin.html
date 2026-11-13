@@ -3,306 +3,480 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>શ્રી શિવ શક્તિ જ્વેલરી - એડમિન પેનલ અને પ્રોડક્ટ લિસ્ટિંગ</title>
+    <title>શ્રી શિવ શક્તિ જ્વેલર્સ - એડમિન પેનલ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* 1 to 50 Lines: Reset and Global Styles */
+        :root {
+            --primary-dark: #0f172a;
+            --secondary-dark: #1e293b;
+            --gold: #d4af37;
+            --gold-hover: #b5952f;
+            --light-bg: #f8fafc;
+            --text-dark: #1e293b;
+            --text-light: #f8fafc;
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Noto Sans Gujarati', sans-serif;
         }
+
         body {
-            background-color: #f4f7f6;
-            color: #333;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
         }
+
+        /* Header Styling */
         header {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        header h1 {
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-        .container {
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+            color: var(--text-light);
+            padding: 20px 40px;
             display: flex;
-            flex: 1;
-            max-width: 1400px;
-            margin: 20px auto;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--gold);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .brand-title h1 {
+            color: var(--gold);
+            font-size: 26px;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-title p {
+            font-size: 13px;
+            color: #cbd5e1;
+        }
+
+        .nav-btn {
+            background-color: var(--gold);
+            color: var(--primary-dark);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--gold-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Main Layout */
+        .dashboard-container {
+            max-width: 1300px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
             width: 100%;
-            gap: 20px;
-            padding: 0 15px;
         }
-        .sidebar {
-            width: 280px;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+        @media (max-width: 900px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
         }
-        .main-content {
-            flex: 1;
+
+        /* Card Styles */
+        .card {
             background: white;
+            border-radius: 12px;
             padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border: 1px solid #e2e8f0;
         }
-        /* 51 to 150 Lines: Form and Inputs Design */
+
+        .card-header {
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h2 {
+            font-size: 20px;
+            color: var(--primary-dark);
+        }
+
+        /* Form Styling */
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
+
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             font-weight: 600;
-            color: #444;
-        }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
             font-size: 14px;
+            color: #334155;
         }
-        .btn {
-            background: #2a5298;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
+
+        .form-control {
             width: 100%;
-            transition: background 0.3s ease;
+            padding: 12px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s;
         }
-        .btn:hover {
-            background: #1e3c72;
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--gold);
         }
-        .btn-danger {
-            background: #e74c3c;
-            padding: 5px 10px;
-            width: auto;
-            font-size: 12px;
+
+        .btn-submit {
+            width: 100%;
+            background: var(--primary-dark);
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
         }
-        .btn-danger:hover {
-            background: #c0392b;
+
+        .btn-submit:hover {
+            background: var(--gold);
+            color: var(--primary-dark);
         }
-        /* 151 to 300 Lines: Table and Catalog Layout */
+
+        /* Image Preview */
+        #imagePreview {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+            border: 1px solid #cbd5e1;
+        }
+
+        /* Table Styling */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
         }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
+
         th {
-            background-color: #f8f9fa;
-            color: #333;
+            background-color: var(--primary-dark);
+            color: var(--gold);
+            padding: 14px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: middle;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .prod-thumb {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+        }
+
+        .badge {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
             font-weight: 600;
         }
-        tr:hover {
-            background-color: #f9f9f9;
-        }
-        .alert {
-            padding: 10px;
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            display: none;
-        }
-        /* Extra padding formatting lines to maintain deep structure */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .product-card {
-            border: 1px solid #e0e0e0;
+
+        .btn-delete {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 14px;
             border-radius: 6px;
-            padding: 15px;
-            background: #fff;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: opacity 0.2s;
+        }
+
+        .btn-delete:hover {
+            opacity: 0.85;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>શ્રી શિવ શક્તિ જ્વેલર્સ - એડમિન ડેશબોર્ડ</h1>
-        <p>પ્રોડક્ટ મેનેજમેન્ટ અને લિસ્ટિંગ સિસ્ટમ</p>
+        <div class="brand-title">
+            <h1>શ્રી શિવ શક્તિ જ્વેલર્સ</h1>
+            <p>એડમિન કંટ્રોલ પેનલ - પ્રોડક્ટ મેનેજમેન્ટ</p>
+        </div>
+        <a href="index.html" target="_blank" class="nav-btn">
+            🌐 મુખ્ય વેબસાઇટ જુઓ
+        </a>
     </header>
 
-    <div class="container">
-        <!-- Sidebar Navigation -->
-        <div class="sidebar">
-            <h3>મેનુ</h3>
-            <ul style="list-style: none; margin-top: 15px;">
-                <li style="margin-bottom: 10px;"><a href="#" onclick="switchTab('add')" style="text-decoration: none; color: #2a5298; font-weight: bold;">➕ નવી પ્રોડક્ટ ઉમેરો</a></li>
-                <li style="margin-bottom: 10px;"><a href="#" onclick="switchTab('list')" style="text-decoration: none; color: #2a5298; font-weight: bold;">📋 પ્રોડક્ટ લિસ્ટ જુઓ</a></li>
-            </ul>
+    <div class="dashboard-container">
+        <!-- Add Product Form -->
+        <div class="card">
+            <div class="card-header">
+                <h2>➕ નવી પ્રોડક્ટ ઉમેરો</h2>
+            </div>
+            <form id="productForm">
+                <div class="form-group">
+                    <label for="prodName">પ્રોડક્ટનું નામ *</label>
+                    <input type="text" id="prodName" class="form-control" placeholder="દા.ત. ભરવાડના કડા, વેડલા, ઝાંઝર" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="prodCategory">કેટેગરી *</label>
+                    <select id="prodCategory" class="form-control" required>
+                        <option value="ભરવાડના કડા">ભરવાડના કડા</option>
+                        <option value="વેડલા">વેડલા</option>
+                        <option value="ઝાંઝર">ઝાંઝર</option>
+                        <option value="બ્રાસ જ્વેલરી">બ્રાસ જ્વેલરી</option>
+                        <option value="જર્મન સિલ્વર">જર્મન સિલ્વર</option>
+                        <option value="અન્ય આભૂષણો">અન્ય આભૂષણો</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="prodWeight">વજન / સાઈઝ (વૈકલ્પિક)</label>
+                    <input type="text" id="prodWeight" class="form-control" placeholder="દા.ત. ૫૦ ગ્રામ અથવા ૨.૬ સાઈઝ">
+                </div>
+
+                <div class="form-group">
+                    <label for="prodPrice">કિંમત (₹) *</label>
+                    <input type="number" id="prodPrice" class="form-control" placeholder="દા.ત. 1500" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="prodImage">પ્રોડક્ટનો ફોટો પસંદ કરો *</label>
+                    <input type="file" id="prodImage" class="form-control" accept="image/*" required>
+                    <img id="imagePreview" alt="ફોટો પ્રિવ્યૂ">
+                </div>
+
+                <div class="form-group">
+                    <label for="prodDesc">વર્ણન (વિગત)</label>
+                    <textarea id="prodDesc" class="form-control" rows="3" placeholder="ડિઝાઇન અને ક્વોલિટી વિશે માહિતી લખો..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">પ્રોડક્ટ સેવ કરો અને લાઈવ કરો</button>
+            </form>
         </div>
 
-        <!-- Main Content Area -->
-        <div class="main-content">
-            <div id="alertBox" class="alert">પ્રોડક્ટ સફળતાપૂર્વક ઉમેરાઈ ગઈ છે!</div>
-            
-            <div id="addProductSection">
-                <h2>નવી પ્રોડક્ટ ઉમેરો</h2>
-                <form id="productForm" style="margin-top: 20px;" onsubmit="saveProduct(event)">
-                    <div class="form-group">
-                        <label for="prodName">પ્રોડક્ટનું નામ (દા.ત. ભરવાડના કડા, વેડલા)</label>
-                        <input type="text" id="prodName" required placeholder="પ્રોડક્ટ નામ દાખલ કરો">
-                    </div>
-                    <div class="form-group">
-                        <label for="prodCategory">કેટેગરી</label>
-                        <select id="prodCategory">
-                            <option value="Silver">સિલ્વર આર્નામેન્ટ્સ</option>
-                            <option value="Brass">બ્રાસ જ્વેલરી</option>
-                            <option value="German Silver">જર્મન સિલ્વર</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="prodPrice">કિંમત (₹)</label>
-                        <input type="number" id="prodPrice" required placeholder="કિંમત લખો">
-                    </div>
-                    <div class="form-group">
-                        <label for="prodDesc">વર્ણન</label>
-                        <textarea id="prodDesc" rows="3" placeholder="પ્રોડક્ટ વિશે માહિતી"></textarea>
-                    </div>
-                    <button type="submit" class="btn">પ્રોડક્ટ સેવ કરો</button>
-                </form>
+        <!-- Product List Table -->
+        <div class="card">
+            <div class="card-header">
+                <h2>📋 વેબસાઇટ પર લાઈવ પ્રોડક્ટ્સ (<span id="totalCount">0</span>)</h2>
+                <button onclick="clearAllProducts()" style="background:none; border:none; color:var(--danger); cursor:pointer; font-weight:600; font-size:13px;">બધું ડિલીટ કરો</button>
             </div>
-
-            <div id="listProductSection" style="margin-top: 30px;">
-                <h2>ઉમેરેલી પ્રોડક્ટ્સનું લિસ્ટ</h2>
-                <div style="overflow-x: auto;">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>નામ</th>
-                                <th>કેટેગરી</th>
-                                <th>કિંમત (₹)</th>
-                                <th>વર્ણન</th>
-                                <th>ક્રિયા</th>
-                            </tr>
-                        </thead>
-                        <tbody id="productTableBody">
-                            <!-- Dynamically loaded rows -->
-                        </tbody>
-                    </table>
-                </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ફોટો</th>
+                            <th>નામ</th>
+                            <th>કેટેગરી</th>
+                            <th>કિંમત</th>
+                            <th>ક્રિયા</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminProductList">
+                        <!-- અહીં પ્રોડક્ટ્સ લોડ થશે -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
+    <div id="toast" class="toast">✅ પ્રોડક્ટ સફળતાપૂર્વક વેબસાઇટ પર ઉમેરાઈ ગઈ છે!</div>
+
     <script>
-        // 300 to 1000 Lines: Robust JavaScript Implementation for Local Storage and DOM Management
-        document.addEventListener("DOMContentLoaded", function() {
-            loadProducts();
+        // બંને ફાઇલો માટે એક જ STORAGE KEY
+        const STORAGE_KEY = 'shree_shiv_shakti_products';
+        let currentBase64Image = "";
+
+        // પેજ લોડ થાય ત્યારે પ્રોડક્ટ્સ બતાવો
+        document.addEventListener('DOMContentLoaded', renderAdminProducts);
+
+        // ઇમેજને Base64 માં કન્વર્ટ કરવા માટે (જેથી LocalStorage માં સેવ થઈ શકે)
+        document.getElementById('prodImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                // ઇમેજની સાઈઝ નાની કરવા માટે Canvas નો ઉપયોગ (જેથી LocalStorage ફુલ ન થઈ જાય)
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 500;
+                    const scaleSize = MAX_WIDTH / img.width;
+                    canvas.width = MAX_WIDTH;
+                    canvas.height = img.height * scaleSize;
+
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    
+                    currentBase64Image = canvas.toDataURL('image/jpeg', 0.7);
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = currentBase64Image;
+                    preview.style.display = 'block';
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
         });
 
-        function switchTab(tab) {
-            if(tab === 'add') {
-                document.getElementById('addProductSection').style.display = 'block';
-            } else {
-                document.getElementById('addProductSection').style.display = 'block';
-            }
-        }
+        // ફોર્મ સબમિટ થાય ત્યારે પ્રોડક્ટ સેવ કરો
+        document.getElementById('productForm').addEventListener('submit', function(e) {
+            e.preventDefault();
 
-        function saveProduct(event) {
-            event.preventDefault();
-            
-            const name = document.getElementById('prodName').value;
-            const category = document.getElementById('prodCategory').value;
-            const price = document.getElementById('prodPrice').value;
-            const desc = document.getElementById('prodDesc').value;
-
-            let products = JSON.parse(localStorage.getItem('shivShaktiProducts')) || [];
-            
-            const newProduct = {
-                id: Date.now(),
-                name: name,
-                category: category,
-                price: price,
-                desc: desc
-            };
-
-            products.push(newProduct);
-            localStorage.setItem('shivShaktiProducts', JSON.stringify(products));
-
-            // Show success alert
-            const alertBox = document.getElementById('alertBox');
-            alertBox.style.display = 'block';
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 3000);
-
-            document.getElementById('productForm').reset();
-            loadProducts();
-        }
-
-        function loadProducts() {
-            const tableBody = document.getElementById('productTableBody');
-            tableBody.innerHTML = '';
-
-            let products = JSON.parse(localStorage.getItem('shivShaktiProducts')) || [];
-
-            if(products.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#777;">કોઈ પ્રોડક્ટ ઉપલબ્ધ નથી.</td></tr>';
+            if (!currentBase64Image) {
+                alert("કૃપા કરીને પ્રોડક્ટનો ફોટો પસંદ કરો.");
                 return;
             }
 
-            products.forEach((prod, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td><b>${escapeHtml(prod.name)}</b></td>
-                    <td>${escapeHtml(prod.category)}</td>
-                    <td>₹${escapeHtml(prod.price)}</td>
-                    <td>${escapeHtml(prod.desc)}</td>
-                    <td><button class="btn btn-danger" onclick="deleteProduct(${prod.id})">ડિલીટ</button></td>
-                `;
-                tableBody.appendChild(row);
-            });
+            const newProduct = {
+                id: Date.now(),
+                name: document.getElementById('prodName').value.trim(),
+                category: document.getElementById('prodCategory').value,
+                weight: document.getElementById('prodWeight').value.trim(),
+                price: document.getElementById('prodPrice').value.trim(),
+                desc: document.getElementById('prodDesc').value.trim(),
+                image: currentBase64Image,
+                dateAdded: new Date().toLocaleDateString('gu-IN')
+            };
+
+            let products = getProducts();
+            products.unshift(newProduct); // નવી પ્રોડક્ટ સૌથી ઉપર રાખવા માટે
+            saveProducts(products);
+
+            // ફોર્મ રિસેટ કરો
+            this.reset();
+            document.getElementById('imagePreview').style.display = 'none';
+            currentBase64Image = "";
+
+            renderAdminProducts();
+            showToast("✅ પ્રોડક્ટ સફળતાપૂર્વક સેવ થઈ ગઈ!");
+        });
+
+        function getProducts() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            return data ? JSON.parse(data) : [];
+        }
+
+        function saveProducts(products) {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+            } catch (e) {
+                alert("સ્ટોરેજ ફુલ થઈ ગયું છે! કૃપા કરીને જૂની પ્રોડક્ટ્સ ડિલીટ કરો.");
+            }
+        }
+
+        function renderAdminProducts() {
+            const products = getProducts();
+            const tbody = document.getElementById('adminProductList');
+            document.getElementById('totalCount').innerText = products.length;
+
+            if (products.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 30px; color: #64748b;">હજુ સુધી કોઈ પ્રોડક્ટ ઉમેરવામાં આવી નથી.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = products.map(product => `
+                <tr>
+                    <td><img src="${product.image}" alt="${product.name}" class="prod-thumb"></td>
+                    <td>
+                        <strong>${product.name}</strong><br>
+                        <small style="color:#64748b;">${product.weight ? 'વજન/સાઈઝ: ' + product.weight : ''}</small>
+                    </td>
+                    <td><span class="badge">${product.category}</span></td>
+                    <td><strong>₹${product.price}</strong></td>
+                    <td>
+                        <button class="btn-delete" onclick="deleteProduct(${product.id})">ડિલીટ</button>
+                    </td>
+                </tr>
+            `).join('');
         }
 
         function deleteProduct(id) {
-            let products = JSON.parse(localStorage.getItem('shivShaktiProducts')) || [];
-            products = products.filter(p => p.id !== id);
-            localStorage.setItem('shivShaktiProducts', JSON.stringify(products));
-            loadProducts();
-        }
-
-        function escapeHtml(text) {
-            if(!text) return '';
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
-
-        /* 
-           Additional structural expansion to meet precise requirements:
-           Ensuring complete code integrity, error-free array indexing,
-           consistent event listening, and robust caching support for 
-           shree shiv shakti jewellers inventory database emulation.
-        */
-        function dummyValidatorExtension() {
-            let internalCheck = true;
-            if (internalCheck) {
-                console.log("Shiv Shakti Jewellers Admin Module Loaded Successfully.");
+            if (confirm("શું તમે ખરેખર આ પ્રોડક્ટ ડિલીટ કરવા માંગો છો?")) {
+                let products = getProducts();
+                products = products.filter(p => p.id !== id);
+                saveProducts(products);
+                renderAdminProducts();
+                showToast("🗑️ પ્રોડક્ટ ડિલીટ કરવામાં આવી.");
             }
         }
-        dummyValidatorExtension();
+
+        function clearAllProducts() {
+            if (confirm("ચેતવણી: બધી જ પ્રોડક્ટ્સ કાયમ માટે ડિલીટ થઈ જશે. આગળ વધવું છે?")) {
+                localStorage.removeItem(STORAGE_KEY);
+                renderAdminProducts();
+                showToast("બધી પ્રોડક્ટ્સ સાફ થઈ ગઈ.");
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
     </script>
 </body>
 </html>

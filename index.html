@@ -379,6 +379,22 @@
                 loadWebsiteProducts();
             }
         });
+        // === મુખ્ય વેબસાઇટ માટે ઓર્ડર સેવ કરવાનો કોડ (સ્ક્રિપ્ટ ટેગમાં સૌથી છેલ્લે ઉમેરવો) ===
+function saveNewOrderToStorage(orderData) {
+    try {
+        let existingOrders = JSON.parse(localStorage.getItem("rk_enterprise_orders")) || [];
+        // નવો ઓર્ડર ટાઈમસ્ટેમ્પ અને વિગતો સાથે ઉમેરો
+        orderData.id = "ORD-" + Date.now();
+        orderData.date = new Date().toLocaleString();
+        existingOrders.push(orderData);
+        
+        // લોકલ સ્ટોરેજમાં સેવ કરો
+        localStorage.setItem("rk_enterprise_orders", JSON.stringify(existingOrders));
+        console.log("ઓર્ડર સફળતાપૂર્વક લોકલ સ્ટોરેજમાં સેવ થઈ ગયો છે.");
+    } catch (err) {
+        console.error("ઓર્ડર સેવ કરવામાં ભૂલ:", err);
+    }
+}
     </script>
 </body>
 </html>

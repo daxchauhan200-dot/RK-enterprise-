@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>શ્રી શિવ શક્તિ જ્વેલર્સ - પરંપરાગત અને આધુનિક આભૂષણો</title>
+    <title>શ્રી શિવ શક્તિ જ્વેલર્સ - મુખ્ય વેબસાઇટ</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-dark: #0f172a;
-            --secondary-dark: #1e293b;
-            --gold: #d4af37;
-            --gold-light: #fef08a;
-            --bg-color: #f8fafc;
-            --text-main: #1e293b;
-            --whatsapp: #25d366;
+            --primary-color: #1b263b;
+            --accent-gold: #c59b27;
+            --bg-light: #f8f9fa;
+            --text-dark: #212529;
+            --white: #ffffff;
         }
 
         * {
@@ -24,173 +22,160 @@
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
         }
 
-        /* Navbar */
-        nav {
-            background: var(--primary-dark);
-            color: white;
-            padding: 18px 5%;
+        header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 3px solid var(--accent-gold);
             position: sticky;
             top: 0;
-            z-index: 100;
-            border-bottom: 2px solid var(--gold);
+            z-index: 1000;
         }
 
-        .logo {
+        .logo-area h1 {
             font-size: 24px;
-            font-weight: 700;
-            color: var(--gold);
-            text-decoration: none;
+            color: var(--accent-gold);
         }
 
-        .admin-link {
-            color: #cbd5e1;
-            text-decoration: none;
-            font-size: 14px;
-            border: 1px solid #475569;
-            padding: 6px 14px;
-            border-radius: 6px;
-            transition: all 0.3s;
+        .logo-area p {
+            font-size: 12px;
+            color: #adb5bd;
         }
 
-        .admin-link:hover {
-            border-color: var(--gold);
-            color: var(--gold);
-        }
-
-        /* Hero Banner */
-        .hero {
-            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.9)), url('https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=1350&q=80') center/cover;
-            color: white;
-            text-align: center;
-            padding: 70px 20px;
-            border-bottom: 4px solid var(--gold);
-        }
-
-        .hero h1 {
-            font-size: 36px;
-            color: var(--gold);
-            margin-bottom: 12px;
-        }
-
-        .hero p {
-            font-size: 18px;
-            color: #e2e8f0;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Filter Section */
-        .filter-container {
-            max-width: 1200px;
-            margin: 30px auto 10px;
-            padding: 0 20px;
+        nav ul {
+            list-style: none;
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
+            gap: 20px;
         }
 
-        .filter-btn {
-            background: white;
-            border: 1.5px solid #cbd5e1;
-            padding: 8px 18px;
-            border-radius: 25px;
-            cursor: pointer;
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
             font-weight: 600;
-            color: var(--text-main);
-            transition: all 0.3s;
+            transition: color 0.3s;
+            cursor: pointer;
         }
 
-        .filter-btn.active, .filter-btn:hover {
-            background: var(--primary-dark);
-            color: var(--gold);
-            border-color: var(--primary-dark);
+        nav ul li a:hover, nav ul li a.active {
+            color: var(--accent-gold);
         }
 
-        /* Catalog Grid */
-        .catalog-container {
-            max-width: 1200px;
-            margin: 20px auto 60px;
-            padding: 0 20px;
+        .admin-btn-link {
+            background-color: var(--accent-gold);
+            color: var(--primary-color);
+            padding: 6px 14px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .page-section {
+            display: none;
+            padding: 40px 5%;
+            min-height: 70vh;
+        }
+
+        .page-section.active-page {
+            display: block;
+        }
+
+        .hero-banner {
+            background: linear-gradient(rgba(27, 38, 59, 0.8), rgba(27, 38, 59, 0.8)), url('https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=1350&q=80') center/cover;
+            color: var(--white);
+            text-align: center;
+            padding: 80px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .hero-banner h2 {
+            font-size: 38px;
+            color: var(--accent-gold);
+            margin-bottom: 15px;
+        }
+
+        .hero-banner p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 20px;
+            color: #e2e8f0;
+        }
+
+        .section-title {
+            font-size: 26px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--accent-gold);
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+
+        .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 25px;
+            margin-top: 20px;
         }
 
         .product-card {
-            background: white;
-            border-radius: 12px;
+            background: var(--white);
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-            border: 1px solid #e2e8f0;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            border: 1px solid #dee2e6;
+            transition: transform 0.3s;
             display: flex;
             flex-direction: column;
         }
 
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.12);
         }
 
-        .product-img-wrapper {
+        .product-img {
             width: 100%;
-            height: 240px;
-            overflow: hidden;
-            background: #f1f5f9;
-            position: relative;
-        }
-
-        .product-img-wrapper img {
-            width: 100%;
-            height: 100%;
+            height: 220px;
             object-fit: cover;
+            background-color: #e9ecef;
         }
 
-        .category-tag {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            background: var(--primary-dark);
-            color: var(--gold);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .product-details {
-            padding: 20px;
+        .product-info {
+            padding: 15px;
             flex: 1;
             display: flex;
             flex-direction: column;
         }
 
         .product-title {
-            font-size: 19px;
+            font-size: 18px;
             font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 6px;
+            color: var(--primary-color);
+            margin-bottom: 5px;
         }
 
-        .product-weight {
-            font-size: 13px;
-            color: #64748b;
+        .product-cat {
+            font-size: 12px;
+            background: #fff3cd;
+            color: #856404;
+            padding: 2px 8px;
+            border-radius: 10px;
+            width: fit-content;
             margin-bottom: 8px;
         }
 
         .product-desc {
             font-size: 14px;
-            color: #475569;
+            color: #6c757d;
             margin-bottom: 15px;
-            line-height: 1.5;
             flex: 1;
         }
 
@@ -198,153 +183,185 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid #f1f5f9;
-            padding-top: 15px;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
         }
 
-        .price {
-            font-size: 20px;
+        .product-price {
+            font-size: 18px;
             font-weight: 700;
-            color: var(--primary-dark);
+            color: var(--primary-color);
         }
 
-        .btn-order {
-            background: var(--whatsapp);
+        .order-whatsapp-btn {
+            background-color: #25d366;
             color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
             text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 6px;
+            font-size: 13px;
             font-weight: 600;
-            font-size: 14px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: opacity 0.2s;
         }
 
-        .btn-order:hover {
-            opacity: 0.9;
+        .info-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
         }
 
-        .empty-state {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 60px 20px;
-            background: white;
-            border-radius: 12px;
-            border: 1px dashed #cbd5e1;
+        .info-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .info-card p {
+            margin-bottom: 10px;
+            color: #495057;
         }
 
         footer {
-            background: var(--primary-dark);
-            color: #94a3b8;
+            background-color: var(--primary-color);
+            color: var(--white);
             text-align: center;
             padding: 25px;
-            border-top: 2px solid var(--gold);
+            border-top: 3px solid var(--accent-gold);
+            margin-top: 40px;
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <a href="index.html" class="logo">✨ શ્રી શિવ શક્તિ જ્વેલર્સ</a>
-        <a href="admin.html" class="admin-link">⚙️ એડમિન લોગીન</a>
-    </nav>
+    <header>
+        <div class="logo-area">
+            <h1>✨ શ્રી શિવ શક્તિ જ્વેલર્સ</h1>
+            <p>પરંપરાગત આભૂષણો અને કાસિંગ વર્ક</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a onclick="switchPage('home', this)" class="active">હોમ પેજ</a></li>
+                <li><a onclick="switchPage('products', this)">પ્રોડક્ટ્સ</a></li>
+                <li><a onclick="switchPage('about', this)">અબાઉટ અસ</a></li>
+                <li><a onclick="switchPage('contact', this)">કોન્ટેક્ટ અસ</a></li>
+                <li><a onclick="switchPage('orders', this)">ઓર્ડર ફોર્મ</a></li>
+                <li><a href="admin.html" class="admin-btn-link" target="_blank">⚙️ એડમિન પેનલ</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <section class="hero">
-        <h1>શુદ્ધતા અને પરંપરાનો સંગમ</h1>
-        <p>ભરવાડના કડા, વેડલા, ઝાંઝર, બ્રાસ અને જર્મન સિલ્વરના બેનમૂન આભૂષણોના ઉત્પાદક અને વિક્રેતા.</p>
+    <!-- હોમ પેજ સેક્શન -->
+    <section id="home" class="page-section active-page">
+        <div class="hero-banner">
+            <h2>શુદ્ધતા અને પરંપરાનો વિશ્વાસ</h2>
+            <p>શ્રી શિવ શક્તિ જ્વેલર્સમાં આપનું સ્વાગત છે. અહીં આપને ઉત્તમ ગુણવત્તાવાળા ભરવાડના કડા, વેડલા, ઝાંઝર અને અન્ય આભૂષણો મળી રહેશે.</p>
+            <a onclick="switchPage('products', document.querySelectorAll('nav ul li a')[1])" style="background:var(--accent-gold); color:var(--primary-color); padding:10px 25px; border-radius:5px; font-weight:bold; cursor:pointer; display:inline-block;">પ્રોડક્ટ્સ જુઓ</a>
+        </div>
+
+        <h3 class="section-title">નવીનતમ પ્રોડક્ટ્સ ઝલક</h3>
+        <div class="products-grid" id="homeProductsGrid">
+            <!-- ડાયનેમિક પ્રોડક્ટ્સ અહીં લોડ થશે -->
+        </div>
     </section>
 
-    <!-- Category Filters -->
-    <div class="filter-container" id="filterButtons">
-        <button class="filter-btn active" onclick="filterProducts('All', this)">બધી પ્રોડક્ટ્સ</button>
-        <button class="filter-btn" onclick="filterProducts('ભરવાડના કડા', this)">ભરવાડના કડા</button>
-        <button class="filter-btn" onclick="filterProducts('વેડલા', this)">વેડલા</button>
-        <button class="filter-btn" onclick="filterProducts('ઝાંઝર', this)">ઝાંઝર</button>
-        <button class="filter-btn" onclick="filterProducts('બ્રાસ જ્વેલરી', this)">બ્રાસ જ્વેલરી</button>
-        <button class="filter-btn" onclick="filterProducts('જર્મન સિલ્વર', this)">જર્મન સિલ્વર</button>
-    </div>
+    <!-- પ્રોડક્ટ્સ પેજ સેક્શન -->
+    <section id="products" class="page-section">
+        <h3 class="section-title">અમારી તમામ પ્રોડક્ટ્સ લિસ્ટિંગ</h3>
+        <p style="margin-bottom: 20px; color: #6c757d;">એડમિન પેનલમાંથી ઉમેરેલી તમામ પ્રોડક્ટ્સ અહીં લાઈવ દેખાઈ જશે.</p>
+        <div class="products-grid" id="allProductsGrid">
+            <!-- ડાયનેમિક પ્રોડક્ટ્સ અહીં લોડ થશે -->
+        </div>
+    </section>
 
-    <!-- Product Grid -->
-    <main class="catalog-container" id="publicProductGrid">
-        <!-- અહીં પ્રોડક્ટ્સ ઓટોમેટિક દેખાશે -->
-    </main>
+    <!-- અબાઉટ અસ પેજ સેક્શન -->
+    <section id="about" class="page-section">
+        <div class="info-card">
+            <h3>અમારા વિશે (About Us)</h3>
+            <p><strong>શ્રી શિવ શક્તિ જ્વેલર્સ</strong> પરંપરાગત જ્વેલરી ઉત્પાદન, ડાઈ કટીંગ, મોલ્ડ કટીંગ, ફાઈલીંગ, પોલીસીંગ અને વેક્સ સેટિંગ ક્ષેત્રે ઉત્કૃષ્ટ સેવાઓ આપે છે.</p>
+            <p>અમે ગ્રાહકોની પસંદગી મુજબ સિલ્વર, જર્મન સિલ્વર અને બ્રાસ આભૂષણોની અદ્ભુત વેરાયટી તૈયાર કરીએ છીએ.</p>
+        </div>
+    </section>
+
+    <!-- કોન્ટેક્ટ અસ પેજ સેક્શન -->
+    <section id="contact" class="page-section">
+        <div class="info-card">
+            <h3>સંપર્ક કરો (Contact Us)</h3>
+            <p>📍 <strong>સરનામું:</strong> સુરત, ગુજરાત, ભારત.</p>
+            <p>📞 <strong>ફોન/વોટ્સએપ:</strong> +91 XXXXX XXXXX</p>
+            <p>✉️ <strong>સહયોગ:</strong> પરંપરાગત આભૂષણો અને કાસિંગ ઓર્ડર માટે અમારો સંપર્ક કરો.</p>
+        </div>
+    </section>
+
+    <!-- ઓર્ડર પેજ સેક્શન -->
+    <section id="orders" class="page-section">
+        <div class="info-card">
+            <h3>ઓર્ડર અને પૂછપરછ વિગત</h3>
+            <p>જો તમારે કોઈ સ્પેશિયલ ડિઝાઇન કે ઓર્ડર આપવો હોય, તો તમે સીધા પ્રોડક્ટ પર આપેલા WhatsApp બટન દ્વારા અથવા રૂબરૂ સંપર્ક કરી શકો છો.</p>
+        </div>
+    </section>
 
     <footer>
         <p>© 2026 શ્રી શિવ શક્તિ જ્વેલર્સ. સર્વ હક્ક સ્વાધીન.</p>
     </footer>
 
     <script>
-        // એડમિન પેજ વાળી જ STORAGE KEY
         const STORAGE_KEY = 'shree_shiv_shakti_products';
-        
-        // તમારો WhatsApp નંબર અહીં નાખવો (91 સાથે)
-        const WHATSAPP_NUMBER = "919876543210"; 
 
-        document.addEventListener('DOMContentLoaded', () => {
-            displayProducts('All');
-        });
+        function switchPage(pageId, element) {
+            document.querySelectorAll('.page-section').forEach(sec => {
+                sec.classList.remove('active-page');
+            });
+            document.getElementById(pageId).classList.add('active-page');
 
-        // જો બીજા ટેબમાં એડમિન પેજ પર ફેરફાર થાય, તો અહીં તરત જ અપડેટ થશે
-        window.addEventListener('storage', (event) => {
-            if (event.key === STORAGE_KEY) {
-                displayProducts('All');
+            document.querySelectorAll('nav ul li a').forEach(a => {
+                a.classList.remove('active');
+            });
+            if(element) {
+                element.classList.add('active');
             }
-        });
+            window.scrollTo(0, 0);
+        }
 
-        function displayProducts(categoryFilter) {
-            const grid = document.getElementById('publicProductGrid');
+        function loadWebsiteProducts() {
             const rawData = localStorage.getItem(STORAGE_KEY);
-            let products = rawData ? JSON.parse(rawData) : [];
+            const products = rawData ? JSON.parse(rawData) : [];
 
-            if (categoryFilter !== 'All') {
-                products = products.filter(p => p.category === categoryFilter);
-            }
+            const homeGrid = document.getElementById('homeProductsGrid');
+            const allGrid = document.getElementById('allProductsGrid');
 
             if (products.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-state">
-                        <h3 style="color: #334155; margin-bottom: 10px;">હાલમાં આ કેટેગરીમાં કોઈ પ્રોડક્ટ ઉપલબ્ધ નથી.</h3>
-                        <p style="color: #64748b;">એડમિન પેનલમાંથી નવી પ્રોડક્ટ ઉમેરો, તે તરત જ અહીં દેખાશે.</p>
-                    </div>
-                `;
+                const emptyHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:#6c757d;">હજુ સુધી કોઈ પ્રોડક્ટ ઉમેરવામાં આવી નથી. એડમિન પેનલમાંથી પ્રોડક્ટ ઉમેરો.</div>`;
+                homeGrid.innerHTML = emptyHTML;
+                allGrid.innerHTML = emptyHTML;
                 return;
             }
 
-            grid.innerHTML = products.map(product => {
-                const whatsappMsg = encodeURIComponent(`નમસ્તે શ્રી શિવ શક્તિ જ્વેલર્સ, મને તમારી આ પ્રોડક્ટ ખરીદવામાં રસ છે:\n*નામ:* ${product.name}\n*કેટેગરી:* ${product.category}\n*કિંમત:* ₹${product.price}`);
-                
-                return `
-                    <div class="product-card">
-                        <div class="product-img-wrapper">
-                            <span class="category-tag">${product.category}</span>
-                            <img src="${product.image}" alt="${product.name}">
-                        </div>
-                        <div class="product-details">
-                            <h3 class="product-title">${product.name}</h3>
-                            ${product.weight ? `<div class="product-weight">⚖️ ${product.weight}</div>` : ''}
-                            <p class="product-desc">${product.desc || 'ઉત્તમ ગુણવત્તા અને આકર્ષક ફિનિશિંગ સાથેનું આભૂષણ.'}</p>
-                            <div class="product-footer">
-                                <span class="price">₹${product.price}</span>
-                                <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMsg}" target="_blank" class="btn-order">
-                                    💬 ઓર્ડર કરો
-                                </a>
-                            </div>
+            const productsHTML = products.map(prod => `
+                <div class="product-card">
+                    <img src="${prod.image}" alt="${prod.name}" class="product-img">
+                    <div class="product-info">
+                        <span class="product-cat">${prod.category}</span>
+                        <h4 class="product-title">${prod.name}</h4>
+                        <p class="product-desc">${prod.desc || 'શ્રેષ્ઠ ગુણવત્તા યુક્ત આભૂષણ.'}</p>
+                        <div class="product-footer">
+                            <span class="product-price">₹${prod.price}</span>
+                            <a href="https://wa.me/919876543210?text=નમસ્તે,%20મારે%20આ%20પ્રોડક્ટ%20માટે%20ઓર્ડર%20આપવો%20છે:%20${encodeURIComponent(prod.name)}" target="_blank" class="order-whatsapp-btn">ઓર્ડર કરો</a>
                         </div>
                     </div>
-                `;
-            }).join('');
+                </div>
+            `).join('');
+
+            homeGrid.innerHTML = productsHTML;
+            allGrid.innerHTML = productsHTML;
         }
 
-        function filterProducts(category, btnElement) {
-            // બધા બટન પરથી active ક્લાસ હટાવો
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            // ક્લિક કરેલા બટન પર active ક્લાસ લગાવો
-            btnElement.classList.add('active');
-            
-            displayProducts(category);
-        }
+        document.addEventListener('DOMContentLoaded', loadWebsiteProducts);
+
+        window.addEventListener('storage', (e) => {
+            if (e.key === STORAGE_KEY) {
+                loadWebsiteProducts();
+            }
+        });
     </script>
 </body>
 </html>

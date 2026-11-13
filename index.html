@@ -3,163 +3,870 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>શ્રી શિવ શક્તિ જ્વેલરી</title>
-  <link rel="icon" type="image/png" href="shree shiv shkti jwelry logo .PNG">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;700&display=swap" rel="stylesheet">
+    <title>RK ENTERPRISE - પ્રીમિયમ બ્રાસ અને જ્વેલરી કલેક્શન</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #000428; --gold: #FFD700; --glass: rgba(255, 255, 255, 0.98); --dark-red: #800020; }
-        body { margin: 0; font-family: 'Noto Sans Gujarati', sans-serif; background: linear-gradient(135deg, #000428, #004e92); color: #333; line-height: 1.6; }
-        header { background: rgba(255,255,255,0.15); backdrop-filter: blur(15px); padding: 25px 15px; text-align: center; border-bottom: 3px solid var(--gold); position: sticky; top: 0; z-index: 1000; }
-        header h1 { color: var(--gold); margin: 0; font-size: 1.8em; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .nav-container { display: flex; justify-content: center; gap: 8px; margin-top: 15px; flex-wrap: wrap; }
-        .nav-btn { background: var(--gold); border: none; padding: 10px 16px; border-radius: 25px; font-weight: bold; cursor: pointer; font-size: 0.9em; box-shadow: 0 4px 8px rgba(0,0,0,0.2); transition: 0.3s; }
-        .content-section { display: none; padding: 30px 20px; max-width: 800px; margin: auto; animation: fadeIn 0.5s ease-in-out; }
-        .active-section { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .info-card { background: var(--glass); padding: 30px; border-radius: 25px; margin-bottom: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.3); }
-        .catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 20px; }
-        .product-card { background: #fff; border-radius: 20px; overflow: hidden; border-top: 5px solid var(--gold); text-align: center; padding: 20px; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-        .product-img { width: 100%; height: 220px; object-fit: contain; margin-bottom: 15px; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; overflow-y: auto; }
-        .modal-content { background: white; width: 95%; max-width: 550px; margin: 20px auto; padding: 25px; border-radius: 30px; text-align: center; position: relative; }
-        .close-btn { position: absolute; right: 20px; top: 15px; font-size: 35px; cursor: pointer; color: #666; }
-        .slider-container { display: flex; overflow-x: auto; gap: 15px; padding: 10px 0; scroll-snap-type: x mandatory; scrollbar-width: none; }
-        .slider-img { width: 100%; max-height: 350px; object-fit: contain; flex-shrink: 0; scroll-snap-align: center; border-radius: 15px; }
-        .desc-text { text-align: left; background: #fdfdfd; padding: 20px; border-radius: 20px; border: 1px solid #eee; margin: 15px 0; font-size: 0.95em; }
-        input, textarea { width: 100%; padding: 16px; margin: 12px 0; border: 2px solid #eee; border-radius: 15px; box-sizing: border-box; font-size: 1.1em; }
-        .btn-order { background: #28a745; color: white; width: 100%; padding: 18px; border: none; border-radius: 15px; font-weight: bold; font-size: 1.2em; cursor: pointer; margin-top: 15px; }
-        footer { text-align: center; padding: 40px 20px; color: white; font-size: 0.9em; opacity: 0.8; }
+        /* ==========================================================================
+           1. MODERN THEME VARIABLES & RESET (નવા જમાનાની ડેશિંગ ડિઝાઇન)
+           ========================================================================== */
+        :root {
+            --bg-dark: #070b19;
+            --bg-gradient: linear-gradient(135deg, #070b19 0%, #0f1c3f 50%, #091126 100%);
+            --gold-primary: #ffd700;
+            --gold-gradient: linear-gradient(135deg, #ffd700 0%, #f59e0b 100%);
+            --gold-glow: rgba(255, 215, 0, 0.35);
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --card-bg: #ffffff;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dark: #0f172a;
+            --accent-green: #10b981;
+            --accent-green-hover: #059669;
+            --shadow-card: 0 20px 40px rgba(0, 0, 0, 0.4);
+            --transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans Gujarati', 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* ==========================================================================
+           2. GLASSMORPHISM HEADER & NAVIGATION
+           ========================================================================== */
+        header {
+            background: rgba(7, 11, 25, 0.82);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 20px 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.25);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .brand-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.1rem;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            filter: drop-shadow(0 2px 10px rgba(255, 215, 0, 0.2));
+        }
+
+        .brand-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: var(--glass-bg);
+            color: var(--text-light);
+            border: 1px solid var(--glass-border);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.92rem;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-btn:hover, .nav-btn.active-nav {
+            background: var(--gold-gradient);
+            color: var(--bg-dark);
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 20px var(--gold-glow);
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================================================
+           3. MAIN SECTIONS & ANIMATIONS
+           ========================================================================== */
+        main {
+            flex-grow: 1;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 35px 20px;
+        }
+
+        .content-section {
+            display: none;
+            animation: slideUpFade 0.5s ease forwards;
+        }
+
+        .active-section {
+            display: block;
+        }
+
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ==========================================================================
+           4. HERO HOME SECTION (આકર્ષક હોમ સ્ક્રીન)
+           ========================================================================== */
+        .hero-box {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(16px);
+            border-radius: 30px;
+            padding: 50px 30px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.15);
+            color: var(--gold-primary);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .hero-box h2 {
+            font-size: 2.3rem;
+            color: #ffffff;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .hero-box h2 span {
+            color: var(--gold-primary);
+        }
+
+        .hero-box p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 650px;
+            margin: 0 auto 30px;
+        }
+
+        .cta-btn {
+            background: var(--gold-gradient);
+            color: var(--bg-dark);
+            border: none;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 25px var(--gold-glow);
+            transition: var(--transition);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.5);
+        }
+
+        .features-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 35px;
+        }
+
+        .feature-item {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 25px 20px;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .feature-item h4 {
+            color: var(--gold-primary);
+            margin-bottom: 6px;
+            font-size: 1.05rem;
+        }
+
+        .feature-item p {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        /* ==========================================================================
+           5. PRODUCTS CATALOG & FILTER (ડાયનેમિક પ્રોડક્ટ ગ્રીડ)
+           ========================================================================== */
+        .section-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            color: var(--gold-primary);
+            margin-bottom: 8px;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .filter-pills {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .pill-btn {
+            background: var(--glass-bg);
+            color: var(--text-light);
+            border: 1px solid var(--glass-border);
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.88rem;
+            transition: var(--transition);
+        }
+
+        .pill-btn.active, .pill-btn:hover {
+            background: var(--gold-primary);
+            color: var(--bg-dark);
+            font-weight: 700;
+        }
+
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            overflow: hidden;
+            color: var(--text-dark);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+            transition: var(--transition);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--gold-primary);
+            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.25);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: var(--bg-dark);
+            color: var(--gold-primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            z-index: 2;
+        }
+
+        .product-img-wrap {
+            width: 100%;
+            height: 240px;
+            background: #f8fafc;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover .product-img {
+            transform: scale(1.06);
+        }
+
+        .product-body {
+            padding: 20px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-body h3 {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .product-meta {
+            font-size: 0.82rem;
+            color: #64748b;
+            margin-bottom: 12px;
+        }
+
+        .product-price {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--accent-green);
+            margin-bottom: 14px;
+        }
+
+        .view-btn {
+            background: var(--bg-dark);
+            color: var(--gold-primary);
+            padding: 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .product-card:hover .view-btn {
+            background: var(--gold-gradient);
+            color: var(--bg-dark);
+        }
+
+        /* ==========================================================================
+           6. PRODUCT DETAILS MODAL (પ્રોડક્ટ પોપઅપ અને સ્લાઇડર)
+           ========================================================================== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(7, 11, 25, 0.92);
+            backdrop-filter: blur(10px);
+            z-index: 3000;
+            overflow-y: auto;
+            padding: 20px 10px;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            color: var(--text-dark);
+            width: 100%;
+            max-width: 540px;
+            margin: 20px auto;
+            padding: 30px 25px;
+            border-radius: 28px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+            animation: slideUpFade 0.3s ease;
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 18px;
+            top: 14px;
+            width: 38px;
+            height: 38px;
+            background: #f1f5f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            color: #334155;
+            transition: 0.2s;
+        }
+
+        .close-btn:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .slider-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding: 10px 0;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+        }
+
+        .slider-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .slider-img {
+            width: 100%;
+            max-height: 320px;
+            object-fit: contain;
+            flex-shrink: 0;
+            scroll-snap-align: center;
+            border-radius: 16px;
+            background: #f8fafc;
+            padding: 10px;
+        }
+
+        .desc-text {
+            text-align: left;
+            background: #f8fafc;
+            padding: 18px;
+            border-radius: 18px;
+            border: 1px solid #e2e8f0;
+            margin: 15px 0;
+            font-size: 0.95rem;
+            color: #334155;
+        }
+
+        .btn-order {
+            background: var(--accent-green);
+            color: white;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+            transition: var(--transition);
+        }
+
+        .btn-order:hover {
+            background: var(--accent-green-hover);
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================================================
+           7. ORDER FORM, ABOUT & CONTACT CARDS
+           ========================================================================== */
+        .info-card {
+            background: #ffffff;
+            color: var(--text-dark);
+            padding: 35px 30px;
+            border-radius: 28px;
+            max-width: 650px;
+            margin: 0 auto;
+            box-shadow: var(--shadow-card);
+            border-top: 5px solid var(--gold-primary);
+        }
+
+        .info-card h2 {
+            color: var(--bg-dark);
+            margin-bottom: 18px;
+            font-size: 1.6rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 15px 18px;
+            margin: 10px 0;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            font-size: 1rem;
+            background: #f8fafc;
+            transition: 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+            background: #ffffff;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 16px;
+            margin: 12px 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* ==========================================================================
+           8. FOOTER
+           ========================================================================== */
+        footer {
+            background: rgba(7, 11, 25, 0.9);
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 40px;
+        }
+
+        footer strong {
+            color: var(--gold-primary);
+        }
+
+        @media (max-width: 600px) {
+            .brand-title { font-size: 1.6rem; }
+            .hero-box h2 { font-size: 1.7rem; }
+            .hero-box { padding: 35px 20px; }
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>શ્રી શિવ શક્તિ જ્વેલરી</h1>
+    <div class="brand-title">RK ENTERPRISE</div>
+    <div class="brand-subtitle">શુદ્ધ પિત્તળની મૂર્તિઓ અને પ્રીમિયમ જ્વેલરી કલેક્શન</div>
     <div class="nav-container">
-        <button class="nav-btn" onclick="showSection('home')">🏠 HOME</button>
-        <button class="nav-btn" onclick="showSection('products')">🛍️ PRODUCTS</button>
-        <button class="nav-btn" onclick="showSection('about')">ℹ️ ABOUT</button>
-        <button class="nav-btn" onclick="showSection('contact')">📞 CONTACT</button>
+        <button class="nav-btn active-nav" id="btn-home" onclick="showSection('home')">🏠 HOME</button>
+        <button class="nav-btn" id="btn-products" onclick="showSection('products')">🛍️ PRODUCTS</button>
+        <button class="nav-btn" id="btn-about" onclick="showSection('about')">ℹ️ ABOUT</button>
+        <button class="nav-btn" id="btn-contact" onclick="showSection('contact')">📞 CONTACT</button>
     </div>
 </header>
 
-<div id="home" class="content-section active-section">
-    <div class="info-card" style="text-align: center;">
-        <h2 style="color: var(--dark-red);">નમસ્તે! પધારો..</h2>
-        <p>અમે લાવીએ છીએ તમારા ઘર અને મંદિર માટે ૧૦૦% શુદ્ધ પિત્તળની મૂર્તિઓ.</p>
-    </div>
-</div>
-
-<div id="products" class="content-section">
-    <div class="catalog-grid">
-        <div class="product-card" onclick="openDetails('hanuman')">
-            <img src="HANUMAAN.png" class="product-img">
-            <h3>હનુમાન મૂર્તિ</h3>
-            <p style="color: #28a745; font-weight: bold;">₹ 2000</p>
+<main>
+    <!-- 1. HOME SECTION -->
+    <div id="home" class="content-section active-section">
+        <div class="hero-box">
+            <span class="hero-badge">✨ ૧૦૦% શુદ્ધ અને પ્રીમિયમ ક્વોલિટી</span>
+            <h2><span>RK ENTERPRISE</span> માં આપનું હાર્દિક સ્વાગત છે</h2>
+            <p>અમે લાવીએ છીએ તમારા ઘર, મંદિર અને ખાસ પ્રસંગો માટે ઉત્કૃષ્ટ કારીગરીવાળી પિત્તળની મૂર્તિઓ તથા પરંપરાગત જ્વેલરી.</p>
+            <button class="cta-btn" onclick="showSection('products')">🛍️ અમારું કલેક્શન જુઓ</button>
         </div>
-        <div class="product-card" onclick="openDetails('panchmukhi')">
-            <img src="Screenshot 2025-10-28 210206.png" class="product-img">
-            <h3>પંચમુખી હનુમાન</h3>
-            <p style="color: #28a745; font-weight: bold;">₹ 2500</p>
+
+        <div class="features-row">
+            <div class="feature-item">
+                <div class="feature-icon">🏆</div>
+                <h4>શ્રેષ્ઠ ગુણવત્તા</h4>
+                <p>૧૦૦% શુદ્ધ ધાતુ અને લાંબા સમય સુધી ટકી રહે તેવું ફિનિશિંગ.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🎨</div>
+                <h4>સૂક્ષ્મ કારીગરી</h4>
+                <p>અનુભવી કારીગરો દ્વારા તૈયાર કરાયેલી આકર્ષક ડિઝાઇન.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🚚</div>
+                <h4>સરળ WhatsApp ઓર્ડર</h4>
+                <p>ઘરે બેઠા સીધો ઓર્ડર કરો અને ઝડપી ડિલિવરી મેળવો.</p>
+            </div>
         </div>
     </div>
-</div>
 
+    <!-- 2. PRODUCTS SECTION (CMS માંથી ડાયનેમિક લોડ થશે) -->
+    <div id="products" class="content-section">
+        <div class="section-header">
+            <h2>અમારું ખાસ કલેક્શન</h2>
+            <p>કોઈપણ પ્રોડક્ટની વધુ વિગત જોવા અને ઓર્ડર કરવા તેના પર ક્લિક કરો</p>
+        </div>
+
+        <div class="filter-pills" id="category-filters">
+            <button class="pill-btn active" onclick="filterProducts('ALL', this)">બધી પ્રોડક્ટ્સ</button>
+            <button class="pill-btn" onclick="filterProducts('મૂર્તિ', this)">મૂર્તિઓ</button>
+            <button class="pill-btn" onclick="filterProducts('કડા', this)">કડા</button>
+            <button class="pill-btn" onclick="filterProducts('વેડલા', this)">વેડલા</button>
+            <button class="pill-btn" onclick="filterProducts('ઝાંઝર', this)">ઝાંઝર</button>
+        </div>
+
+        <!-- અહીં JavaScript દ્વારા પ્રોડક્ટ્સ આપમેળે લોડ થશે -->
+        <div class="catalog-grid" id="dynamic-catalog-grid"></div>
+    </div>
+
+    <!-- 3. ORDER FORM SECTION -->
+    <div id="order-page" class="content-section">
+       <div id="order-page" class="content-section">
+        <div class="info-card">
+            <h2 id="order-item-display" style="text-align: center;">ઓર્ડર ફોર્મ</h2>
+            <p style="text-align: center; color: #64748b; margin-bottom: 15px;">નીચેની વિગતો ભરીને WhatsApp પર ઓર્ડર કન્ફર્મ કરો</p>
+            <input type="text" id="cust_name" placeholder="તમારું પૂરું નામ">
+            <input type="tel" id="cust_phone" placeholder="મોબાઈલ નંબર">
+            <textarea id="cust_addr" rows="4" placeholder="પૂરું સરનામું (ઘર નંબર, સોસાયટી, ગામ/શહેર, તાલુકો, જિલ્લો, પિનકોડ)"></textarea>
+            <button class="btn-order" onclick="finishOrder()">✅ ઓર્ડર કન્ફર્મ કરો (WhatsApp)</button>
+            <button class="nav-btn" style="width: 100%; justify-content: center; margin-top: 12px; color: #334155; border-color: #cbd5e1;" onclick="showSection('products')">← પાછા જાઓ</button>
+        </div>
+    </div>
+
+    <!-- 4. ABOUT SECTION -->
+    <div id="about" class="content-section">
+        <div class="info-card">
+            <h2>RK ENTERPRISE વિશે</h2>
+            <p style="margin-bottom: 15px; color: #334155;">
+                <strong>RK ENTERPRISE</strong> સુરતમાં છેલ્લા ૯ વર્ષથી ઉચ્ચ ગુણવત્તાવાળી પિત્તળની મૂર્તિઓ અને પરંપરાગત ઘરેણાંના ઉત્પાદન અને વેચાણ ક્ષેત્રે વિશ્વાસપાત્ર નામ છે.
+            </p>
+            <p style="color: #334155;">
+                અમારો મુખ્ય ઉદ્દેશ્ય ગ્રાહકોને વ્યાજબી ભાવે ઉત્તમ કારીગરી અને ૧૦૦% શુદ્ધ પ્રોડક્ટ્સ પૂરી પાડવાનો છે. દરેક પ્રોડક્ટ ગુણવત્તાની કસોટીમાંથી પસાર થયા બાદ જ ગ્રાહક સુધી પહોંચાડવામાં આવે છે.
+            </p>
+        </div>
+    </div>
+
+    <!-- 5. CONTACT SECTION -->
+    <div id="contact" class="content-section">
+        <div class="info-card" style="text-align: center;">
+            <h2>સંપર્ક કરો</h2>
+            <p style="color: #64748b; margin-bottom: 20px;">કોઈપણ પૂછપરછ અથવા બલ્ક ઓર્ડર માટે અમારો સંપર્ક કરો</p>
+            <div class="contact-item">📞 +91 89803 70599</div>
+            <div class="contact-item">📍 સુરત, ગુજરાત, ભારત</div>
+            <a href="https://wa.me/918980370599" target="_blank" class="btn-order" style="display: inline-block; text-decoration: none; margin-top: 15px;">💬 WhatsApp પર મેસેજ કરો</a>
+        </div>
+    </div>
+</main>
+
+<!-- PRODUCT DETAILS POPUP MODAL -->
 <div id="detailsModal" class="modal">
     <div class="modal-content">
         <span class="close-btn" onclick="closeModal()">&times;</span>
         <div class="slider-container" id="modalSlider"></div>
-        <p style="font-size: 0.8em; color: #999;">← સ્લાઈડ કરી બીજા ફોટા જુઓ →</p>
-        <h2 id="detTitle"></h2>
+        <p style="font-size: 0.82rem; color: #64748b; margin-top: 5px;">← સ્લાઈડ કરી વધુ ફોટા જુઓ →</p>
+        <h2 id="detTitle" style="margin-top: 12px; color: var(--bg-dark);"></h2>
         <div id="detDesc" class="desc-text"></div>
-        <h3 id="detPrice" style="color: #28a745;"></h3>
+        <h3 id="detPrice" style="color: var(--accent-green); font-size: 1.5rem; margin-bottom: 10px;"></h3>
         <button class="btn-order" onclick="goToOrder()">🛒 ઓર્ડર ફોર્મ ભરો</button>
     </div>
 </div>
 
-<div id="order-page" class="content-section">
-    <div class="info-card">
-        <h2 id="order-item-display" style="text-align: center; color: var(--dark-red);"></h2>
-        <input type="text" id="cust_name" placeholder="તમારું પૂરું નામ">
-        <input type="tel" id="cust_phone" placeholder="મોબાઈલ નંબર">
-        <textarea id="cust_addr" rows="4" placeholder="પૂરું સરનામું (ગામ, તાલુકો, જીલ્લો, પિનકોડ)"></textarea>
-        <button class="btn-order" onclick="finishOrder()">✅ ઓર્ડર કન્ફર્મ કરો (WhatsApp)</button>
-    </div>
-</div>
+<footer>
+    © 2026 <strong>RK ENTERPRISE</strong> | સુરત, ગુજરાત | સર્વાધિકાર સુરક્ષિત
+</footer>
 
-<div id="about" class="content-section">
-    <div class="info-card"><h2>અમારા વિશે</h2><p>અમે સુરતમાં છેલ્લા 9 વર્ષથી પિત્તળની મૂર્તિઓના ઉત્પાદક છીએ.</p></div>
-</div>
-
-<div id="contact" class="content-section">
-    <div class="info-card" style="text-align: center;"><h2>સંપર્ક કરો</h2><p>📞 +91 89803 70599</p></div>
-</div>
-
+<!-- ==========================================================================
+     JAVASCRIPT LOGIC (CMS INTEGRATION + DYNAMIC CATALOG + WHATSAPP ORDER)
+     ========================================================================== -->
 <script>
-    const productData = {
-        'hanuman': {
-            title: 'હનુમાન મૂર્તિ',
-            price: '2000',
+    // CMS Storage Key (admin.html સાથે જોડાયેલી કી)
+    const CMS_STORAGE_KEY = 'shree_shiv_shakti_products';
+
+    // ડિફોલ્ટ પ્રોડક્ટ્સ (જો CMS માં હજુ સુધી કોઈ પ્રોડક્ટ ન ઉમેરી હોય તો આ દેખાશે)
+    const defaultProducts = [
+        {
+            id: 'hanuman',
+            name: 'હનુમાન મૂર્તિ',
+            category: 'મૂર્તિ',
+            metal: 'પિત્તળ (Brass)',
+            price: 2000,
+            weight: 'પ્રીમિયમ સાઈઝ',
+            imageUrl: 'HANUMAAN.png',
             images: ['HANUMAAN.png', 'hanuman left.png', 'Screenshot 2025-10-28 210103.png', 'Screenshot 2025-10-28 210110.png', 'Screenshot 2025-10-28 210220.png'],
-            desc: `<b>વર્ણન:</b> આ ઉત્કૃષ્ટ બ્રાસની મૂર્તિ ભગવાન હનુમાનજીની ભવ્ય વીરતાનું પ્રતીક છે. સંજીવની પર્વત ઉઠાવીને આકાશમાં ઉડતી મુદ્રામાં છે.`
+            description: 'આ ઉત્કૃષ્ટ બ્રાસની મૂર્તિ ભગવાન હનુમાનજીની ભવ્ય વીરતાનું પ્રતીક છે. સંજીવની પર્વત ઉઠાવીને આકાશમાં ઉડતી મુદ્રામાં છે.'
         },
-        'panchmukhi': {
-            title: 'પંચમુખી હનુમાન',
-            price: '2500',
+        {
+            id: 'panchmukhi',
+            name: 'પંચમુખી હનુમાન',
+            category: 'મૂર્તિ',
+            metal: 'પિત્તળ (Brass)',
+            price: 2500,
+            weight: 'હેવી ફિનિશિંગ',
+            imageUrl: 'Screenshot 2025-10-28 210206.png',
             images: ['Screenshot 2025-10-28 210206.png', 'Screenshot 2025-10-28 210144.png', 'Screenshot 2025-10-28 210210.png', 'Screenshot 2025-10-28 210216.png', 'c.png'],
-            desc: `<b>વર્ણન:</b> હનુમાનજીના પાંચ મુખનું સચોટ નિરૂપણ, જે ચારેય દિશાઓથી રક્ષણ આપે છે. શુદ્ધ પિત્તળ અને પ્રીમિયમ ફિનિશિંગ.`
+            description: 'હનુમાનજીના પાંચ મુખનું સચોટ નિરૂપણ, જે ચારેય દિશાઓથી રક્ષણ આપે છે. શુદ્ધ પિત્તળ અને પ્રીમિયમ ફિનિશિંગ.'
         }
-    };
+    ];
 
-    let activeKey = '';
-    function showSection(id) {
-        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active-section'));
-        document.getElementById(id).classList.add('active-section');
-        window.scrollTo(0,0);
+    let allProducts = [];
+    let selectedProduct = null;
+
+    // પેજ લોડ થાય ત્યારે CMS ડેટા ચેક કરવો
+    document.addEventListener('DOMContentLoaded', () => {
+        loadCatalogProducts();
+    });
+
+    function loadCatalogProducts() {
+        const storedData = JSON.parse(localStorage.getItem(CMS_STORAGE_KEY));
+        
+        if (storedData && storedData.length > 0) {
+            // CMS (admin.html) માંથી ઉમેરેલી પ્રોડક્ટ્સ લોડ કરવી
+            allProducts = storedData.map(item => ({
+                ...item,
+                images: item.images && item.images.length > 0 ? item.images : [item.imageUrl]
+            }));
+        } else {
+            allProducts = defaultProducts;
+        }
+
+        renderCatalog(allProducts);
     }
 
-    function openDetails(key) {
-        activeKey = key;
-        const item = productData[key];
-        document.getElementById('detTitle').innerText = item.title;
-        document.getElementById('detPrice').innerText = "કિંમત: ₹" + item.price;
-        document.getElementById('detDesc').innerHTML = item.desc;
-        document.getElementById('modalSlider').innerHTML = item.images.map(img => `<img src="${img}" class="slider-img">`).join('');
-        document.getElementById('detailsModal').style.display = 'block';
-    }
+    // પ્રોડક્ટ કાર્ડ્સ સ્ક્રીન પર બનાવવા
+    function renderCatalog(items) {
+        const grid = document.getElementById('dynamic-catalog-grid');
+        grid.innerHTML = '';
 
-    function closeModal() { document.getElementById('detailsModal').style.display = 'none'; }
-
-    function goToOrder() { 
-        closeModal(); 
-        document.getElementById('order-item-display').innerText = "ઓર્ડર: " + productData[activeKey].title; 
-        showSection('order-page'); 
-    }
-
-    function finishOrder() {
-        const name = document.getElementById('cust_name').value;
-        const phone = document.getElementById('cust_phone').value;
-        const addr = document.getElementById('cust_addr').value;
-        const product = productData[activeKey].title;
-        const price = productData[activeKey].price;
-
-        if(!name || !phone || !addr) {
-            alert("કૃપા કરીને બધી વિગતો ભરો!");
+        if (items.length === 0) {
+            grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #94a3b8; padding: 30px;">આ કેટેગરીમાં હાલ કોઈ પ્રોડક્ટ ઉપલબ્ધ નથી.</p>`;
             return;
         }
 
-        // WhatsApp મેસેજ ફોર્મેટ
-        const msg = `*નવો ઓર્ડર - શ્રી શિવ શક્તિ જ્વેલરી*%0A---------------------------%0A*વસ્તુ:* ${product}%0A*કિંમત:* ₹${price}%0A*નામ:* ${name}%0A*નંબર:* ${phone}%0A*સરનામું:* ${addr}`;
+        items.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.onclick = () => openDetails(item.id);
+
+            card.innerHTML = `
+                <span class="card-badge">${item.metal || 'પ્રીમિયમ'}</span>
+                <div class="product-img-wrap">
+                    <img src="${item.imageUrl}" alt="${item.name}" class="product-img" onerror="this.src='https://via.placeholder.com/300?text=RK+ENTERPRISE'">
+                </div>
+                <div class="product-body">
+                    <div>
+                        <h3>${item.name}</h3>
+                        <div class="product-meta">${item.category || ''} ${item.weight ? '• ' + item.weight : ''}</div>
+                    </div>
+                    <div>
+                        <div class="product-price">₹ ${Number(item.price).toLocaleString('en-IN')}</div>
+                        <div class="view-btn">વિગત જુઓ અને ઓર્ડર કરો</div>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    // કેટેગરી મુજબ ફિલ્ટર કરવું
+    function filterProducts(category, btnElement) {
+        document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+        btnElement.classList.add('active');
+
+        if (category === 'ALL') {
+            renderCatalog(allProducts);
+        } else {
+            const filtered = allProducts.filter(p => p.category && p.category.includes(category));
+            renderCatalog(filtered);
+        }
+    }
+
+    // સેક્શન બદલવા માટે
+    function showSection(id) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active-section'));
+        document.getElementById(id).classList.add('active-section');
+
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active-nav'));
+        const activeBtn = document.getElementById('btn-' + id);
+        if (activeBtn) activeBtn.classList.add('active-nav');
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // પ્રોડક્ટ પોપઅપ ખોલવું
+    function openDetails(productId) {
+        selectedProduct = allProducts.find(p => p.id === productId);
+        if (!selectedProduct) return;
+
+        document.getElementById('detTitle').innerText = selectedProduct.name;
+        document.getElementById('detPrice').innerText = "કિંમત: ₹ " + Number(selectedProduct.price).toLocaleString('en-IN');
+        document.getElementById('detDesc').innerHTML = `
+            <b>વર્ણન:</b> ${selectedProduct.description}<br><br>
+            ${selectedProduct.metal ? `<b>ધાતુ:</b> ${selectedProduct.metal}<br>` : ''}
+            ${selectedProduct.weight ? `<b>વજન/સાઈઝ:</b> ${selectedProduct.weight}` : ''}
+        `;
+
+        const imgList = selectedProduct.images && selectedProduct.images.length > 0 
+            ? selectedProduct.images 
+            : [selectedProduct.imageUrl];
+
+        document.getElementById('modalSlider').innerHTML = imgList
+            .map(img => `<img src="${img}" class="slider-img" onerror="this.src='https://via.placeholder.com/300?text=RK+ENTERPRISE'">`)
+            .join('');
+
+        document.getElementById('detailsModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('detailsModal').style.display = 'none';
+    }
+
+    function goToOrder() {
+        if (!selectedProduct) return;
+        closeModal();
+        document.getElementById('order-item-display').innerText = "ઓર્ડર: " + selectedProduct.name + " (₹" + selectedProduct.price + ")";
+        showSection('order-page');
+    }
+
+    // WhatsApp પર ઓર્ડર મોકલવો
+    function finishOrder() {
+        const name = document.getElementById('cust_name').value.trim();
+        const phone = document.getElementById('cust_phone').value.trim();
+        const addr = document.getElementById('cust_addr').value.trim();
+
+        if (!name || !phone || !addr) {
+            alert("કૃપા કરીને તમારું નામ, નંબર અને સરનામું બધી વિગતો ભરો!");
+            return;
+        }
+
+        const product = selectedProduct ? selectedProduct.name : 'પ્રોડક્ટ';
+        const price = selectedProduct ? selectedProduct.price : '';
+
+        const msg = `*નવો ઓર્ડર - RK ENTERPRISE*%0A---------------------------%0A*વસ્તુ:* ${product}%0A*કિંમત:* ₹${price}%0A*નામ:* ${name}%0A*મોબાઈલ:* ${phone}%0A*સરનામું:* ${addr}`;
         
         const wpUrl = `https://wa.me/918980370599?text=${msg}`;
         window.open(wpUrl, '_blank');
         
         alert("ઓર્ડરની વિગતો WhatsApp પર મોકલવામાં આવી રહી છે.");
-        location.reload();
     }
 </script>
 
-<footer>© 2026 શ્રી શિવ શક્તિ જ્વેલરી | સુરત</footer>
 </body>
 </html>
-

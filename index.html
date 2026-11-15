@@ -516,23 +516,6 @@
             }
             window.scrollTo(0, 0);
         }
-<!-- એમેઝોન/ફ્લિપકાર્ટ જેવું પ્રોડક્ટ ડીટેલ પૉપઅપ મોડલ -->
-<div id="rk-product-detail-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 3000;">
-    <div style="background: #fff; width: 90%; max-width: 600px; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 25px rgba(0,0,0,0.3); position: relative; padding: 25px;">
-        <button onclick="document.getElementById('rk-product-detail-modal').style.display='none'" style="position: absolute; top: 12px; right: 15px; background: none; border: none; font-size: 28px; cursor: pointer; color: #333;">&times;</button>
-        <div style="display: flex; flex-direction: column; gap: 15px;">
-            <img id="modal-prod-img" src="" alt="Product Image" style="width: 100%; height: 280px; object-fit: contain; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
-            <div>
-                <span id="modal-prod-cat" style="font-size: 12px; background: #fff3cd; color: #856404; padding: 3px 10px; border-radius: 10px; font-weight: bold;"></span>
-                <h2 id="modal-prod-name" style="font-size: 22px; color: #1b263b; margin: 8px 0;"></h2>
-                <p id="modal-prod-desc" style="font-size: 14px; color: #6c757d; margin-bottom: 15px;"></p>
-                <p style="font-size: 14px; margin-bottom: 5px;"><strong>વજન / સાઈઝ:</strong> <span id="modal-prod-weight">-</span></p>
-                <p style="font-size: 22px; color: #1b263b; font-weight: bold; margin-top: 10px;">કિંમત: ₹<span id="modal-prod-price"></span></p>
-            </div>
-        </div>
-    </div>
-</div>
-        
         function loadWebsiteProducts() {
             const rawData = localStorage.getItem(STORAGE_KEY);
             const products = rawData ? JSON.parse(rawData) : [];
@@ -630,19 +613,6 @@ document.getElementById('rk-customer-order-form').addEventListener('submit', fun
         alert("ઓર્ડર સેવ કરવામાં સમસ્યા આવી છે. કૃપા કરીને ફરી પ્રયાસ કરો.");
     }
 });
-        // પ્રોડક્ટ પર ક્લિક કરતાં પૉપઅપ મોડલ ઓપન કરવા માટેનું ફંક્શન
-function openProductModal(name, image, category, desc, price, weight) {
-    document.getElementById('modal-prod-name').innerText = decodeURIComponent(name);
-    document.getElementById('modal-prod-img').src = decodeURIComponent(image);
-    document.getElementById('modal-prod-cat').innerText = decodeURIComponent(category);
-    document.getElementById('modal-prod-desc').innerText = decodeURIComponent(desc || 'શ્રેષ્ઠ ગુણવત્તા યુક્ત આભૂષણ.');
-    document.getElementById('modal-prod-price').innerText = decodeURIComponent(price);
-    document.getElementById('modal-prod-weight').innerText = decodeURIComponent(weight) || 'માનક સાઈઝ';
-    
-    document.getElementById('rk-product-detail-modal').style.display = 'flex';
-}
-        
-        
     </script>
 </body>
 </html>

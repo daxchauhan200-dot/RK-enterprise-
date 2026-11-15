@@ -536,187 +536,668 @@
 
     <footer>
         <p>© 2026 RK Enterprise - All Rights Reserved. Global E-Commerce Architecture.</p>
-    </footer>
+    </footer> 
+    
     <script>
+    /**
+     * ============================================================================
+     * SHREE SHIV SHAKTI JEWELLERY & RK ENTERPRISE - CORE ENGINE (v4.5)
+     * Mobile & Android Optimized | Multi-Image Slider | Admin Panel Sync
+     * ============================================================================
+     */
+
     const STORAGE_KEY = 'shree_shiv_shakti_products';
     const ORDERS_KEY = 'rk_enterprise_orders';
+    const WHATSAPP_NUMBER = '918980370599';
+
     let allLoadedProducts = [];
     let currentActiveProduct = null;
+    let currentModalImages = [];
+    let currentSlideIndex = 0;
 
-    function switchPage(pageId, element) {
-        document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-page'));
-        document.getElementById(pageId).classList.add('active-page');
-        document.querySelectorAll('nav ul li a').forEach(a => a.classList.remove('active'));
-        if(element) element.classList.add('active');
-        window.scrollTo(0, 0);
+    // Android Touch Swipe Variables
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    // ============================================================================
+    // 1. MULTI-IMAGE PARSER (એડમિન પેનલના કોઈપણ ફોર્મેટમાંથી બધા ફોટા શોધવા માટે)
+    // ============================================================================
+    function extractAllProductImages(prod) {
+        if (!prod) return ['https://via.placeholder.com/400x400?text=No+Image'];
+
+        let rawImages = [];
+
+        // અલગ-અલગ સંભવિત પ્રોપર્ટી નામો ચેક કરવા માટે
+        const possibleKeys = ['images', 'image', 'photos', 'gallery', 'img', 'imgs', 'productImages'];
+
+        for (let key of possibleKeys) {
+            if (prod[key] !== undefined && prod[key] !== null && prod[key] !== '') {
+                let val = prod[key];
+
+                if (Array.isArray(val)) {
+                    rawImages = rawImages.concat(val);
+                } else if (typeof val === 'string') {
+                    val = val.trim();
+                    if (val.startsWith('[')) {
+                        try {
+                            const parsed = JSON.parse(val);
+                            if (Array.isArray(parsed)) {
+                                rawImages = rawImages.concat(parsed);
+                            } else {
+                                rawImages.push(val);
+                            }
+                        } catch (e) {
+                            rawImages.push(val);
+                        }
+                    } else if (val.includes(',') && !val.startsWith('data:image')) {
+                        // જો કોમાથી અલગ કરેલી URL લિંક હોય
+                        const splitUrls = val.split(',').map(item => item.trim()).filter(Boolean);
+                        rawImages = rawImages.concat(splitUrls);
+                    } else if (val.includes('|||')) {
+                        // જો કસ્ટમ સેપરેટર હોય
+                        const splitCustom = val.split('|||').map(item => item.trim()).filter(Boolean);
+                        rawImages = rawImages.concat(splitCustom);
+                    } else {
+                        rawImages.push(val);
+                    }
+                }
+            }
+        }
+
+        // જો ઓબ્જેક્ટની અંદર image1, image2, image3 જેવી કી હોય તો તે પણ ચેક કરો
+        for (let i = 1; i <= 15; i++) {
+            if (prod['image' + i] && typeof prod['image' + i] === 'string') {
+                rawImages.push(prod['image' + i].trim());
+            }
+            if (prod['img' + i] && typeof prod['img' + i] === 'string') {
+                rawImages.push(prod['img' + i].trim());
+            }
+        }
+
+        // ડુપ્લિકેટ અને ખાલી લિંક દૂર કરવા માટે
+        const uniqueImages = [];
+        const seen = new Set();
+
+        for (let item of rawImages) {
+            let finalUrl = '';
+            if (typeof item === 'string') {
+                finalUrl = item.trim();
+            } else if (item && typeof item === 'object') {
+                finalUrl = (item.url || item.src || item.data || '').trim();
+            }
+
+            if (finalUrl && finalUrl.length > 5 && !seen.has(finalUrl)) {
+                seen.add(finalUrl);
+                uniqueImages.push(finalUrl);
+            }
+        }
+
+        if (uniqueImages.length === 0) {
+            return ['https://via.placeholder.com/400x400?text=No+Image'];
+        }
+
+        return uniqueImages;
     }
 
+    // ============================================================================
+    // 2. INJECT SLIDER STYLES FOR ANDROID & DESKTOP (લેફ્ટ-રાઈટ એરો બટન CSS)
+    // ============================================================================
+    function injectSliderStyles() {
+        if (document.getElementById('rk-slider-custom-styles')) return;
+
+        const styleTag = document.createElement('style');
+        styleTag.id = 'rk-slider-custom-styles';
+        styleTag.innerHTML = `
+            .rk-modal-img-wrapper {
+                position: relative;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #f8fafc;
+                border-radius: 12px;
+                overflow: hidden;
+                user-select: none;
+                -webkit-user-select: none;
+                touch-action: pan-y;
+            }
+            .rk-slider-arrow {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 44px;
+                height: 44px;
+                background: rgba(15, 23, 42, 0.78);
+                color: #ffffff;
+                border: 2px solid #d4af37;
+                border-radius: 50%;
+                font-size: 20px;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                z-index: 999;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+                transition: all 0.2s ease;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .rk-slider-arrow:active {
+                transform: translateY(-50%) scale(0.90);
+                background: #d4af37;
+                color: #0f172a;
+            }
+            .rk-slider-prev {
+                left: 10px;
+            }
+            .rk-slider-next {
+                right: 10px;
+            }
+            .rk-slider-counter {
+                position: absolute;
+                bottom: 10px;
+                right: 12px;
+                background: rgba(15, 23, 42, 0.85);
+                color: #d4af37;
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-size: 13px;
+                font-weight: 700;
+                letter-spacing: 0.5px;
+                z-index: 998;
+                border: 1px solid rgba(212, 175, 55, 0.5);
+            }
+            .rk-slider-dots {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 8px;
+                margin-top: 12px;
+                flex-wrap: wrap;
+            }
+            .rk-slider-dot {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background: #cbd5e1;
+                cursor: pointer;
+                transition: all 0.25s ease;
+                border: none;
+                padding: 0;
+            }
+            .rk-slider-dot.active {
+                background: #d4af37;
+                width: 24px;
+                border-radius: 6px;
+            }
+            @media (max-width: 600px) {
+                .rk-slider-arrow {
+                    width: 42px;
+                    height: 42px;
+                    font-size: 18px;
+                }
+            }
+        `;
+        document.head.appendChild(styleTag);
+    }
+
+    // ============================================================================
+    // 3. PAGE NAVIGATION LOGIC
+    // ============================================================================
+    function switchPage(pageId, element) {
+        const sections = document.querySelectorAll('.page-section');
+        sections.forEach(sec => {
+            sec.classList.remove('active-page');
+            sec.style.display = '';
+        });
+
+        const targetPage = document.getElementById(pageId);
+        if (targetPage) {
+            targetPage.classList.add('active-page');
+        }
+
+        const navLinks = document.querySelectorAll('nav ul li a');
+        navLinks.forEach(a => a.classList.remove('active'));
+        if (element) {
+            element.classList.add('active');
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ============================================================================
+    // 4. LOAD & RENDER PRODUCTS ON HOME & CATALOG GRIDS
+    // ============================================================================
     function loadWebsiteProducts() {
-        const rawData = localStorage.getItem(STORAGE_KEY);
-        allLoadedProducts = rawData ? JSON.parse(rawData) : [];
+        try {
+            const rawData = localStorage.getItem(STORAGE_KEY);
+            allLoadedProducts = rawData ? JSON.parse(rawData) : [];
+        } catch (err) {
+            console.error('LocalStorage Data Parse Error:', err);
+            allLoadedProducts = [];
+        }
 
         const homeGrid = document.getElementById('homeProductsGrid');
         const allGrid = document.getElementById('allProductsGrid');
 
-        if (!homeGrid || !allGrid) return;
+        if (!homeGrid && !allGrid) return;
 
-        if (allLoadedProducts.length === 0) {
-            const emptyHTML = `<div style="grid-column: 1/-1; text-align:center; padding:50px; color:#64748b; font-size: 16px;">હજુ સુધી કોઈ પ્રોડક્ટ ઉમેરવામાં આવી નથી. એડમિન પેનલમાંથી પ્રોડક્ટ ઉમેરો.</div>`;
-            homeGrid.innerHTML = emptyHTML;
-            allGrid.innerHTML = emptyHTML;
+        if (!Array.isArray(allLoadedProducts) || allLoadedProducts.length === 0) {
+            const emptyHTML = `
+                <div style="grid-column: 1/-1; text-align:center; padding:50px 20px; color:#64748b; font-size: 16px; background: #fff; border-radius: 12px; border: 1px dashed #cbd5e1;">
+                    હજુ સુધી કોઈ પ્રોડક્ટ ઉમેરવામાં આવી નથી. એડમિન પેનલમાંથી પ્રોડક્ટ ઉમેરો.
+                </div>
+            `;
+            if (homeGrid) homeGrid.innerHTML = emptyHTML;
+            if (allGrid) allGrid.innerHTML = emptyHTML;
             return;
         }
 
         const productsHTML = allLoadedProducts.map((prod, index) => {
-            let firstImg = '';
-            if (Array.isArray(prod.image)) {
-                firstImg = prod.image[0];
-            } else if (typeof prod.image === 'string' && prod.image.startsWith('[')) {
-                try { const parsed = JSON.parse(prod.image); firstImg = Array.isArray(parsed) ? parsed[0] : prod.image; } catch(e) { firstImg = prod.image; }
-            } else {
-                firstImg = prod.image;
-            }
+            const images = extractAllProductImages(prod);
+            const firstImg = images[0];
+            const extraCount = images.length > 1 ? `<span style="position:absolute; top:10px; right:10px; background:rgba(15,23,42,0.8); color:#d4af37; font-size:11px; font-weight:700; padding:3px 8px; border-radius:12px;">📷 ${images.length}</span>` : '';
+            const safeName = prod.name || 'આભૂષણ / મૂર્તિ';
+            const safeCat = prod.category || 'ખાસ કલેક્શન';
+            const safeWeight = prod.weight || 'માનક';
+            const safePrice = prod.price || '0';
+            const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('નમસ્તે, મારે આ પ્રોડક્ટ માટે ઓર્ડર આપવો છે: ' + safeName)}`;
 
             return `
-                <div class="product-card" onclick="openProductModal(${index})" style="cursor:pointer;">
-                    <img src="${firstImg}" alt="${prod.name}" class="product-img">
+                <div class="product-card" onclick="openProductModal(${index})" style="cursor:pointer; position:relative;">
+                    ${extraCount}
+                    <img src="${firstImg}" alt="${safeName}" class="product-img" loading="lazy">
                     <div class="product-info">
-                        <span class="product-cat">${prod.category}</span>
-                        <h4 class="product-title">${prod.name}</h4>
-                        <p style="font-size: 13px; color: #64748b; margin-bottom: 10px; font-weight: 600;">સાઈઝ/વજન: ${prod.weight || 'માનક'}</p>
+                        <span class="product-cat">${safeCat}</span>
+                        <h4 class="product-title">${safeName}</h4>
+                        <p style="font-size: 13px; color: #64748b; margin-bottom: 10px; font-weight: 600;">સાઈઝ/વજન: ${safeWeight}</p>
                         <div class="product-footer">
-                            <span class="product-price">₹${prod.price}</span>
-                            <a href="https://wa.me/918980370599?text=નમસ્તે,%20મારે%20આ%20પ્રોડક્ટ%20માટે%20ઓર્ડર%20આપવો%20છે:%20${encodeURIComponent(prod.name)}" target="_blank" class="order-whatsapp-btn" onclick="event.stopPropagation();">WhatsApp</a>
+                            <span class="product-price">₹${safePrice}</span>
+                            <a href="${waLink}" target="_blank" class="order-whatsapp-btn" onclick="event.stopPropagation();">WhatsApp</a>
                         </div>
                     </div>
                 </div>
             `;
         }).join('');
 
-        homeGrid.innerHTML = productsHTML;
-        allGrid.innerHTML = productsHTML;
+        if (homeGrid) homeGrid.innerHTML = productsHTML;
+        if (allGrid) allGrid.innerHTML = productsHTML;
     }
 
-    function openProductModal(index) {
-        const prod = allLoadedProducts[index];
-        if (!prod) return;
-        currentActiveProduct = prod;
-
-        let imagesArray = [];
-        if (Array.isArray(prod.image)) {
-            imagesArray = prod.image;
-        } else if (typeof prod.image === 'string' && prod.image.startsWith('[')) {
-            try { imagesArray = JSON.parse(prod.image); } catch(e) { imagesArray = [prod.image]; }
-        } else {
-            imagesArray = [prod.image];
-        }
-
+    // ============================================================================
+    // 5. MODAL SLIDER CONTROLS (લેફ્ટ એરો, રાઈટ એરો અને ટચ સ્વાઇપ)
+    // ============================================================================
+    function updateModalSliderDisplay() {
         const mainImg = document.getElementById('modal-prod-img');
-        if(mainImg && imagesArray.length > 0) {
-            mainImg.src = imagesArray[0];
-        }
+        const counterEl = document.getElementById('rk-slider-counter');
+        const dotsContainer = document.getElementById('rk-slider-dots');
 
-        document.getElementById('modal-prod-cat').innerText = prod.category;
-        document.getElementById('modal-prod-name').innerText = prod.name;
-        document.getElementById('modal-prod-desc').innerText = prod.desc || 'શ્રેષ્ઠ ગુણવત્તા યુક્ત આભૂષણ.';
-        document.getElementById('modal-prod-weight').innerText = prod.weight || 'માનક સાઈઝ';
-        document.getElementById('modal-prod-price').innerText = prod.price;
+        if (!mainImg || currentModalImages.length === 0) return;
 
-        let thumbContainer = document.getElementById('modal-thumbs-container');
-        if (!thumbContainer && mainImg) {
-            thumbContainer = document.createElement('div');
-            thumbContainer.id = 'modal-thumbs-container';
-            thumbContainer.style.cssText = "display: flex; gap: 10px; margin-top: 12px; overflow-x: auto;";
-            mainImg.parentNode.insertBefore(thumbContainer, mainImg.nextSibling);
-        }
+        // ઇમેજ બદલવા માટે
+        mainImg.style.opacity = '0.3';
+        setTimeout(() => {
+            mainImg.src = currentModalImages[currentSlideIndex];
+            mainImg.style.opacity = '1';
+        }, 80);
 
-        if (thumbContainer) {
-            if (imagesArray.length > 1) {
-                thumbContainer.innerHTML = imagesArray.map((imgSrc, i) => `
-                    <img src="${imgSrc}" onclick="document.getElementById('modal-prod-img').src='${imgSrc}'" style="width: 65px; height: 65px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 2px solid ${i === 0 ? '#d4af37' : '#cbd5e1'};">
-                `).join('');
+        // કાઉન્ટર અપડેટ (દા.ત. 1 / 5)
+        if (counterEl) {
+            if (currentModalImages.length > 1) {
+                counterEl.style.display = 'block';
+                counterEl.innerText = `${currentSlideIndex + 1} / ${currentModalImages.length}`;
             } else {
-                thumbContainer.innerHTML = '';
+                counterEl.style.display = 'none';
             }
         }
 
-        document.getElementById('rk-product-detail-modal').style.display = 'flex';
+        // ડોટ્સ અપડેટ
+        if (dotsContainer) {
+            const dots = dotsContainer.querySelectorAll('.rk-slider-dot');
+            dots.forEach((dot, idx) => {
+                if (idx === currentSlideIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+    }
+
+    function prevProductSlide(event) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        if (currentModalImages.length <= 1) return;
+
+        currentSlideIndex--;
+        if (currentSlideIndex < 0) {
+            currentSlideIndex = currentModalImages.length - 1;
+        }
+        updateModalSliderDisplay();
+    }
+
+    function nextProductSlide(event) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        if (currentModalImages.length <= 1) return;
+
+        currentSlideIndex++;
+        if (currentSlideIndex >= currentModalImages.length) {
+            currentSlideIndex = 0;
+        }
+        updateModalSliderDisplay();
+    }
+
+    function goToProductSlide(index, event) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        if (index >= 0 && index < currentModalImages.length) {
+            currentSlideIndex = index;
+            updateModalSliderDisplay();
+        }
+    }
+
+    // Android Swipe Handler
+    function handleTouchStart(e) {
+        touchStartX = e.changedTouches[0].screenX;
+    }
+
+    function handleTouchEnd(e) {
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 40) {
+            if (diff > 0) {
+                // જમણેથી ડાબે સ્વાઇપ -> આગળનો ફોટો
+                nextProductSlide();
+            } else {
+                // ડાબેથી જમણે સ્વાઇપ -> પાછળનો ફોટો
+                prevProductSlide();
+            }
+        }
+    }
+
+    // ============================================================================
+    // 6. OPEN PRODUCT MODAL WITH LEFT & RIGHT ARROWS
+    // ============================================================================
+    function openProductModal(index) {
+        injectSliderStyles();
+
+        const prod = allLoadedProducts[index];
+        if (!prod) return;
+
+        currentActiveProduct = prod;
+        currentModalImages = extractAllProductImages(prod);
+        currentSlideIndex = 0;
+
+        const mainImg = document.getElementById('modal-prod-img');
+        if (mainImg) {
+            mainImg.style.transition = 'opacity 0.2s ease';
+            mainImg.src = currentModalImages[0];
+
+            // જો રેપર ન બન્યો હોય તો ઇમેજની આસપાસ રેપર બનાવો
+            let wrapper = document.getElementById('rk-modal-img-wrapper');
+            if (!wrapper) {
+                wrapper = document.createElement('div');
+                wrapper.id = 'rk-modal-img-wrapper';
+                wrapper.className = 'rk-modal-img-wrapper';
+                mainImg.parentNode.insertBefore(wrapper, mainImg);
+                wrapper.appendChild(mainImg);
+
+                // Android Touch Events ઉમેરો
+                wrapper.addEventListener('touchstart', handleTouchStart, { passive: true });
+                wrapper.addEventListener('touchend', handleTouchEnd, { passive: true });
+            }
+
+            // જૂના બટનો સાફ કરીને નવા ઉમેરો
+            const oldPrev = document.getElementById('rk-slider-prev-btn');
+            const oldNext = document.getElementById('rk-slider-next-btn');
+            const oldCounter = document.getElementById('rk-slider-counter');
+            if (oldPrev) oldPrev.remove();
+            if (oldNext) oldNext.remove();
+            if (oldCounter) oldCounter.remove();
+
+            // જો 1 થી વધુ ફોટા હોય તો જ Left અને Right Arrow બટન ઉમેરો
+            if (currentModalImages.length > 1) {
+                const prevBtn = document.createElement('button');
+                prevBtn.id = 'rk-slider-prev-btn';
+                prevBtn.type = 'button';
+                prevBtn.className = 'rk-slider-arrow rk-slider-prev';
+                prevBtn.innerHTML = '&#10094;'; // ❮ Left Arrow
+                prevBtn.setAttribute('aria-label', 'પાછળનો ફોટો');
+                prevBtn.onclick = prevProductSlide;
+
+                const nextBtn = document.createElement('button');
+                nextBtn.id = 'rk-slider-next-btn';
+                nextBtn.type = 'button';
+                nextBtn.className = 'rk-slider-arrow rk-slider-next';
+                nextBtn.innerHTML = '&#10095;'; // ❯ Right Arrow
+                nextBtn.setAttribute('aria-label', 'આગળનો ફોટો');
+                nextBtn.onclick = nextProductSlide;
+
+                const counterBadge = document.createElement('div');
+                counterBadge.id = 'rk-slider-counter';
+                counterBadge.className = 'rk-slider-counter';
+                counterBadge.innerText = `1 / ${currentModalImages.length}`;
+
+                wrapper.appendChild(prevBtn);
+                wrapper.appendChild(nextBtn);
+                wrapper.appendChild(counterBadge);
+            }
+
+            // નીચે ડોટ્સ (Dots Indicator) બનાવો
+            let dotsContainer = document.getElementById('rk-slider-dots');
+            if (!dotsContainer) {
+                dotsContainer = document.createElement('div');
+                dotsContainer.id = 'rk-slider-dots';
+                dotsContainer.className = 'rk-slider-dots';
+                wrapper.parentNode.insertBefore(dotsContainer, wrapper.nextSibling);
+            }
+
+            if (currentModalImages.length > 1) {
+                dotsContainer.innerHTML = currentModalImages.map((_, i) => `
+                    <button type="button" class="rk-slider-dot ${i === 0 ? 'active' : ''}" onclick="goToProductSlide(${i}, event)"></button>
+                `).join('');
+            } else {
+                dotsContainer.innerHTML = '';
+            }
+        }
+
+        // જૂનું થમ્બનેલ કન્ટેનર હોય તો છુપાવી દો જેથી UI સ્વચ્છ રહે
+        const oldThumbContainer = document.getElementById('modal-thumbs-container');
+        if (oldThumbContainer) {
+            oldThumbContainer.innerHTML = '';
+        }
+
+        // ટેક્સ્ટ વિગતો સેટ કરો
+        const catEl = document.getElementById('modal-prod-cat');
+        const nameEl = document.getElementById('modal-prod-name');
+        const descEl = document.getElementById('modal-prod-desc');
+        const weightEl = document.getElementById('modal-prod-weight');
+        const priceEl = document.getElementById('modal-prod-price');
+
+        if (catEl) catEl.innerText = prod.category || 'ખાસ કલેક્શન';
+        if (nameEl) nameEl.innerText = prod.name || '';
+        if (descEl) {
+            // લાઇન બ્રેક સાથે ડિસ્ક્રિપ્શન બતાવવા માટે
+            descEl.style.whiteSpace = 'pre-line';
+            descEl.innerText = prod.desc || 'શ્રેષ્ઠ ગુણવત્તા યુક્ત આભૂષણ અને કલાકૃતિ.';
+        }
+        if (weightEl) weightEl.innerText = prod.weight || 'માનક સાઈઝ';
+        if (priceEl) priceEl.innerText = prod.price || '0';
+
+        // મોડલ ઓપન કરો અને સ્ક્રોલ ટોપ પર લાવો
+        const modal = document.getElementById('rk-product-detail-modal');
+        if (modal) {
+            modal.style.display = 'flex';
+            const modalContent = modal.querySelector('.modal-content') || modal.firstElementChild;
+            if (modalContent) modalContent.scrollTop = 0;
+        }
     }
 
     function closeModal() {
-        document.getElementById('rk-product-detail-modal').style.display = 'none';
+        const modal = document.getElementById('rk-product-detail-modal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
     }
 
+    // ============================================================================
+    // 7. KEYBOARD NAVIGATION (લેપટોપ પર એરો કી દબાવવાથી પણ ફોટો બદલાશે)
+    // ============================================================================
+    document.addEventListener('keydown', function(e) {
+        const modal = document.getElementById('rk-product-detail-modal');
+        if (modal && modal.style.display === 'flex') {
+            if (e.key === 'ArrowLeft') {
+                prevProductSlide();
+            } else if (e.key === 'ArrowRight') {
+                nextProductSlide();
+            } else if (e.key === 'Escape') {
+                closeModal();
+            }
+        }
+    });
+
+    // ============================================================================
+    // 8. MODAL OUTSIDE CLICK CLOSE
+    // ============================================================================
+    window.addEventListener('click', function(e) {
+        const modal = document.getElementById('rk-product-detail-modal');
+        if (modal && e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // ============================================================================
+    // 9. INITIALIZATION & ORDER FORM HANDLING
+    // ============================================================================
     document.addEventListener('DOMContentLoaded', () => {
+        injectSliderStyles();
         loadWebsiteProducts();
-        
+
+        // Buy Now Button Handler
         const buyNowBtn = document.getElementById('modal-buy-now-btn');
-        if(buyNowBtn) {
+        if (buyNowBtn) {
             buyNowBtn.addEventListener('click', function() {
                 if (!currentActiveProduct) return;
                 closeModal();
-                
-                const orderNavLink = document.querySelectorAll('nav ul li a')[4];
+
+                const navLinks = document.querySelectorAll('nav ul li a');
+                const orderNavLink = navLinks.length > 4 ? navLinks[4] : null;
                 switchPage('orders', orderNavLink);
 
-                document.getElementById('rk-product-name').value = currentActiveProduct.name;
-                document.getElementById('rk-product-price').value = currentActiveProduct.price;
-                if(currentActiveProduct.weight) {
-                    document.getElementById('rk-product-size').value = currentActiveProduct.weight;
+                const prodNameInput = document.getElementById('rk-product-name');
+                const prodPriceInput = document.getElementById('rk-product-price');
+                const prodSizeInput = document.getElementById('rk-product-size');
+
+                if (prodNameInput) prodNameInput.value = currentActiveProduct.name || '';
+                if (prodPriceInput) prodPriceInput.value = currentActiveProduct.price || '';
+                if (prodSizeInput && currentActiveProduct.weight) {
+                    prodSizeInput.value = currentActiveProduct.weight;
                 }
+            });
+        }
+
+        // Customer Order Form Submit Logic
+        const orderForm = document.getElementById('rk-customer-order-form');
+        if (orderForm) {
+            orderForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const custNameEl = document.getElementById('rk-cust-name');
+                const custPhoneEl = document.getElementById('rk-cust-phone');
+                const custAddrEl = document.getElementById('rk-cust-address');
+                const custCityEl = document.getElementById('rk-cust-city');
+                const custPinEl = document.getElementById('rk-cust-pincode');
+                const prodNameEl = document.getElementById('rk-product-name');
+                const prodSizeEl = document.getElementById('rk-product-size');
+                const prodQtyEl = document.getElementById('rk-product-qty');
+                const prodPriceEl = document.getElementById('rk-product-price');
+
+                const customerName = custNameEl ? custNameEl.value.trim() : '';
+                const phone = custPhoneEl ? custPhoneEl.value.trim() : '';
+                const baseAddress = custAddrEl ? custAddrEl.value.trim() : '';
+                const city = custCityEl ? custCityEl.value.trim() : '';
+                const pincode = custPinEl ? custPinEl.value.trim() : '';
+
+                const fullAddress = [baseAddress, city, pincode].filter(Boolean).join(', ');
+
+                if (!customerName || !phone || !baseAddress) {
+                    alert('કૃપા કરીને તમારું નામ, મોબાઈલ નંબર અને સરનામું અવશ્ય ભરો.');
+                    return;
+                }
+
+                const finalProductName = (prodNameEl && prodNameEl.value.trim()) 
+                    ? prodNameEl.value.trim() 
+                    : (currentActiveProduct ? currentActiveProduct.name : 'કસ્ટમ ઓર્ડર');
+
+                const finalPrice = (prodPriceEl && prodPriceEl.value.trim()) 
+                    ? prodPriceEl.value.trim() 
+                    : (currentActiveProduct ? currentActiveProduct.price : '0');
+
+                const finalWeight = (prodSizeEl && prodSizeEl.value.trim()) 
+                    ? prodSizeEl.value.trim() 
+                    : (currentActiveProduct ? currentActiveProduct.weight : 'માનક');
+
+                const finalQty = (prodQtyEl && prodQtyEl.value.trim()) 
+                    ? prodQtyEl.value.trim() 
+                    : '1';
+
+                const newOrder = {
+                    id: 'ORD-' + Date.now(),
+                    date: new Date().toLocaleString('en-IN'),
+                    customer: customerName,
+                    phone: phone,
+                    address: fullAddress,
+                    productName: finalProductName,
+                    price: finalPrice,
+                    weight: finalWeight,
+                    quantity: finalQty,
+                    status: 'pending'
+                };
+
+                try {
+                    const existingOrders = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]');
+                    existingOrders.unshift(newOrder);
+                    localStorage.setItem(ORDERS_KEY, JSON.stringify(existingOrders));
+                } catch (err) {
+                    console.error('Order Save Error:', err);
+                }
+
+                const waMessage = 
+                    `*નવો ઓર્ડર - RK Enterprise / શ્રી શિવ શક્તિ જ્વેલરી*\n` +
+                    `----------------------------------\n` +
+                    `*ઓર્ડર ID:* ${newOrder.id}\n` +
+                    `*ગ્રાહકનું નામ:* ${customerName}\n` +
+                    `*મોબાઈલ નંબર:* ${phone}\n` +
+                    `*સરનામું:* ${fullAddress}\n` +
+                    `*પ્રોડક્ટ:* ${finalProductName}\n` +
+                    `*સાઈઝ/વજન:* ${finalWeight}\n` +
+                    `*જથ્થો (Qty):* ${finalQty}\n` +
+                    `*કુલ કિંમત:* ₹${finalPrice}`;
+
+                const waURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waMessage)}`;
+                window.open(waURL, '_blank');
+
+                alert('તમારો ઓર્ડર સફળતાપૂર્વક નોંધાઈ ગયો છે!');
+                orderForm.reset();
             });
         }
     });
 
+    // ============================================================================
+    // 10. REAL-TIME STORAGE SYNC (એડમિન પેનલમાં ફેરફાર થતા તરત અપડેટ થાય)
+    // ============================================================================
     window.addEventListener('storage', (e) => {
         if (e.key === STORAGE_KEY) {
             loadWebsiteProducts();
         }
     });
-
-    // Order Form Submit Logic with Admin Sync & WhatsApp Notification
-    const orderForm = document.getElementById('rk-customer-order-form');
-    if(orderForm) {
-        orderForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const customerName = document.getElementById('rk-cust-name').value.trim();
-            const phone = document.getElementById('rk-cust-phone').value.trim();
-            const address = document.getElementById('rk-cust-address').value.trim();
-
-            if (!customerName || !phone || !address) {
-                alert('કૃપા કરીને નામ, ફોન નંબર અને સરનામું ભરો.');
-                return;
-            }
-
-            const newOrder = {
-                id: 'ORD-' + Date.now(),
-                date: new Date().toLocaleString(),
-                customer: customerName,
-                phone: phone,
-                address: address,
-                productName: currentActiveProduct ? currentActiveProduct.name : (document.getElementById('rk-product-name') ? document.getElementById('rk-product-name').value : 'કસ્ટમ ઓર્ડર'),
-                price: currentActiveProduct ? currentActiveProduct.price : (document.getElementById('rk-product-price') ? document.getElementById('rk-product-price').value : '0'),
-                weight: currentActiveProduct ? currentActiveProduct.weight : (document.getElementById('rk-product-size') ? document.getElementById('rk-product-size').value : 'માનક'),
-                status: 'pending'
-            };
-
-            try {
-                const existingOrders = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]');
-                existingOrders.push(newOrder);
-                localStorage.setItem(ORDERS_KEY, JSON.stringify(existingOrders));
-            } catch(err) {
-                console.error(err);
-            }
-
-            const waText = `નમસ્તે, મારે નવો ઓર્ડર આપવો છે:%0Aનામ: ${customerName}%0Aફોન: ${phone}%0Aસરનામું: ${address}%0Aપ્રોડક્ટ: ${newOrder.productName}%0Aકિંમત: ₹${newOrder.price}%0Aસાઈઝ/વજન: ${newOrder.weight}`;
-            window.open(`https://wa.me/918980370599?text=${waText}`, '_blank');
-            
-            alert('તમારો ઓર્ડર સફળતાપૂર્વક નોંધાઈ ગયો છે!');
-            orderForm.reset();
-        });
-    }
-    </script>
-    
+</script>
 </body>
 </html>

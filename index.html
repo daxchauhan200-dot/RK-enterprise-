@@ -573,6 +573,48 @@ function saveNewOrderToStorage(orderData) {
         console.error("ઓર્ડર સેવ કરવામાં ભૂલ:", err);
     }
 }
+        // === ગ્રાહક ઓર્ડર ફોર્મ સબમિટ અને સેવ કરવા માટેનું લૉજિક ===
+document.getElementById('rk-customer-order-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const customerName = document.getElementById('rk-cust-name').value.trim();
+    const phone = document.getElementById('rk-cust-phone').value.trim();
+    const address = document.getElementById('rk-cust-address').value.trim();
+    const city = document.getElementById('rk-cust-city').value.trim();
+    const pincode = document.getElementById('rk-cust-pincode').value.trim();
+    const productName = document.getElementById('rk-product-name').value.trim();
+    const size = document.getElementById('rk-product-size').value.trim() || 'લાગુ નથી';
+    const color = document.getElementById('rk-product-color').value.trim() || 'સામાન્ય';
+    const qty = document.getElementById('rk-product-qty').value.trim();
+    const price = document.getElementById('rk-product-price').value.trim();
+
+    const fullProductDetails = `${productName} (સાઈઝ: ${size}, કલર: ${color}, નંગ: ${qty})`;
+    const fullAddress = `${address}, ${city} - ${pincode}`;
+
+    const orderData = {
+        id: "ORD-" + Date.now(),
+        date: new Date().toLocaleString(),
+        customerName: customerName,
+        phone: phone,
+        productDetails: fullProductDetails,
+        shippingAddress: fullAddress,
+        totalAmount: price,
+        status: "pending"
+    };
+
+    try {
+        let existingOrders = JSON.parse(localStorage.getItem("rk_enterprise_orders")) || [];
+        existingOrders.push(orderData);
+        localStorage.setItem("rk_enterprise_orders", JSON.stringify(existingOrders));
+
+        alert("તમારો ઓર્ડર સફળતાપૂર્વક નોંધાઈ ગયો છે! એડમિન પેનલ પર મોકલી દેવામાં આવ્યો છે.");
+        document.getElementById('rk-customer-order-form').reset();
+    } catch (err) {
+        console.error("ઓર્ડર સેવ કરવામાં ભૂલ:", err);
+        alert("ઓર્ડર સેવ કરવામાં સમસ્યા આવી છે. કૃપા કરીને ફરી પ્રયાસ કરો.");
+    }
+});
+        
     </script>
 </body>
 </html>

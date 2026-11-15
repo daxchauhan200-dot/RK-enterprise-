@@ -552,19 +552,33 @@
 
         let allLoadedProducts = [];
 
-        function loadWebsiteProducts() {
-            const rawData = localStorage.getItem(STORAGE_KEY);
-            allLoadedProducts = rawData ? JSON.parse(rawData) : [];
+                    const productsHTML = allLoadedProducts.map((prod, index) => {
+                // મલ્ટી-ઇમેજ અથવા સિંગલ ઇમેજ હેન્ડલ કરવા માટે
+                let firstImg = '';
+                if (Array.isArray(prod.image)) {
+                    firstImg = prod.image[0];
+                } else if (typeof prod.image === 'string' && prod.image.startsWith('[')) {
+                    try { const parsed = JSON.parse(prod.image); firstImg = Array.isArray(parsed) ? parsed[0] : prod.image; } catch(e) { firstImg = prod.image; }
+                } else {
+                    firstImg = prod.image;
+                }
 
-            const homeGrid = document.getElementById('homeProductsGrid');
-            const allGrid = document.getElementById('allProductsGrid');
+                return `
+                    <div class="product-card" onclick="openProductModal(${index})" style="cursor:pointer;">
+                        <img src="${firstImg}" alt="${prod.name}" class="product-img">
+                        <div class="product-info">
+                            <span class="product-cat">${prod.category}</span>
+                            <h4 class="product-title">${prod.name}</h4>
+                            <p style="font-size: 13px; color: #64748b; margin-bottom: 10px; font-weight: 600;">સાઈઝ/વજન: ${prod.weight || 'માનક'}</p>
+                            <div class="product-footer">
+                                <span class="product-price">₹${prod.price}</span>
+                                <a href="https://wa.me/918980370599?text=નમસ્તે,%20મારે%20આ%20પ્રોડક્ટ%20માટે%20ઓર્ડર%20આપવો%20છે:%20${encodeURIComponent(prod.name)}" target="_blank" class="order-whatsapp-btn" onclick="event.stopPropagation();">WhatsApp</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
 
-            if (allLoadedProducts.length === 0) {
-                const emptyHTML = `<div style="grid-column: 1/-1; text-align:center; padding:50px; color:#64748b; font-size: 16px;">હજુ સુધી કોઈ પ્રોડક્ટ ઉમેરવામાં આવી નથી. એડમિન પેનલમાંથી પ્રોડક્ટ ઉમેરો.</div>`;
-                homeGrid.innerHTML = emptyHTML;
-                allGrid.innerHTML = emptyHTML;
-                return;
-            }
 
             const productsHTML = allLoadedProducts.map((prod, index) => `
                 <div class="product-card" onclick="openProductModal(${index})">
@@ -587,20 +601,49 @@
 
         let currentActiveProduct = null;
 
-        function openProductModal(index) {
+                function openProductModal(index) {
             const prod = allLoadedProducts[index];
             if (!prod) return;
             currentActiveProduct = prod;
 
-            document.getElementById('modal-prod-img').src = prod.image;
+            let imagesArray = [];
+            if (Array.isArray(prod.image)) {
+                imagesArray = prod.image;
+            } else if (typeof prod.image === 'string' && prod.image.startsWith('[')) {
+                try { imagesArray = JSON.parse(prod.image); } catch(e) { imagesArray = [prod.image]; }
+            } else {
+                imagesArray = [prod.image];
+            }
+
+            const mainImg = document.getElementById('modal-prod-img');
+            mainImg.src = imagesArray[0];
+
             document.getElementById('modal-prod-cat').innerText = prod.category;
             document.getElementById('modal-prod-name').innerText = prod.name;
             document.getElementById('modal-prod-desc').innerText = prod.desc || 'શ્રેષ્ઠ ગુણવત્તા યુક્ત આભૂષણ.';
             document.getElementById('modal-prod-weight').innerText = prod.weight || 'માનક સાઈઝ';
             document.getElementById('modal-prod-price').innerText = prod.price;
 
+            // જો એકથી વધુ ફોટા હોય તો થમ્બનેલ ગેલેરી બનાવવા માટે
+            let thumbContainer = document.getElementById('modal-thumbs-container');
+            if (!thumbContainer) {
+                thumbContainer = document.createElement('div');
+                thumbContainer.id = 'modal-thumbs-container';
+                thumbContainer.style.cssText = "display: flex; gap: 10px; margin-top: 12px; overflow-x: auto;";
+                mainImg.parentNode.insertBefore(thumbContainer, mainImg.nextSibling);
+            }
+
+            if (imagesArray.length > 1) {
+                thumbContainer.innerHTML = imagesArray.map((imgSrc, i) => `
+                    <img src="${imgSrc}" onclick="document.getElementById('modal-prod-img').src='${imgSrc}'" style="width: 65px; height: 65px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 2px solid ${i === 0 ? '#d4af37' : '#cbd5e1'};">
+                `).join('');
+            } else {
+                thumbContainer.innerHTML = '';
+            }
+
             document.getElementById('rk-product-detail-modal').style.display = 'flex';
         }
+
 
         function closeModal() {
             document.getElementById('rk-product-detail-modal').style.display = 'none';

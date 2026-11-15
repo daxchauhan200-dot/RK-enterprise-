@@ -579,26 +579,6 @@
                 `;
             }).join('');
 
-
-            const productsHTML = allLoadedProducts.map((prod, index) => `
-                <div class="product-card" onclick="openProductModal(${index})">
-                    <img src="${prod.image}" alt="${prod.name}" class="product-img">
-                    <div class="product-info">
-                        <span class="product-cat">${prod.category}</span>
-                        <h4 class="product-title">${prod.name}</h4>
-                        <p class="product-desc">${prod.desc || 'શ્રેષ્ઠ ગુણવત્તા યુક્ત આભૂષણ.'}</p>
-                        <div class="product-footer">
-                            <span class="product-price">₹${prod.price}</span>
-                            <a href="https://wa.me/918980370599?text=નમસ્તે,%20મારે%20આ%20પ્રોડક્ટ%20માટે%20ઓર્ડર%20આપવો%20છે:%20${encodeURIComponent(prod.name)}" target="_blank" class="order-whatsapp-btn" onclick="event.stopPropagation();">WhatsApp</a>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-
-            homeGrid.innerHTML = productsHTML;
-            allGrid.innerHTML = productsHTML;
-        }
-
         let currentActiveProduct = null;
 
                 function openProductModal(index) {

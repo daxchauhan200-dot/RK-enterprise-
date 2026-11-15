@@ -245,6 +245,116 @@
         font-size: 20px;
     }
         }
+        /* ================================================================= */
+/* R.K. ENTERPRISE - WEBSITE ORDER FORM STYLES (CSS ONLY)            */
+/* ================================================================= */
+
+.rk-website-order-wrapper {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.rk-order-form-card {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border: 1px solid #e1e4e8;
+}
+
+.rk-form-header {
+    background: #2c3e50;
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+}
+
+.rk-form-header h3 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.rk-form-header p {
+    margin: 5px 0 0 0;
+    font-size: 13px;
+    color: #bdc3c7;
+}
+
+.rk-styled-form {
+    padding: 20px;
+}
+
+.rk-form-group {
+    margin-bottom: 15px;
+}
+
+.rk-form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #333333;
+}
+
+.rk-input-field {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.rk-input-field:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+.rk-form-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.rk-half {
+    flex: 1;
+    min-width: 200px;
+}
+
+.rk-third {
+    flex: 1;
+    min-width: 130px;
+}
+
+.rk-submit-btn {
+    width: 100%;
+    background: #27ae60;
+    color: #ffffff;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    margin-top: 10px;
+}
+
+.rk-submit-btn:hover {
+    background: #219653;
+}
+
+.rk-submit-btn:active {
+    transform: scale(0.99);
+}
+/* ================================================================= */
+        
         
     </style>
 </head>
@@ -315,6 +425,74 @@
             <h3>ઓર્ડર અને પૂછપરછ વિગત</h3>
             <p>જો તમારે કોઈ સ્પેશિયલ ડિઝાઇન કે ઓર્ડર આપવો હોય, તો તમે સીધા પ્રોડક્ટ પર આપેલા WhatsApp બટન દ્વારા અથવા રૂબરૂ સંપર્ક કરી શકો છો.</p>
         </div>
+        <!-- ================================================================= -->
+<!-- R.K. ENTERPRISE - WEBSITE ORDER FORM (HTML ONLY)                  -->
+<!-- ================================================================= -->
+<div class="rk-website-order-wrapper">
+    <div class="rk-order-form-card">
+        <div class="rk-form-header">
+            <h3>શ્રી શિવ શક્તિ જ્વેલર્સ - ઓર્ડર ફોર્મ</h3>
+            <p>કૃપા કરીને નીચે આપેલી વિગતો સાચી ભરો જેથી તમારો ઓર્ડર ઝડપથી ડિલિવર થઈ શકે.</p>
+        </div>
+        
+        <form id="rk-customer-order-form" class="rk-styled-form">
+            <div class="rk-form-group">
+                <label for="rk-cust-name">ગ્રાહકનું પૂરું નામ *</label>
+                <input type="text" id="rk-cust-name" class="rk-input-field" placeholder="તમારું નામ લખો" required>
+            </div>
+
+            <div class="rk-form-group">
+                <label for="rk-cust-phone">મોબાઈલ નંબર (WhatsApp માટે) *</label>
+                <input type="tel" id="rk-cust-phone" class="rk-input-field" placeholder="10 અંકનો મોબાઈલ નંબર" pattern="[0-9]{10}" required>
+            </div>
+
+            <div class="rk-form-group">
+                <label for="rk-cust-address">પૂરું સરનામું (Shipping Address) *</label>
+                <textarea id="rk-cust-address" class="rk-input-field" rows="3" placeholder="ઘર નંબર, સોસાયટી, એરિયા, લેન્ડમાર્ક..." required></textarea>
+            </div>
+
+            <div class="rk-form-row">
+                <div class="rk-form-group rk-half">
+                    <label for="rk-cust-city">શહેર / ગામ *</label>
+                    <input type="text" id="rk-cust-city" class="rk-input-field" placeholder="શહેરનું નામ" required>
+                </div>
+                <div class="rk-form-group rk-half">
+                    <label for="rk-cust-pincode">પિનકોડ (Pincode) *</label>
+                    <input type="text" id="rk-cust-pincode" class="rk-input-field" placeholder="6 અંકનો પિનકોડ" pattern="[0-9]{6}" required>
+                </div>
+            </div>
+
+            <div class="rk-form-group">
+                <label for="rk-product-name">પ્રોડક્ટનું નામ / આઇટમ *</label>
+                <input type="text" id="rk-product-name" class="rk-input-field" placeholder="જેમ કે ભરવાડના કડા, વેડલા, ઝાંઝર..." required>
+            </div>
+
+            <div class="rk-form-row">
+                <div class="rk-form-group rk-third">
+                    <label for="rk-product-size">સાઈઝ (Size)</label>
+                    <input type="text" id="rk-product-size" class="rk-input-field" placeholder="દા.ત. 2.4 / L / XL">
+                </div>
+                <div class="rk-form-group rk-third">
+                    <label for="rk-product-color">રંગ / ફિનિશિંગ</label>
+                    <input type="text" id="rk-product-color" class="rk-input-field" placeholder="દા.ત. ગોલ્ડન / સિલ્વર">
+                </div>
+                <div class="rk-form-group rk-third">
+                    <label for="rk-product-qty">નંગ (Quantity) *</label>
+                    <input type="number" id="rk-product-qty" class="rk-input-field" value="1" min="1" required>
+                </div>
+            </div>
+
+            <div class="rk-form-group">
+                <label for="rk-product-price">કુલ રકમ (₹) *</label>
+                <input type="number" id="rk-product-price" class="rk-input-field" placeholder="અંદાજિત રકમ રૂપિયામાં" required>
+            </div>
+
+            <button type="submit" class="rk-submit-btn">હમણાં ઓર્ડર કન્ફર્મ કરો</button>
+        </form>
+    </div>
+</div>
+<!-- ================================================================= -->
+        
     </section>
 
     <footer>

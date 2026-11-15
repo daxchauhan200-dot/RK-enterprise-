@@ -412,90 +412,121 @@
     </div>
 
     <div id="toast" class="toast">✅ સફળતાપૂર્વક પૂર્ણ થયું!</div>
+<script>
+    /**
+     * ============================================================================
+     * RK ENTERPRISE - ADMIN CORE ENGINE
+     * Multi-Image Upload, Secure Login, Product & Order Management
+     * ============================================================================
+     */
 
-    <script>
-        // એડમિન સુરક્ષા (Password: rk@123)
-        (function() {
-            const ADMIN_SESSION_KEY = "admin_authenticated_session";
-            const CORRECT_PASSWORD = "rk@123"; 
-            
-            let isAuthenticated = false;
-            try {
-                if (sessionStorage.getItem(ADMIN_SESSION_KEY) === "true") {
-                    isAuthenticated = true;
-                }
-            } catch (e) {}
-
-            if (!isAuthenticated) {
-                let userInput = prompt("સુરક્ષિત એડમિન પેનલ: પાસવર્ડ દાખલ કરો:");
-                if (userInput === CORRECT_PASSWORD) {
-                    try { sessionStorage.setItem(ADMIN_SESSION_KEY, "true"); } catch (e) {}
-                    alert("સફળ લોગિન!");
-                } else {
-                    alert("ખોટો પાસવર્ડ! એક્સેસ નામંજૂર.");
-                    document.body.innerHTML = "<h2 style='color:red; text-align:center; margin-top:20vh;'>Access Denied - Unauthorized</h2>";
-                    throw new Error("Unauthorized access.");
-                }
+    // 1. એડમિન સેશન અને સુરક્ષા (Password: rk@123)
+    (function() {
+        const ADMIN_SESSION_KEY = "rk_enterprise_admin_session";
+        const CORRECT_PASSWORD = "rk@123"; 
+        
+        let isAuthenticated = false;
+        try {
+            if (sessionStorage.getItem(ADMIN_SESSION_KEY) === "true") {
+                isAuthenticated = true;
             }
-        })();
+        } catch (e) {}
 
-        const STORAGE_KEY = 'shree_shiv_shakti_products';
-        const ORDERS_KEY = 'rk_enterprise_orders';
-        let currentBase64Image = "";
+        if (!isAuthenticated) {
+            let userInput = prompt("સુરક્ષિત એડમિન પેનલ (RK Enterprise): પાસવર્ડ દાખલ કરો:");
+            if (userInput === CORRECT_PASSWORD) {
+                try { sessionStorage.setItem(ADMIN_SESSION_KEY, "true"); } catch (e) {}
+                alert("સફળ લોગિન!");
+            } else {
+                alert("ખોટો પાસવર્ડ! એક્સેસ નામંજૂર.");
+                document.body.innerHTML = "<h2 style='color:red; text-align:center; margin-top:20vh;'>Access Denied - RK Enterprise</h2>";
+                throw new Error("Unauthorized access.");
+            }
+        }
+    })();
 
-        document.addEventListener('DOMContentLoaded', () => {
-            renderAdminProducts();
-            renderAdminOrders();
-        });
+    const STORAGE_KEY = 'rk_enterprise_products';
+    const ORDERS_KEY = 'rk_enterprise_orders';
+    
+    // બહુવિધ ફોટા સ્ટોર કરવા માટેનો એરે
+    let currentUploadedImages = [];
 
-        // Image compressor & Base64 converter
-        document.getElementById('prodImage').addEventListener('change', function(e) {
-    const files = Array.from(e.target.files);
-    if (files.length === 0) return;
+    document.addEventListener('DOMContentLoaded', () => {
+        renderAdminProducts();
+        renderAdminOrders();
 
-    currentBase64Image = [];
-    let processedCount = 0;
-
-    files.forEach((file) => {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const img = new Image();
-            img.onload = function() {
-                const canvas = document.createElement('canvas');
-                const MAX_WIDTH = 600;
-                const scaleSize = MAX_WIDTH / img.width;
-                canvas.width = MAX_WIDTH;
-                canvas.height = img.height * scaleSize;
-
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                
-                currentBase64Image.push(canvas.toDataURL('image/jpeg', 0.8));
-                processedCount++;
-
-                if (processedCount === files.length) {
-                    const preview = document.getElementById('imagePreview');
-                    preview.src = currentBase64Image[0];
-                    preview.style.display = 'block';
-                }
-            };
-            img.src = event.target.result;
-        };
-        reader.readAsDataURL(file);
+        // ઇનપુટ ટેગમાં multiple attribute સેટ કરવા માટે
+        const fileInput = document.getElementById('prodImage');
+        if (fileInput) {
+            fileInput.setAttribute('multiple', 'multiple');
+        }
     });
-});
 
-                img.src = event.target.result;
-            };
-            reader.readAsDataURL(file);
+    // 2. મલ્ટિ-ઇમેજ કમ્પ્રેસર અને બેઝ-૬૪ કન્વર્ટર
+    const prodImageInput = document.getElementById('prodImage');
+    if (prodImageInput) {
+        prodImageInput.addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
+
+            currentUploadedImages = [];
+            let previewContainer = document.getElementById('imagePreviewContainer');
+            if (!previewContainer) {
+                previewContainer = document.createElement('div');
+                previewContainer.id = 'imagePreviewContainer';
+                previewContainer.style.cssText = "display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;";
+                prodImageInput.parentNode.appendChild(previewContainer);
+            }
+            previewContainer.innerHTML = '<p style="font-size:12px; color:#64748b; width:100%;">ફોટા પ્રોસેસ થઈ રહ્યા છે...</p>';
+
+            let processedCount = 0;
+
+            files.forEach((file) => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 600;
+                        const scaleSize = MAX_WIDTH / img.width;
+                        canvas.width = MAX_WIDTH;
+                        canvas.height = img.height * scaleSize;
+
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        
+                        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+                        currentUploadedImages.push(compressedBase64);
+                        processedCount++;
+
+                        if (processedCount === files.length) {
+                            renderThumbnailsPreview(previewContainer);
+                        }
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
         });
+    }
 
-        // Add Product Form Handler
-        document.getElementById('productForm').addEventListener('submit', function(e) {
+    function renderThumbnailsPreview(container) {
+        container.innerHTML = currentUploadedImages.map((src, index) => `
+            <div style="position:relative; width:60px; height:60px; border-radius:6px; overflow:hidden; border:2px solid #d4af37;">
+                <img src="${src}" style="width:100%; height:100%; object-fit:cover;">
+                <span style="position:absolute; bottom:2px; right:2px; background:rgba(0,0,0,0.7); color:#fff; font-size:10px; padding:1px 4px; border-radius:4px;">${index+1}</span>
+            </div>
+        `).join('') + `<p style="width:100%; font-size:12px; color:#16a34a; font-weight:600; margin-top:4px;">✅ કુલ ${currentUploadedImages.length} ફોટા સફળતાપૂર્વક સિલેક્ટ થયા છે.</p>`;
+    }
+
+    // 3. પ્રોડક્ટ સેવ ફોર્મ હેન્ડલર
+    const productForm = document.getElementById('productForm');
+    if (productForm) {
+        productForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            if (!currentBase64Image) {
-                alert("કૃપા કરીને પ્રોડક્ટનો ફોટો પસંદ કરો.");
+            if (currentUploadedImages.length === 0) {
+                alert("કૃપા કરીને ઓછામાં ઓછો એક પ્રોડક્ટનો ફોટો પસંદ કરો.");
                 return;
             }
 
@@ -506,7 +537,7 @@
                 weight: document.getElementById('prodWeight').value.trim(),
                 price: document.getElementById('prodPrice').value.trim(),
                 desc: document.getElementById('prodDesc').value.trim(),
-                image: currentBase64Image,
+                image: currentUploadedImages, // મલ્ટિ-ઇમેજ એરે સેવ થશે
                 dateAdded: new Date().toLocaleDateString('gu-IN')
             };
 
@@ -515,42 +546,72 @@
             saveProducts(products);
 
             this.reset();
-            document.getElementById('imagePreview').style.display = 'none';
-            currentBase64Image = "";
+            currentUploadedImages = [];
+            const previewContainer = document.getElementById('imagePreviewContainer');
+            if (previewContainer) previewContainer.innerHTML = '';
+
+            const oldPreview = document.getElementById('imagePreview');
+            if (oldPreview) oldPreview.style.display = 'none';
 
             renderAdminProducts();
-            showToast("✅ પ્રોડક્ટ સફળતાપૂર્વક સેવ થઈ ગઈ!");
+            showToast("✅ RK Enterprise માં પ્રોડક્ટ સફળતાપૂર્વક સેવ થઈ ગઈ!");
         });
+    }
 
-        function getProducts() {
+    function getProducts() {
+        try {
             const data = localStorage.getItem(STORAGE_KEY);
             return data ? JSON.parse(data) : [];
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function saveProducts(products) {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+        } catch (e) {
+            alert("સ્ટોરેજ ફુલ થઈ ગયું છે! ફોટાની સાઈઝ અથવા સંખ્યા ઘટાડો.");
+        }
+    }
+
+    // 4. એડમિન પેનલમાં પ્રોડક્ટ લિસ્ટ રેન્ડર કરવું
+    function renderAdminProducts() {
+        const products = getProducts();
+        const tbody = document.getElementById('adminProductList');
+        const countEl = document.getElementById('totalCount');
+        if (countEl) countEl.innerText = products.length;
+
+        if (!tbody) return;
+
+        if (products.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 30px; color: #64748b;">હજુ સુધી કોઈ પ્રોડક્ટ ઉમેરવામાં આવી નથી.</td></tr>`;
+            return;
         }
 
-        function saveProducts(products) {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-            } catch (e) {
-                alert("સ્ટોરેજ ફુલ થઈ ગયું છે!");
-            }
-        }
-
-        function renderAdminProducts() {
-            const products = getProducts();
-            const tbody = document.getElementById('adminProductList');
-            document.getElementById('totalCount').innerText = products.length;
-
-            if (products.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 30px; color: #64748b;">હજુ સુધી કોઈ પ્રોડક્ટ ઉમેરવામાં આવી નથી.</td></tr>`;
-                return;
+        tbody.innerHTML = products.map(product => {
+            let thumbUrl = '';
+            let imgCount = 1;
+            if (Array.isArray(product.image)) {
+                thumbUrl = product.image[0];
+                imgCount = product.image.length;
+            } else if (typeof product.image === 'string') {
+                thumbUrl = product.image;
+            } else {
+                thumbUrl = 'https://via.placeholder.com/50';
             }
 
-            tbody.innerHTML = products.map(product => `
+            return `
                 <tr>
-                    <td><img src="${product.image}" alt="${product.name}" class="prod-thumb"></td>
+                    <td>
+                        <div style="position:relative; display:inline-block;">
+                            <img src="${thumbUrl}" alt="${product.name}" class="prod-thumb" style="width:50px; height:50px; object-fit:cover; border-radius:6px;">
+                            ${imgCount > 1 ? `<span style="position:absolute; top:-5px; right:-5px; background:#d4af37; color:#0f172a; font-size:10px; font-weight:bold; padding:2px 5px; border-radius:50%;">${imgCount}</span>` : ''}
+                        </div>
+                    </td>
                     <td>
                         <strong>${product.name}</strong><br>
-                        <small style="color:#64748b;">${product.weight ? 'સાઈઝ/વજન: ' + product.weight : ''}</small>
+                        <small style="color:#64748b;">${product.weight ? 'વજન: ' + product.weight : ''} | ફોટા: ${imgCount}</small>
                     </td>
                     <td><span class="badge">${product.category}</span></td>
                     <td><strong>₹${product.price}</strong></td>
@@ -558,78 +619,83 @@
                         <button class="btn-delete" onclick="deleteProduct(${product.id})">ડિલીટ</button>
                     </td>
                 </tr>
-            `).join('');
+            `;
+        }).join('');
+    }
+
+    function deleteProduct(id) {
+        if (confirm("શું તમે ખરેખર આ પ્રોડક્ટ ડિલીટ કરવા માંગો છો?")) {
+            let products = getProducts();
+            products = products.filter(p => p.id !== id);
+            saveProducts(products);
+            renderAdminProducts();
+            showToast("🗑️ પ્રોડક્ટ ડિલીટ કરવામાં આવી.");
+        }
+    }
+
+    function clearAllProducts() {
+        if (confirm("ચેતવણી: બધી જ પ્રોડક્ટ્સ ડિલીટ થઈ જશે.")) {
+            localStorage.removeItem(STORAGE_KEY);
+            renderAdminProducts();
+            showToast("બધી પ્રોડક્ટ્સ સાફ થઈ ગઈ.");
+        }
+    }
+
+    // 5. ઓર્ડર મેનેજમેન્ટ
+    function renderAdminOrders() {
+        const ordersList = document.getElementById('adminOrdersList');
+        if (!ordersList) return;
+
+        let savedOrders = [];
+        try {
+            savedOrders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+        } catch(e) {}
+
+        if (savedOrders.length === 0) {
+            ordersList.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 35px; color: #64748b;">હાલમાં કોઈ ઓર્ડર ઉપલબ્ધ નથી.</td></tr>`;
+            return;
         }
 
-        function deleteProduct(id) {
-            if (confirm("શું તમે ખરેખર આ પ્રોડક્ટ ડિલીટ કરવા માંગો છો?")) {
-                let products = getProducts();
-                products = products.filter(p => p.id !== id);
-                saveProducts(products);
-                renderAdminProducts();
-                showToast("🗑️ પ્રોડક્ટ ડિલીટ કરવામાં આવી.");
-            }
+        ordersList.innerHTML = savedOrders.slice().reverse().map(ord => `
+            <tr>
+                <td><strong>${ord.id}</strong><br><small style="color:#64748b;">${ord.date}</small></td>
+                <td><strong>${ord.customer || ord.customerName}</strong><br><a href="tel:${ord.phone}" style="color:#2563eb; text-decoration:none;">${ord.phone}</a></td>
+                <td>${ord.address || ord.shippingAddress}</td>
+                <td>${ord.productName || ord.productDetails}</td>
+                <td><strong>₹${ord.price || ord.totalAmount}</strong></td>
+                <td><button class="btn-delete" onclick="deleteOrder('${ord.id}')">હટાવો</button></td>
+            </tr>
+        `).join('');
+    }
+
+    function deleteOrder(orderId) {
+        if (confirm("શું તમે આ ઓર્ડર લિસ્ટમાંથી હટાવવા માંગો છો?")) {
+            let savedOrders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+            savedOrders = savedOrders.filter(o => o.id !== orderId);
+            localStorage.setItem(ORDERS_KEY, JSON.stringify(savedOrders));
+            renderAdminOrders();
+            showToast("ઓર્ડર હટાવવામાં આવ્યો.");
         }
+    }
 
-        function clearAllProducts() {
-            if (confirm("ચેતવણી: બધી જ પ્રોડક્ટ્સ ડિલીટ થઈ જશે.")) {
-                localStorage.removeItem(STORAGE_KEY);
-                renderAdminProducts();
-                showToast("બધી પ્રોડક્ટ્સ સાફ થઈ ગઈ.");
-            }
+    function clearAllOrders() {
+        if (confirm("શું તમે બધા ઓર્ડર ક્લિયર કરવા માંગો છો?")) {
+            localStorage.removeItem(ORDERS_KEY);
+            renderAdminOrders();
+            showToast("બધા ઓર્ડર સાફ થઈ ગયા.");
         }
+    }
 
-        // Render Live Orders in Admin Panel
-        function renderAdminOrders() {
-            const ordersList = document.getElementById('adminOrdersList');
-            let savedOrders = [];
-            try {
-                savedOrders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
-            } catch(e) {}
-
-            if (savedOrders.length === 0) {
-                ordersList.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 35px; color: #64748b;">હાલમાં કોઈ ઓર્ડર ઉપલબ્ધ નથી. ગ્રાહક વેબસાઇટથી ઓર્ડર કરશે એટલે અહીં લાઈવ દેખાશે.</td></tr>`;
-                return;
-            }
-
-            ordersList.innerHTML = savedOrders.slice().reverse().map(ord => `
-                <tr>
-                    <td><strong>${ord.id}</strong><br><small style="color:#64748b;">${ord.date}</small></td>
-                    <td><strong>${ord.customerName}</strong><br><a href="tel:${ord.phone}" style="color:#2563eb; text-decoration:none;">${ord.phone}</a></td>
-                    <td>${ord.shippingAddress}</td>
-                    <td>${ord.productDetails}</td>
-                    <td><strong>₹${ord.totalAmount}</strong></td>
-                    <td><button class="btn-delete" onclick="deleteOrder('${ord.id}')">હટાવો</button></td>
-                </tr>
-            `).join('');
-        }
-
-        function deleteOrder(orderId) {
-            if (confirm("શું તમે આ ઓર્ડર લિસ્ટમાંથી હટાવવા માંગો છો?")) {
-                let savedOrders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
-                savedOrders = savedOrders.filter(o => o.id !== orderId);
-                localStorage.setItem(ORDERS_KEY, JSON.stringify(savedOrders));
-                renderAdminOrders();
-                showToast("ઓર્ડર હટાવવામાં આવ્યો.");
-            }
-        }
-
-        function clearAllOrders() {
-            if (confirm("શું તમે બધા ઓર્ડર ક્લિયર કરવા માંગો છો?")) {
-                localStorage.removeItem(ORDERS_KEY);
-                renderAdminOrders();
-                showToast("બધા ઓર્ડર સાફ થઈ ગયા.");
-            }
-        }
-
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.innerText = message;
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-    </script>
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        toast.innerText = message;
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+</script>
+    
 </body>
 </html>

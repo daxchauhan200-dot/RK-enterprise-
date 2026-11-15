@@ -1,82 +1,95 @@
-// ==========================================
-// R.K. Enterprise - Simple Backend Server
-// ==========================================
-
-const http = require('http');
+// =================================================================
+// RK ENTERPRISE - BACKEND SERVER (Node.js & Express)
+// =================================================================
+const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const cors = require('cors');
 
-const PORT = 3000;
-const DB_FILE = path.join(__dirname, 'orders.json');
+const app = express();
+const PORT = process.env.PORT || 3000;
+const ORDERS_FILE = path.join(__dirname, 'orders.json');
 
-// જો ડેટાબેઝ ફાઇલ ન હોય તો ખાલી એરે સાથે બનાવી દો
-if (!fs.existsSync(DB_FILE)) {
-    fs.writeFileSync(DB_FILE, JSON.stringify([]));
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.static(__dirname));
+
+// Ensure orders.json exists
+if (!fs.existsSync(ORDERS_FILE)) {
+    fs.writeFileSync(ORDERS_FILE, JSON.stringify([], null, 2));
 }
 
-const server = http.createServer((req, res) => {
-    // CORS હેડર્સ સેટ કરો જેથી વેબસાઇટ સાથે કનેક્ટ થઈ શકે
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-    if (req.method === 'OPTIONS') {
-        res.writeHead(204);
-        res.end();
-        return;
-    }
-
-    // ઓર્ડર સેવ કરવા માટેની API (POST /api/orders)
-    if (req.method === 'POST' && req.url === '/api/orders') {
-        let body = '';
-        
-        req.on('data', chunk => {
-            body += chunk.toString();
-        });
-
-        req.on('end', () => {
-            try {
-                const newOrder = JSON.parse(body);
-                newOrder.id = "ORD-" + Date.now();
-                newOrder.date = new Date().toLocaleString();
-
-                // હાલની ફાઇલ વાંચો
-                const fileData = fs.readFileSync(DB_FILE, 'utf8');
-                const orders = JSON.parse(fileData);
-
-                // નવો ઓર્ડર ઉમેરો
-                orders.push(newOrder);
-
-                // ફાઇલમાં પાછો ડેટા સેવ કરો (ડેટાબેઝ ફાઇલ અપડેટ)
-                fs.writeFileSync(DB_FILE, JSON.stringify(orders, null, 2));
-
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: true, message: 'ઓર્ડર સફળતાપૂર્વક સેવ થઈ ગયો!', order: newOrder }));
-            } catch (err) {
-                res.writeHead(400, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: false, error: 'ખોટો ડેટા格式 છે.' }));
-            }
-        });
-    } 
-    // બધા ઓર્ડર મેળવવા માટેની API (GET /api/orders)
-    else if (req.method === 'GET' && req.url === '/api/orders') {
-        try {
-            const fileData = fs.readFileSync(DB_FILE, 'utf8');
-            const orders = JSON.parse(fileData);
-
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify(orders));
-        } catch (err) {
-            res.writeHead(500, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ success: false, error: 'ડેટા વાંચવામાં ભૂલ થઈ.' }));
+// API: Get all orders
+app.get('/api/orders', (req, res) => {
+    fs.readFile(ORDERS_FILE, 'utf8', (err, data) => {
+        if (err) {
+            console.error("ਡેટા વાંચવામાં ભૂલ:", err);
+            return res.status(500).json({ error: "સર્વર એરર" });
         }
-    } 
-    else {
-        res.writeHead(404, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'પેજ મળ્યું નથી.' }));
-    }
+        try {
+            const orders = JSON.parse(data || '[]');
+            res.json(orders);
+        } catch (parseErr) {
+            res.json([]);
+        }
+    });
 });
 
-server.listen(PORT, () => {
-    console.log(`સર્વર આ પર ચાલી રહ્યું છે: http://localhost:${PORT}`);
+// API: Save a new order
+app.post('/api/orders', (req, res) => {
+    const newOrder = req.body;
+    
+    if (!newOrder.customerName || !newOrder.phone || !newOrder.totalAmount) {
+        return res.status(400).json({ error: "જરૂરી માહિતી ખૂટે છે." });
+    }
+
+    fs.readFile(ORDERS_FILE, 'utf8', (err, data) => {
+        let orders = [];
+        try {
+            orders = JSON.parse(data || '[]');
+        } catch (e) {
+            orders = [];
+        }
+
+        newOrder.id = "ORD-" + Date.now();
+        newOrder.date = new Date().toLocaleString();
+        orders.push(newOrder);
+
+        fs.writeFile(ORDERS_FILE, JSON.stringify(orders, null, 2), (writeErr) => {
+            if (writeErr) {
+                console.error("ઓર્ડર સેવ કરવામાં ભૂલ:", writeErr);
+                return res.status(500).json({ error: "ઓર્ડર સેવ કરવામાં નિષ્ફળતા" });
+            }
+            res.status(201).json({ success: true, message: "ઓર્ડર સફળતાપૂર્વક સેવ થયો!", order: newOrder });
+        });
+    });
+});
+
+// API: Delete an order
+app.delete('/api/orders/:id', (req, res) => {
+    const orderId = req.params.id;
+
+    fs.readFile(ORDERS_FILE, 'utf8', (err, data) => {
+        if (err) return res.status(500).json({ error: "સર્વર એરર" });
+
+        let orders = [];
+        try {
+            orders = JSON.parse(data || '[]');
+        } catch (e) {
+            orders = [];
+        }
+
+        const filteredOrders = orders.filter(o => o.id !== orderId);
+
+        fs.writeFile(ORDERS_FILE, JSON.stringify(filteredOrders, null, 2), (writeErr) => {
+            if (writeErr) return res.status(500).json({ error: "ડિલીટ કરવામાં ભૂલ" });
+            res.json({ success: true, message: "ઓર્ડર ડિલીટ થઈ ગયો." });
+        });
+    });
+});
+
+// Start Server
+app.listen(PORT, () => {
+    console.log(`RK Enterprise Backend Server running on port ${PORT}`);
 });

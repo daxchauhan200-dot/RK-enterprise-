@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RK ENTERPRISE</title>
+    <title>RK Enterprise - Global E-Commerce Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #1b263b;
-            --accent-gold: #c59b27;
-            --bg-light: #f8f9fa;
-            --text-dark: #212529;
+            --primary-dark: #0f172a;
+            --secondary-dark: #1e293b;
+            --accent-gold: #d4af37;
+            --accent-gold-hover: #b5952f;
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
             --white: #ffffff;
+            --danger: #ef4444;
+            --success: #10b981;
         }
 
         * {
@@ -25,12 +29,15 @@
             background-color: var(--bg-light);
             color: var(--text-dark);
             line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         header {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
             color: var(--white);
-            padding: 15px 5%;
+            padding: 18px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -38,22 +45,25 @@
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
 
         .logo-area h1 {
-            font-size: 24px;
+            font-size: 26px;
             color: var(--accent-gold);
+            letter-spacing: 0.5px;
         }
 
         .logo-area p {
             font-size: 12px;
-            color: #adb5bd;
+            color: #cbd5e1;
         }
 
         nav ul {
             list-style: none;
             display: flex;
-            gap: 20px;
+            gap: 22px;
+            align-items: center;
         }
 
         nav ul li a {
@@ -62,6 +72,7 @@
             font-weight: 600;
             transition: color 0.3s;
             cursor: pointer;
+            font-size: 15px;
         }
 
         nav ul li a:hover, nav ul li a.active {
@@ -70,18 +81,24 @@
 
         .admin-btn-link {
             background-color: var(--accent-gold);
-            color: var(--primary-color);
-            padding: 6px 14px;
-            border-radius: 4px;
+            color: var(--primary-dark);
+            padding: 8px 16px;
+            border-radius: 6px;
             text-decoration: none;
             font-weight: 700;
             font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .admin-btn-link:hover {
+            background-color: var(--accent-gold-hover);
+            transform: translateY(-2px);
         }
 
         .page-section {
             display: none;
             padding: 40px 5%;
-            min-height: 70vh;
+            flex: 1;
         }
 
         .page-section.active-page {
@@ -89,93 +106,99 @@
         }
 
         .hero-banner {
-            background: linear-gradient(rgba(27, 38, 59, 0.8), rgba(27, 38, 59, 0.8)), url('https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=1350&q=80') center/cover;
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(30, 41, 59, 0.85)), url('https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=1350&q=80') center/cover;
             color: var(--white);
             text-align: center;
-            padding: 80px 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
+            padding: 90px 20px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .hero-banner h2 {
-            font-size: 38px;
+            font-size: 40px;
             color: var(--accent-gold);
             margin-bottom: 15px;
+            font-weight: 700;
         }
 
         .hero-banner p {
             font-size: 18px;
-            max-width: 700px;
-            margin: 0 auto 20px;
-            color: #e2e8f0;
+            max-width: 750px;
+            margin: 0 auto 25px;
+            color: #cbd5e1;
         }
 
         .section-title {
-            font-size: 26px;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--accent-gold);
-            padding-bottom: 5px;
+            font-size: 28px;
+            color: var(--primary-dark);
+            margin-bottom: 25px;
+            border-bottom: 3px solid var(--accent-gold);
+            padding-bottom: 8px;
             display: inline-block;
         }
 
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
             margin-top: 20px;
         }
 
         .product-card {
             background: var(--white);
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-            border: 1px solid #dee2e6;
-            transition: transform 0.3s;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
+            cursor: pointer;
         }
 
         .product-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
         }
 
         .product-img {
             width: 100%;
-            height: 220px;
-            object-fit: cover;
-            background-color: #e9ecef;
+            height: 240px;
+            object-fit: contain;
+            background-color: #f1f5f9;
+            padding: 10px;
         }
 
         .product-info {
-            padding: 15px;
+            padding: 20px;
             flex: 1;
             display: flex;
             flex-direction: column;
         }
 
         .product-title {
-            font-size: 18px;
+            font-size: 19px;
             font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 5px;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
         }
 
         .product-cat {
             font-size: 12px;
-            background: #fff3cd;
-            color: #856404;
-            padding: 2px 8px;
-            border-radius: 10px;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 12px;
+            border-radius: 20px;
             width: fit-content;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            font-weight: 600;
         }
 
         .product-desc {
             font-size: 14px;
-            color: #6c757d;
-            margin-bottom: 15px;
+            color: #64748b;
+            margin-bottom: 20px;
             flex: 1;
         }
 
@@ -183,179 +206,188 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid #eee;
-            padding-top: 10px;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 15px;
         }
 
         .product-price {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
-            color: var(--primary-color);
+            color: var(--primary-dark);
         }
 
         .order-whatsapp-btn {
             background-color: #25d366;
             color: white;
-            padding: 6px 12px;
-            border-radius: 4px;
+            padding: 8px 16px;
+            border-radius: 6px;
             text-decoration: none;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .order-whatsapp-btn:hover {
+            opacity: 0.9;
         }
 
         .info-card {
             background: var(--white);
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
         }
 
         .info-card h3 {
-            color: var(--primary-color);
+            color: var(--primary-dark);
             margin-bottom: 15px;
+            font-size: 22px;
         }
 
         .info-card p {
-            margin-bottom: 10px;
-            color: #495057;
+            margin-bottom: 12px;
+            color: #475569;
+        }
+
+        /* Order Form Styling */
+        .rk-website-order-wrapper {
+            max-width: 650px;
+            margin: 20px auto;
+        }
+
+        .rk-order-form-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .rk-form-header {
+            background: var(--primary-dark);
+            color: var(--white);
+            padding: 25px;
+            text-align: center;
+            border-bottom: 3px solid var(--accent-gold);
+        }
+
+        .rk-form-header h3 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        .rk-form-header p {
+            margin: 8px 0 0 0;
+            font-size: 14px;
+            color: #cbd5e1;
+        }
+
+        .rk-styled-form {
+            padding: 25px;
+        }
+
+        .rk-form-group {
+            margin-bottom: 20px;
+        }
+
+        .rk-form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #334155;
+        }
+
+        .rk-input-field {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .rk-input-field:focus {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+        }
+
+        .rk-form-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .rk-half { flex: 1; min-width: 220px; }
+        .rk-third { flex: 1; min-width: 140px; }
+
+        .rk-submit-btn {
+            width: 100%;
+            background: var(--success);
+            color: #ffffff;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .rk-submit-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* Modal Styles */
+        #rk-product-detail-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.75);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal-content-box {
+            background: #ffffff;
+            width: 100%;
+            max-width: 650px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            position: relative;
+            padding: 30px;
+            animation: modalPop 0.3s ease;
+        }
+
+        @keyframes modalPop {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         footer {
-            background-color: var(--primary-color);
+            background: var(--primary-dark);
             color: var(--white);
             text-align: center;
-            padding: 25px;
+            padding: 30px;
             border-top: 3px solid var(--accent-gold);
-            margin-top: 40px;
+            margin-top: auto;
         }
+
         @media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        padding: 15px;
-        text-align: center;
-    }
-    nav ul {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-        margin-top: 10px;
-    }
-    .logo-area h1 {
-        font-size: 20px;
-    }
+            header { flex-direction: column; padding: 15px; text-align: center; }
+            nav ul { flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 12px; }
         }
-        /* ================================================================= */
-/* R.K. ENTERPRISE - WEBSITE ORDER FORM STYLES (CSS ONLY)            */
-/* ================================================================= */
-
-.rk-website-order-wrapper {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 15px;
-    box-sizing: border-box;
-}
-
-.rk-order-form-card {
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    border: 1px solid #e1e4e8;
-}
-
-.rk-form-header {
-    background: #2c3e50;
-    color: #ffffff;
-    padding: 20px;
-    text-align: center;
-}
-
-.rk-form-header h3 {
-    margin: 0;
-    font-size: 22px;
-    font-weight: 700;
-}
-
-.rk-form-header p {
-    margin: 5px 0 0 0;
-    font-size: 13px;
-    color: #bdc3c7;
-}
-
-.rk-styled-form {
-    padding: 20px;
-}
-
-.rk-form-group {
-    margin-bottom: 15px;
-}
-
-.rk-form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-    font-size: 13px;
-    color: #333333;
-}
-
-.rk-input-field {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
-    font-size: 14px;
-    box-sizing: border-box;
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.rk-input-field:focus {
-    border-color: #3498db;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
-}
-
-.rk-form-row {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.rk-half {
-    flex: 1;
-    min-width: 200px;
-}
-
-.rk-third {
-    flex: 1;
-    min-width: 130px;
-}
-
-.rk-submit-btn {
-    width: 100%;
-    background: #27ae60;
-    color: #ffffff;
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
-    margin-top: 10px;
-}
-
-.rk-submit-btn:hover {
-    background: #219653;
-}
-
-.rk-submit-btn:active {
-    transform: scale(0.99);
-}
-/* ================================================================= */
-        
-        
     </style>
 </head>
 <body>
@@ -363,7 +395,7 @@
     <header>
         <div class="logo-area">
             <h1>✨ RK ENTERPRISE</h1>
-            <p>પરંપરાગત આભૂષણો અને કાસિંગ વર્ક</p>
+            <p>ગ્લોબલ પ્રીમિયમ આભૂષણો અને ક્રાફ્ટમેનશિપ</p>
         </div>
         <nav>
             <ul>
@@ -380,32 +412,28 @@
     <!-- હોમ પેજ સેક્શન -->
     <section id="home" class="page-section active-page">
         <div class="hero-banner">
-            <h2>શુદ્ધતા અને પરંપરાનો વિશ્વાસ</h2>
-            <p>રાધે ક્રિષ્ના જ્વેલર્સમાં આપનું સ્વાગત છે. અહીં આપને ઉત્તમ ગુણવત્તાવાળા ભરવાડના કડા, વેડલા, ઝાંઝર અને અન્ય આભૂષણો મળી રહેશે.</p>
-            <a onclick="switchPage('products', document.querySelectorAll('nav ul li a')[1])" style="background:var(--accent-gold); color:var(--primary-color); padding:10px 25px; border-radius:5px; font-weight:bold; cursor:pointer; display:inline-block;">પ્રોડક્ટ્સ જુઓ</a>
+            <h2>વર્લ્ડ ક્લાસ ક્વોલિટી અને પરંપરાનો વિશ્વાસ</h2>
+            <p>શ્રી શિવ શક્તિ જ્વેલર્સ અને આર.કે. એન્ટરપ્રાઇઝમાં આપનું સ્વાગત છે. અહીં આપને ઉત્તમ ગુણવત્તાવાળા ભરવાડના કડા, વેડલા, ઝાંઝર અને આંતરરાષ્ટ્રીય સ્ટાન્ડર્ડના આભૂષણો મળી રહેશે.</p>
+            <a onclick="switchPage('products', document.querySelectorAll('nav ul li a')[1])" style="background:var(--accent-gold); color:var(--primary-dark); padding:12px 30px; border-radius:8px; font-weight:bold; cursor:pointer; display:inline-block; transition:0.3s;">પ્રોડક્ટ્સ જુઓ</a>
         </div>
 
         <h3 class="section-title">નવીનતમ પ્રોડક્ટ્સ ઝલક</h3>
-        <div class="products-grid" id="homeProductsGrid">
-            <!-- ડાયનેમિક પ્રોડક્ટ્સ અહીં લોડ થશે -->
-        </div>
+        <div class="products-grid" id="homeProductsGrid"></div>
     </section>
 
     <!-- પ્રોડક્ટ્સ પેજ સેક્શન -->
     <section id="products" class="page-section">
         <h3 class="section-title">અમારી તમામ પ્રોડક્ટ્સ લિસ્ટિંગ</h3>
-        <p style="margin-bottom: 20px; color: #6c757d;">એડમિન પેનલમાંથી ઉમેરેલી તમામ પ્રોડક્ટ્સ અહીં લાઈવ દેખાઈ જશે.</p>
-        <div class="products-grid" id="allProductsGrid">
-            <!-- ડાયનેમિક પ્રોડક્ટ્સ અહીં લોડ થશે -->
-        </div>
+        <p style="margin-bottom: 25px; color: #64748b;">એડમિન પેનલમાંથી ઉમેરેલી તમામ પ્રીમિયમ પ્રોડક્ટ્સ અહીં લાઈવ ઉપલબ્ધ છે.</p>
+        <div class="products-grid" id="allProductsGrid"></div>
     </section>
 
     <!-- અબાઉટ અસ પેજ સેક્શન -->
     <section id="about" class="page-section">
         <div class="info-card">
             <h3>અમારા વિશે (About Us)</h3>
-            <p><strong>શ્રી શિવ શક્તિ જ્વેલર્સ</strong> પરંપરાગત જ્વેલરી ઉત્પાદન, ડાઈ કટીંગ, મોલ્ડ કટીંગ, ફાઈલીંગ, પોલીસીંગ અને વેક્સ સેટિંગ ક્ષેત્રે ઉત્કૃષ્ટ સેવાઓ આપે છે.</p>
-            <p>અમે ગ્રાહકોની પસંદગી મુજબ સિલ્વર, જર્મન સિલ્વર અને બ્રાસ આભૂષણોની અદ્ભુત વેરાયટી તૈયાર કરીએ છીએ.</p>
+            <p><strong>આર.કે. એન્ટરપ્રાઇઝ તથા શ્રી શિવ શક્તિ જ્વેલર્સ</strong> પરંપરાગત જ્વેલરી ઉત્પાદન, ડાઈ કટીંગ, મોલ્ડ કટીંગ, ફાઈલીંગ, પોલીસીંગ અને વેક્સ સેટિંગ ક્ષેત્રે વૈશ્વિક સ્તરે ઉત્કૃષ્ટ સેવાઓ આપે છે.</p>
+            <p>અમે આધુનિક ટેકનોલોજી અને પરંપરાગત કલાના સમન્વયથી સિલ્વર, જર્મન સિલ્વર અને બ્રાસ આભૂષણોની અદ્ભુત વેરાયટી તૈયાર કરીએ છીએ.</p>
         </div>
     </section>
 
@@ -414,124 +442,132 @@
         <div class="info-card">
             <h3>સંપર્ક કરો (Contact Us)</h3>
             <p>📍 <strong>સરનામું:</strong> સુરત, ગુજરાત, ભારત.</p>
-            <p>📞 <strong>ફોન/વોટ્સએપ:</strong> +91 XXXXX XXXXX</p>
-            <p>✉️ <strong>સહયોગ:</strong> પરંપરાગત આભૂષણો અને કાસિંગ ઓર્ડર માટે અમારો સંપર્ક કરો.</p>
+            <p>📞 <strong>ફોન/વોટ્સએપ:</strong> +91 8980370599</p>
+            <p>✉️ <strong>બિઝનેસ ઇમેઇલ:</strong> contact@rkenterprise.com</p>
         </div>
     </section>
 
     <!-- ઓર્ડર પેજ સેક્શન -->
     <section id="orders" class="page-section">
-        <div class="info-card">
-            <h3>ઓર્ડર અને પૂછપરછ વિગત</h3>
-            <p>જો તમારે કોઈ સ્પેશિયલ ડિઝાઇન કે ઓર્ડર આપવો હોય, તો તમે સીધા પ્રોડક્ટ પર આપેલા WhatsApp બટન દ્વારા અથવા રૂબરૂ સંપર્ક કરી શકો છો.</p>
+        <div class="rk-website-order-wrapper">
+            <div class="rk-order-form-card">
+                <div class="rk-form-header">
+                    <h3>શ્રી શિવ શક્તિ જ્વેલર્સ - ઓર્ડર ફોર્મ</h3>
+                    <p>કૃપા કરીને નીચે આપેલી વિગતો સાચી ભરો જેથી તમારો ઓર્ડર ઝડપથી ડિલિવર થઈ શકે.</p>
+                </div>
+                
+                <form id="rk-customer-order-form" class="rk-styled-form">
+                    <div class="rk-form-group">
+                        <label for="rk-cust-name">ગ્રાહકનું પૂરું નામ *</label>
+                        <input type="text" id="rk-cust-name" class="rk-input-field" placeholder="તમારું નામ લખો" required>
+                    </div>
+
+                    <div class="rk-form-group">
+                        <label for="rk-cust-phone">મોબાઈલ નંબર (WhatsApp માટે) *</label>
+                        <input type="tel" id="rk-cust-phone" class="rk-input-field" placeholder="10 અંકનો મોબાઈલ નંબર" pattern="[0-9]{10}" required>
+                    </div>
+
+                    <div class="rk-form-group">
+                        <label for="rk-cust-address">પૂરું સરનામું (Shipping Address) *</label>
+                        <textarea id="rk-cust-address" class="rk-input-field" rows="3" placeholder="ઘર નંબર, સોસાયટી, એરિયા, લેન્ડમાર્ક..." required></textarea>
+                    </div>
+
+                    <div class="rk-form-row">
+                        <div class="rk-form-group rk-half">
+                            <label for="rk-cust-city">શહેર / ગામ *</label>
+                            <input type="text" id="rk-cust-city" class="rk-input-field" placeholder="શહેરનું નામ" required>
+                        </div>
+                        <div class="rk-form-group rk-half">
+                            <label for="rk-cust-pincode">પિનકોડ (Pincode) *</label>
+                            <input type="text" id="rk-cust-pincode" class="rk-input-field" placeholder="6 અંકનો પિનકોડ" pattern="[0-9]{6}" required>
+                        </div>
+                    </div>
+
+                    <div class="rk-form-group">
+                        <label for="rk-product-name">પ્રોડક્ટનું નામ / આઇટમ *</label>
+                        <input type="text" id="rk-product-name" class="rk-input-field" placeholder="જેમ કે ભરવાડના કડા, વેડલા, ઝાંઝર..." required>
+                    </div>
+
+                    <div class="rk-form-row">
+                        <div class="rk-form-group rk-third">
+                            <label for="rk-product-size">સાઈઝ (Size)</label>
+                            <input type="text" id="rk-product-size" class="rk-input-field" placeholder="દા.ત. 2.4 / L / XL">
+                        </div>
+                        <div class="rk-form-group rk-third">
+                            <label for="rk-product-color">રંગ / ફિનિશિંગ</label>
+                            <input type="text" id="rk-product-color" class="rk-input-field" placeholder="દા.ત. ગોલ્ડન / સિલ્વર">
+                        </div>
+                        <div class="rk-form-group rk-third">
+                            <label for="rk-product-qty">નંગ (Quantity) *</label>
+                            <input type="number" id="rk-product-qty" class="rk-input-field" value="1" min="1" required>
+                        </div>
+                    </div>
+
+                    <div class="rk-form-group">
+                        <label for="rk-product-price">કુલ રકમ (₹) *</label>
+                        <input type="number" id="rk-product-price" class="rk-input-field" placeholder="અંદાજિત રકમ રૂપિયામાં" required>
+                    </div>
+
+                    <button type="submit" class="rk-submit-btn">હમણાં ઓર્ડર કન્ફર્મ કરો</button>
+                </form>
+            </div>
         </div>
-        <!-- ================================================================= -->
-<!-- R.K. ENTERPRISE - WEBSITE ORDER FORM (HTML ONLY)                  -->
-<!-- ================================================================= -->
-<div class="rk-website-order-wrapper">
-    <div class="rk-order-form-card">
-        <div class="rk-form-header">
-            <h3>શ્રી શિવ શક્તિ જ્વેલર્સ - ઓર્ડર ફોર્મ</h3>
-            <p>કૃપા કરીને નીચે આપેલી વિગતો સાચી ભરો જેથી તમારો ઓર્ડર ઝડપથી ડિલિવર થઈ શકે.</p>
-        </div>
-        
-        <form id="rk-customer-order-form" class="rk-styled-form">
-            <div class="rk-form-group">
-                <label for="rk-cust-name">ગ્રાહકનું પૂરું નામ *</label>
-                <input type="text" id="rk-cust-name" class="rk-input-field" placeholder="તમારું નામ લખો" required>
-            </div>
-
-            <div class="rk-form-group">
-                <label for="rk-cust-phone">મોબાઈલ નંબર (WhatsApp માટે) *</label>
-                <input type="tel" id="rk-cust-phone" class="rk-input-field" placeholder="10 અંકનો મોબાઈલ નંબર" pattern="[0-9]{10}" required>
-            </div>
-
-            <div class="rk-form-group">
-                <label for="rk-cust-address">પૂરું સરનામું (Shipping Address) *</label>
-                <textarea id="rk-cust-address" class="rk-input-field" rows="3" placeholder="ઘર નંબર, સોસાયટી, એરિયા, લેન્ડમાર્ક..." required></textarea>
-            </div>
-
-            <div class="rk-form-row">
-                <div class="rk-form-group rk-half">
-                    <label for="rk-cust-city">શહેર / ગામ *</label>
-                    <input type="text" id="rk-cust-city" class="rk-input-field" placeholder="શહેરનું નામ" required>
-                </div>
-                <div class="rk-form-group rk-half">
-                    <label for="rk-cust-pincode">પિનકોડ (Pincode) *</label>
-                    <input type="text" id="rk-cust-pincode" class="rk-input-field" placeholder="6 અંકનો પિનકોડ" pattern="[0-9]{6}" required>
-                </div>
-            </div>
-
-            <div class="rk-form-group">
-                <label for="rk-product-name">પ્રોડક્ટનું નામ / આઇટમ *</label>
-                <input type="text" id="rk-product-name" class="rk-input-field" placeholder="જેમ કે ભરવાડના કડા, વેડલા, ઝાંઝર..." required>
-            </div>
-
-            <div class="rk-form-row">
-                <div class="rk-form-group rk-third">
-                    <label for="rk-product-size">સાઈઝ (Size)</label>
-                    <input type="text" id="rk-product-size" class="rk-input-field" placeholder="દા.ત. 2.4 / L / XL">
-                </div>
-                <div class="rk-form-group rk-third">
-                    <label for="rk-product-color">રંગ / ફિનિશિંગ</label>
-                    <input type="text" id="rk-product-color" class="rk-input-field" placeholder="દા.ત. ગોલ્ડન / સિલ્વર">
-                </div>
-                <div class="rk-form-group rk-third">
-                    <label for="rk-product-qty">નંગ (Quantity) *</label>
-                    <input type="number" id="rk-product-qty" class="rk-input-field" value="1" min="1" required>
-                </div>
-            </div>
-
-            <div class="rk-form-group">
-                <label for="rk-product-price">કુલ રકમ (₹) *</label>
-                <input type="number" id="rk-product-price" class="rk-input-field" placeholder="અંદાજિત રકમ રૂપિયામાં" required>
-            </div>
-
-            <button type="submit" class="rk-submit-btn">હમણાં ઓર્ડર કન્ફર્મ કરો</button>
-        </form>
-    </div>
-</div>
-<!-- ================================================================= -->
-        
     </section>
 
+    <!-- એમેઝોન સ્ટાઈલ પ્રોડક્ટ ડિટેલ પૉપઅપ મોડલ -->
+    <div id="rk-product-detail-modal">
+        <div class="modal-content-box">
+            <button onclick="closeModal()" style="position: absolute; top: 15px; right: 20px; background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 24px; cursor: pointer; color: var(--primary-dark); font-weight: bold;">&times;</button>
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <img id="modal-prod-img" src="" alt="Product" style="width: 100%; height: 280px; object-fit: contain; background: #f8f9fa; border-radius: 10px; border: 1px solid #e2e8f0;">
+                <div>
+                    <span id="modal-prod-cat" style="font-size: 12px; background: #fef3c7; color: #92400e; padding: 5px 14px; border-radius: 20px; font-weight: bold;"></span>
+                    <h2 id="modal-prod-name" style="font-size: 24px; color: var(--primary-dark); margin: 10px 0 8px 0;"></h2>
+                    <p id="modal-prod-desc" style="font-size: 15px; color: #64748b; margin-bottom: 15px;"></p>
+                    <p style="font-size: 14px; margin-bottom: 15px; color: #475569;"><strong>વજન / સાઈઝ:</strong> <span id="modal-prod-weight">-</span></p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #e2e8f0; padding-top: 15px;">
+                        <span style="font-size: 26px; color: var(--primary-dark); font-weight: bold;">₹<span id="modal-prod-price"></span></span>
+                        <button id="modal-buy-now-btn" style="background: var(--success); color: white; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s;">હમણાં ઓર્ડર કરો</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer>
-        <p>© 2026 RK enterprise </p>
+        <p>© 2026 RK Enterprise - All Rights Reserved. Global E-Commerce Architecture.</p>
     </footer>
 
-    <script>
+ <script>
         const STORAGE_KEY = 'shree_shiv_shakti_products';
+        const ORDERS_KEY = 'rk_enterprise_orders';
 
         function switchPage(pageId, element) {
-            document.querySelectorAll('.page-section').forEach(sec => {
-                sec.classList.remove('active-page');
-            });
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-page'));
             document.getElementById(pageId).classList.add('active-page');
-
-            document.querySelectorAll('nav ul li a').forEach(a => {
-                a.classList.remove('active');
-            });
-            if(element) {
-                element.classList.add('active');
-            }
+            document.querySelectorAll('nav ul li a').forEach(a => a.classList.remove('active'));
+            if(element) element.classList.add('active');
             window.scrollTo(0, 0);
         }
+
+        let allLoadedProducts = [];
+
         function loadWebsiteProducts() {
             const rawData = localStorage.getItem(STORAGE_KEY);
-            const products = rawData ? JSON.parse(rawData) : [];
+            allLoadedProducts = rawData ? JSON.parse(rawData) : [];
 
             const homeGrid = document.getElementById('homeProductsGrid');
             const allGrid = document.getElementById('allProductsGrid');
 
-            if (products.length === 0) {
-                const emptyHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:#6c757d;">હજુ સુધી કોઈ પ્રોડક્ટ ઉમેરવામાં આવી નથી. એડમિન પેનલમાંથી પ્રોડક્ટ ઉમેરો.</div>`;
+            if (allLoadedProducts.length === 0) {
+                const emptyHTML = `<div style="grid-column: 1/-1; text-align:center; padding:50px; color:#64748b; font-size: 16px;">હજુ સુધી કોઈ પ્રોડક્ટ ઉમેરવામાં આવી નથી. એડમિન પેનલમાંથી પ્રોડક્ટ ઉમેરો.</div>`;
                 homeGrid.innerHTML = emptyHTML;
                 allGrid.innerHTML = emptyHTML;
                 return;
             }
 
-            const productsHTML = products.map(prod => `
-                <div class="product-card">
+            const productsHTML = allLoadedProducts.map((prod, index) => `
+                <div class="product-card" onclick="openProductModal(${index})">
                     <img src="${prod.image}" alt="${prod.name}" class="product-img">
                     <div class="product-info">
                         <span class="product-cat">${prod.category}</span>
@@ -539,7 +575,7 @@
                         <p class="product-desc">${prod.desc || 'શ્રેષ્ઠ ગુણવત્તા યુક્ત આભૂષણ.'}</p>
                         <div class="product-footer">
                             <span class="product-price">₹${prod.price}</span>
-                            <a href="https://wa.me/918980370599?text=નમસ્તે,%20મારે%20આ%20પ્રોડક્ટ%20માટે%20ઓર્ડર%20આપવો%20છે:%20${encodeURIComponent(prod.name)}" target="_blank" class="order-whatsapp-btn">ઓર્ડર કરો</a>
+                            <a href="https://wa.me/918980370599?text=નમસ્તે,%20મારે%20આ%20પ્રોડક્ટ%20માટે%20ઓર્ડર%20આપવો%20છે:%20${encodeURIComponent(prod.name)}" target="_blank" class="order-whatsapp-btn" onclick="event.stopPropagation();">WhatsApp</a>
                         </div>
                     </div>
                 </div>
@@ -549,6 +585,43 @@
             allGrid.innerHTML = productsHTML;
         }
 
+        let currentActiveProduct = null;
+
+        function openProductModal(index) {
+            const prod = allLoadedProducts[index];
+            if (!prod) return;
+            currentActiveProduct = prod;
+
+            document.getElementById('modal-prod-img').src = prod.image;
+            document.getElementById('modal-prod-cat').innerText = prod.category;
+            document.getElementById('modal-prod-name').innerText = prod.name;
+            document.getElementById('modal-prod-desc').innerText = prod.desc || 'શ્રેષ્ઠ ગુણવત્તા યુક્ત આભૂષણ.';
+            document.getElementById('modal-prod-weight').innerText = prod.weight || 'માનક સાઈઝ';
+            document.getElementById('modal-prod-price').innerText = prod.price;
+
+            document.getElementById('rk-product-detail-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('rk-product-detail-modal').style.display = 'none';
+        }
+
+        document.getElementById('modal-buy-now-btn').addEventListener('click', function() {
+            if (!currentActiveProduct) return;
+            closeModal();
+            
+            // Switch to Orders Page
+            const orderNavLink = document.querySelectorAll('nav ul li a')[4];
+            switchPage('orders', orderNavLink);
+
+            // Auto-fill form
+            document.getElementById('rk-product-name').value = currentActiveProduct.name;
+            document.getElementById('rk-product-price').value = currentActiveProduct.price;
+            if(currentActiveProduct.weight) {
+                document.getElementById('rk-product-size').value = currentActiveProduct.weight;
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', loadWebsiteProducts);
 
         window.addEventListener('storage', (e) => {
@@ -556,63 +629,54 @@
                 loadWebsiteProducts();
             }
         });
-        // === મુખ્ય વેબસાઇટ માટે ઓર્ડર સેવ કરવાનો કોડ (સ્ક્રિપ્ટ ટેગમાં સૌથી છેલ્લે ઉમેરવો) ===
-function saveNewOrderToStorage(orderData) {
-    try {
-        let existingOrders = JSON.parse(localStorage.getItem("rk_enterprise_orders")) || [];
-        // નવો ઓર્ડર ટાઈમસ્ટેમ્પ અને વિગતો સાથે ઉમેરો
-        orderData.id = "ORD-" + Date.now();
-        orderData.date = new Date().toLocaleString();
-        existingOrders.push(orderData);
-        
-        // લોકલ સ્ટોરેજમાં સેવ કરો
-        localStorage.setItem("rk_enterprise_orders", JSON.stringify(existingOrders));
-        console.log("ઓર્ડર સફળતાપૂર્વક લોકલ સ્ટોરેજમાં સેવ થઈ ગયો છે.");
-    } catch (err) {
-        console.error("ઓર્ડર સેવ કરવામાં ભૂલ:", err);
-    }
-}
-        // === ગ્રાહક ઓર્ડર ફોર્મ સબમિટ અને સેવ કરવા માટેનું લૉજિક ===
-document.getElementById('rk-customer-order-form').addEventListener('submit', function(e) {
-    e.preventDefault();
 
-    const customerName = document.getElementById('rk-cust-name').value.trim();
-    const phone = document.getElementById('rk-cust-phone').value.trim();
-    const address = document.getElementById('rk-cust-address').value.trim();
-    const city = document.getElementById('rk-cust-city').value.trim();
-    const pincode = document.getElementById('rk-cust-pincode').value.trim();
-    const productName = document.getElementById('rk-product-name').value.trim();
-    const size = document.getElementById('rk-product-size').value.trim() || 'લાગુ નથી';
-    const color = document.getElementById('rk-product-color').value.trim() || 'સામાન્ય';
-    const qty = document.getElementById('rk-product-qty').value.trim();
-    const price = document.getElementById('rk-product-price').value.trim();
+        // Order Form Submit Logic with Admin Sync & WhatsApp Notification
+        document.getElementById('rk-customer-order-form').addEventListener('submit', function(e) {
+            e.preventDefault();
 
-    const fullProductDetails = `${productName} (સાઈઝ: ${size}, કલર: ${color}, નંગ: ${qty})`;
-    const fullAddress = `${address}, ${city} - ${pincode}`;
+            const customerName = document.getElementById('rk-cust-name').value.trim();
+            const phone = document.getElementById('rk-cust-phone').value.trim();
+            const address = document.getElementById('rk-cust-address').value.trim();
+            const city = document.getElementById('rk-cust-city').value.trim();
+            const pincode = document.getElementById('rk-cust-pincode').value.trim();
+            const productName = document.getElementById('rk-product-name').value.trim();
+            const size = document.getElementById('rk-product-size').value.trim() || 'લાગુ નથી';
+            const color = document.getElementById('rk-product-color').value.trim() || 'સામાન્ય';
+            const qty = document.getElementById('rk-product-qty').value.trim();
+            const price = document.getElementById('rk-product-price').value.trim();
 
-    const orderData = {
-        id: "ORD-" + Date.now(),
-        date: new Date().toLocaleString(),
-        customerName: customerName,
-        phone: phone,
-        productDetails: fullProductDetails,
-        shippingAddress: fullAddress,
-        totalAmount: price,
-        status: "pending"
-    };
+            const fullProductDetails = `${productName} (સાઈઝ: ${size}, કલર: ${color}, નંગ: ${qty})`;
+            const fullAddress = `${address}, ${city} - ${pincode}`;
 
-    try {
-        let existingOrders = JSON.parse(localStorage.getItem("rk_enterprise_orders")) || [];
-        existingOrders.push(orderData);
-        localStorage.setItem("rk_enterprise_orders", JSON.stringify(existingOrders));
+            const orderData = {
+                id: "ORD-" + Date.now(),
+                date: new Date().toLocaleString(),
+                customerName: customerName,
+                phone: phone,
+                productDetails: fullProductDetails,
+                shippingAddress: fullAddress,
+                totalAmount: price,
+                status: "pending"
+            };
 
-        alert("તમારો ઓર્ડર સફળતાપૂર્વક નોંધાઈ ગયો છે! એડમિન પેનલ પર મોકલી દેવામાં આવ્યો છે.");
-        document.getElementById('rk-customer-order-form').reset();
-    } catch (err) {
-        console.error("ઓર્ડર સેવ કરવામાં ભૂલ:", err);
-        alert("ઓર્ડર સેવ કરવામાં સમસ્યા આવી છે. કૃપા કરીને ફરી પ્રયાસ કરો.");
-    }
-});
+            try {
+                let existingOrders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+                existingOrders.push(orderData);
+                localStorage.setItem(ORDERS_KEY, JSON.stringify(existingOrders));
+
+                alert("તમારો ઓર્ડર સફળતાપૂર્વક નોંધાઈ ગયો છે અને એડમિન પેનલ પર મોકલી દેવામાં આવ્યો છે!");
+                
+                // WhatsApp Notification to Admin
+                let whatsappMessage = `નવો ઓર્ડર મળ્યો!%0A*ઓર્ડર ID:* ${orderData.id}%0A*નામ:* ${customerName}%0A*ફોન:* ${phone}%0A*સરનામું:* ${fullAddress}%0A*પ્રોડક્ટ:* ${fullProductDetails}%0A*કુલ રકમ:* ₹${price}`;
+                let adminWhatsAppNumber = "918980370599";
+                window.open(`https://wa.me/${adminWhatsAppNumber}?text=${whatsappMessage}`, '_blank');
+
+                document.getElementById('rk-customer-order-form').reset();
+            } catch (err) {
+                console.error("ઓર્ડર સેવ કરવામાં ભૂલ:", err);
+                alert("ઓર્ડર સેવ કરવામાં સમસ્યા આવી છે. કૃપા કરીને ફરી પ્રયાસ કરો.");
+            }
+        });
     </script>
 </body>
 </html>

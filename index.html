@@ -735,7 +735,6 @@
             }
         });
 
-<script>
     const STORAGE_KEY = 'shree_shiv_shakti_products';
     const ORDERS_KEY = 'rk_enterprise_orders';
 
@@ -815,8 +814,6 @@
         if(mainImg && imagesArray.length > 0) {
             mainImg.src = imagesArray[0];
         }
-
-<script>
     const STORAGE_KEY = 'shree_shiv_shakti_products';
     const ORDERS_KEY = 'rk_enterprise_orders';
     let allLoadedProducts = [];
@@ -896,7 +893,7 @@
         }
 
         document.getElementById('modal-prod-cat').innerText = prod.category;
-<script>
+
     const STORAGE_KEY = 'shree_shiv_shakti_products';
     const ORDERS_KEY = 'rk_enterprise_orders';
     let allLoadedProducts = [];
@@ -1010,77 +1007,7 @@
         loadWebsiteProducts();
         
         const buyNowBtn = document.getElementById('modal-buy-now-btn');
-        if(buyNowBtn) {
-            buyNowBtn.addEventListener('click', function() {
-                if (!currentActiveProduct) return;
-                closeModal();
-                
-                const orderNavLink = document.querySelectorAll('nav ul li a')[4];
-                switchPage('orders', orderNavLink);
 
-                document.getElementById('rk-product-name').value = currentActiveProduct.name;
-                document.getElementById('rk-product-price').value = currentActiveProduct.price;
-                if(currentActiveProduct.weight) {
-                    document.getElementById('rk-product-size').value = currentActiveProduct.weight;
-                }
-            });
-        }
-    });
-
-    window.addEventListener('storage', (e) => {
-        if (e.key === STORAGE_KEY) {
-            loadWebsiteProducts();
-        }
-    });
-
-    const orderForm = document.getElementById('rk-customer-order-form');
-    if(orderForm) {
-        orderForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const customerName = document.getElementById('rk-cust-name').value.trim();
-            const phone = document.getElementById('rk-cust-phone').value.trim();
-            const address = document.getElementById('rk-cust-address').value.trim();
-            const city = document.getElementById('rk-cust-city').value.trim();
-            const pincode = document.getElementById('rk-cust-pincode').value.trim();
-            const productName = document.getElementById('rk-product-name').value.trim();
-            const size = document.getElementById('rk-product-size').value.trim() || 'લાગુ નથી';
-            const color = document.getElementById('rk-product-color').value.trim() || 'સામાન્ય';
-            const qty = document.getElementById('rk-product-qty').value.trim();
-            const price = document.getElementById('rk-product-price').value.trim();
-
-            const fullProductDetails = `${productName} (સાઈઝ: ${size}, કલર: ${color}, નંગ: ${qty})`;
-            const fullAddress = `${address}, ${city} - ${pincode}`;
-
-            const orderData = {
-                id: "ORD-" + Date.now(),
-                date: new Date().toLocaleString(),
-                customerName: customerName,
-                phone: phone,
-                productDetails: fullProductDetails,
-                shippingAddress: fullAddress,
-                totalAmount: price,
-                status: "pending"
-            };
-
-            try {
-                let existingOrders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
-                existingOrders.push(orderData);
-                localStorage.setItem(ORDERS_KEY, JSON.stringify(existingOrders));
-
-                alert("તમારો ઓર્ડર સફળતાપૂર્વક નોંધાઈ ગયો છે અને એડમિન પેનલ પર મોકલી દેવામાં આવ્યો છે!");
-                
-                let whatsappMessage = `નવો ઓર્ડર મળ્યો!%0A*ઓર્ડર ID:* ${orderData.id}%0A*નામ:* ${customerName}%0A*ફોન:* ${phone}%0A*સરનામું:* ${fullAddress}%0A*પ્રોડક્ટ:* ${fullProductDetails}%0A*કુલ રકમ:* ₹${price}`;
-                let adminWhatsAppNumber = "918980370599";
-                window.open(`https://wa.me/${adminWhatsAppNumber}?text=${whatsappMessage}`, '_blank');
-
-                orderForm.reset();
-            } catch (err) {
-                console.error("ઓર્ડર સેવ કરવામાં ભૂલ:", err);
-                alert("ઓર્ડર સેવ કરવામાં સમસ્યા આવી છે. કૃપા કરીને ફરી પ્રયાસ કરો.");
-            }
-        });
-    }
 </script>
 
 

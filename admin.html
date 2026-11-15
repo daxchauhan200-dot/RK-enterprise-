@@ -693,109 +693,36 @@
     </div>
 
     <div id="toast" class="toast">✅ પ્રોડક્ટ સફળતાપૂર્વક વેબસાઇટ પર ઉમેરાઈ ગઈ છે!</div>
-<!-- ================================================================= -->
-<!-- R.K. ENTERPRISE - PROFESSIONAL ADMIN ORDER MANAGEMENT DASHBOARD SECTION -->
-<!-- ================================================================= -->
-<section id="rk-admin-orders-section" class="rk-admin-dashboard-wrapper">
-    <div class="rk-admin-container">
-        
-        <!-- Dashboard Header Area -->
-        <header class="rk-admin-header">
-            <div class="rk-admin-title-box">
-                <h2>શ્રી શિવ શક્તિ જ્વેલર્સ - એડમિન ડેશબોર્ડ</h2>
-                <p>ગ્રાહકો દ્વારા વેબસાઇટ પરથી મળેલા ઓર્ડર્સનું સંચાલન અને ટ્રેકિંગ પેનલ</p>
-            </div>
-            <div class="rk-admin-stats-box">
-                <div class="rk-stat-card">
-                    <span class="rk-stat-label">કુલ ઓર્ડર</span>
-                    <span id="rk-total-orders-count" class="rk-stat-value">0</span>
-                </div>
-                <div class="rk-stat-card">
-                    <span class="rk-stat-label">પેન્ડિંગ ઓર્ડર</span>
-                    <span id="rk-pending-orders-count" class="rk-stat-value">0</span>
-                </div>
-            </div>
-        </header>
-
-        <!-- Dashboard Action Controls & Filters -->
-        <div class="rk-admin-controls-bar">
-            <div class="rk-search-filter-group">
-                <input type="text" id="rk-order-search-input" class="rk-form-control" placeholder="ગ્રાહકનું નામ અથવા મોબાઈલ નંબર દ્વારા શોધો...">
-                <select id="rk-order-status-filter" class="rk-form-control">
-                    <option value="all">બધા ઓર્ડર જુઓ</option>
-                    <option value="pending">પેન્ડિંગ ઓર્ડર</option>
-                    <option value="confirmed">કન્ફર્મ થયેલ ઓર્ડર</option>
-                    <option value="shipped">શિપ થયેલ ઓર્ડર</option>
-                    <option value="delivered">ડિલિવર થયેલ ઓર્ડર</option>
-                </select>
-            </div>
-            <div class="rk-action-buttons-group">
-                <button id="rk-refresh-orders-btn" class="rk-btn rk-btn-primary">ડેટા રિફ્રેશ કરો</button>
-                <button id="rk-export-csv-btn" class="rk-btn rk-btn-secondary">ડેટા એક્સપોર્ટ કરો</button>
-                <button id="rk-clear-all-btn" class="rk-btn rk-btn-danger">બધા ઓર્ડર ડિલીટ કરો</button>
-            </div>
-        </div>
-
-        <!-- Main Orders Display Area / Table Grid Container -->
-        <div class="rk-admin-content-grid">
-            
-            <!-- Left Side or Full Width: Orders Table Container -->
-            <div class="rk-orders-table-card">
-                <div class="rk-card-header">
-                    <h3>नवीनतम प्राप्त ઓર્ડર યાદી (Live Orders Grid)</h3>
+    <!-- ઓર્ડર મેનેજમેન્ટ પ્રોફેશનલ ટેબલ ગ્રીડ -->
+    <div class="admin-orders-wrapper">
+        <div class="order-card-box">
+            <div class="card-header">
+                <h2>📦 ગ્રાહક ઓર્ડર ડેશબોર્ડ (Live Orders)</h2>
+                <div>
                     <span class="rk-live-badge"><span class="rk-pulse-dot"></span> લાઈવ સિન્ક્ડ</span>
-                </div>
-                <div class="rk-card-body">
-                    <div class="rk-table-responsive">
-                        <table id="rk-professional-orders-table" class="rk-data-table">
-                            <thead>
-                                <tr>
-                                    <th>ઓર્ડર ID & સમય</th>
-                                    <th>ગ્રાહકની વિગતો (નામ/ફોન)</th>
-                                    <th>પૂરું સરનામું (Shipping Address)</th>
-                                    <th>પ્રોડક્ટનું નામ & વિગત</th>
-                                    <th>સાઈઝ / કલર / નંગ</th>
-                                    <th>કુલ રકમ (₹)</th>
-                                    <th>ઓર્ડર સ્ટેટસ</th>
-                                    <th>એક્શન / મેનેજમેન્ટ</th>
-                                </tr>
-                            </thead>
-                            <tbody id="rk-orders-table-body">
-                                <!-- Dynamic JavaScript Data will inject here -->
-                                <tr class="rk-empty-row">
-                                    <td colspan="8" class="text-center">હાલમાં કોઈ ઓર્ડર ઉપલબ્ધ નથી. ગ્રાહક વેબસાઇટથી ઓર્ડર કરશે એટલે અહીં દેખાશે.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="rk-card-footer">
-                    <div class="rk-pagination-box">
-                        <span>કુલ રેકોર્ડ્સ: <strong id="rk-record-counter">0</strong></span>
-                    </div>
+                    <button onclick="clearAllOrders()" style="background:none; border:none; color:var(--danger); cursor:pointer; font-weight:600; font-size:13px; margin-left: 15px;">બધા ઓર્ડર સાફ કરો</button>
                 </div>
             </div>
-
-        </div>
-
-        <!-- Detailed Order Modal / Drawer (Hidden by default for popup details) -->
-        <div id="rk-order-detail-modal" class="rk-modal-overlay" style="display: none;">
-            <div class="rk-modal-content">
-                <div class="rk-modal-header">
-                    <h3>ઓર્ડરની વિગતવાર માહિતી (Order Complete Details)</h3>
-                    <button id="rk-modal-close-btn" class="rk-close-btn">&times;</button>
-                </div>
-                <div class="rk-modal-body" id="rk-modal-dynamic-body">
-                    <!-- Detailed view injected dynamically -->
-                </div>
-                <div class="rk-modal-footer">
-                    <button id="rk-print-invoice-btn" class="rk-btn rk-btn-primary">ઇન્વોઇસ પ્રિન્ટ કરો</button>
-                    <button id="rk-modal-close-action-btn" class="rk-btn rk-btn-secondary">બંધ કરો</button>
-                </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ઓર્ડર ID & સમય</th>
+                            <th>ગ્રાહકનું નામ & ફોન</th>
+                            <th>પૂરું સરનામું</th>
+                            <th>પ્રોડક્ટ વિગતો</th>
+                            <th>કુલ રકમ</th>
+                            <th>ક્રિયા</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminOrdersList">
+                        <!-- ઓર્ડર અહીં ડાયનેમિક લોડ થશે -->
+                    </tbody>
+                </table>
             </div>
         </div>
-
     </div>
+    
 </section>
 <!-- ================================================================= -->
     
@@ -1047,6 +974,30 @@
         loadAdminOrders();
     }
 })();
+                function renderAdminOrders() {
+            const ordersList = document.getElementById('adminOrdersList');
+            let savedOrders = [];
+            try {
+                savedOrders = JSON.parse(localStorage.getItem('rk_enterprise_orders')) || [];
+            } catch(e) {}
+
+            if (savedOrders.length === 0) {
+                ordersList.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 30px; color: #64748b;">હાલમાં કોઈ ઓર્ડર ઉપલબ્ધ નથી. ગ્રાહક વેબસાઇટથી ઓર્ડર કરશે એટલે અહીં દેખાશે.</td></tr>`;
+                return;
+            }
+
+            ordersList.innerHTML = savedOrders.slice().reverse().map(ord => `
+                <tr>
+                    <td><strong>${ord.id}</strong><br><small style="color:#64748b;">${ord.date}</small></td>
+                    <td><strong>${ord.customerName}</strong><br><a href="tel:${ord.phone}">${ord.phone}</a></td>
+                    <td>${ord.shippingAddress}</td>
+                    <td>${ord.productDetails}</td>
+                    <td><strong>₹${ord.totalAmount}</strong></td>
+                    <td><button class="btn-delete" onclick="deleteOrder('${ord.id}')">હટાવો</button></td>
+                </tr>
+            `).join('');
+                }
+        
         
     </script>
 </body>

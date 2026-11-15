@@ -450,27 +450,41 @@
 
         // Image compressor & Base64 converter
         document.getElementById('prodImage').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
 
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 600;
-                    const scaleSize = MAX_WIDTH / img.width;
-                    canvas.width = MAX_WIDTH;
-                    canvas.height = img.height * scaleSize;
+    currentBase64Image = [];
+    let processedCount = 0;
 
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    
-                    currentBase64Image = canvas.toDataURL('image/jpeg', 0.8);
+    files.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const MAX_WIDTH = 600;
+                const scaleSize = MAX_WIDTH / img.width;
+                canvas.width = MAX_WIDTH;
+                canvas.height = img.height * scaleSize;
+
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                
+                currentBase64Image.push(canvas.toDataURL('image/jpeg', 0.8));
+                processedCount++;
+
+                if (processedCount === files.length) {
                     const preview = document.getElementById('imagePreview');
-                    preview.src = currentBase64Image;
+                    preview.src = currentBase64Image[0];
                     preview.style.display = 'block';
-                };
+                }
+            };
+            img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+});
+
                 img.src = event.target.result;
             };
             reader.readAsDataURL(file);

@@ -565,22 +565,29 @@
         });
     }
 
-    function getProducts() {
-        try {
-            const data = localStorage.getItem(STORAGE_KEY);
-            return data ? JSON.parse(data) : [];
-        } catch (e) {
-            return [];
-        }
+    async function getProducts() {
+    try {
+        const response = await fetch('/api/products');
+        if (!response.ok) throw new Error('Network response was not ok');
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        return [];
     }
+}
 
-    function saveProducts(products) {
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-        } catch (e) {
-            alert("સ્ટોરેજ ફુલ થઈ ગયું છે! ફોટાની સાઈઝ અથવા સંખ્યા ઘટાડો.");
-        }
+async function saveProducts(products) {
+    try {
+        await fetch('/api/products', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(products)
+        });
+    } catch (error) {
+        console.error('Error saving products:', error);
+        alert('ડેટા સેવ કરવામાં ભૂલ થઈ છે!');
     }
+}
 
     // 4. એડમિન પેનલમાં પ્રોડક્ટ લિસ્ટ રેન્ડર કરવું
     function renderAdminProducts() {
@@ -629,69 +636,84 @@
             `;
         }).join('');
     }
-
-    function deleteProduct(id) {
-        if (confirm("શું તમે ખરેખર આ પ્રોડક્ટ ડિલીટ કરવા માંગો છો?")) {
-            let products = getProducts();
-            products = products.filter(p => p.id !== id);
-            saveProducts(products);
-            renderAdminProducts();
-            showToast("🗑️ પ્રોડક્ટ ડિલીટ કરવામાં આવી.");
-        }
+async function deleteProduct(id) {
+    if (confirm("શું તમે ખરેખર આ પ્રોડક્ટ ડિલીટ કરવા માંગો છો?")) {
+        let products = await getProducts();
+        products = products.filter(p => p.id !== id);
+        await saveProducts(products);
+        renderAdminProducts();
+        showToast("પ્રોડક્ટ ડિલીટ કરવામાં આવી.");
     }
+}
 
-    function clearAllProducts() {
-        if (confirm("ચેતવણી: બધી જ પ્રોડક્ટ્સ ડિલીટ થઈ જશે.")) {
-            localStorage.removeItem(STORAGE_KEY);
-            renderAdminProducts();
-            showToast("બધી પ્રોડક્ટ્સ સાફ થઈ ગઈ.");
-        }
+async function clearAllProducts() {
+    if (confirm("ચેતવણી: આખી પ્રોડક્ટ લિસ્ટ ડિલીટ થઈ જશે.")) {
+        await saveProducts([]);
+        renderAdminProducts();
+        showToast("બધી પ્રોડક્ટ્સ કાઢી નાખવામાં આવી.");
     }
+}
 
+    
     // 5. ઓર્ડર મેનેજમેન્ટ
-    function renderAdminOrders() {
-        const ordersList = document.getElementById('adminOrdersList');
-        if (!ordersList) return;
+async function renderAdminOrders() {
+  async  const ordersList = document.getElementById('adminOrdersList');
+    if (!ordersList) return;
 
-        let savedOrders = [];
-        try {
-            savedOrders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
-        } catch(e) {}
+    try {
+        const response = await fetch('/api/orders');
+        const savedOrders = await response.json();
 
         if (savedOrders.length === 0) {
-            ordersList.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 35px; color: #64748b;">હાલમાં કોઈ ઓર્ડર ઉપલબ્ધ નથી.</td></tr>`;
+            ordersList.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 30px; color: #64748b;">હજુ કોઈ ઓર્ડર નથી.</td></tr>';
             return;
         }
 
         ordersList.innerHTML = savedOrders.slice().reverse().map(ord => `
             <tr>
-                <td><strong>${ord.id}</strong><br><small style="color:#64748b;">${ord.date}</small></td>
-                <td><strong>${ord.customer || ord.customerName}</strong><br><a href="tel:${ord.phone}" style="color:#2563eb; text-decoration:none;">${ord.phone}</a></td>
+                <td><strong>#${ord.id}</strong><br><small style="color:#64748b;">${ord.date}</small></td>
+                <td><strong>${ord.customer || ord.customerName}</strong><br><a href="tel:${ord.phone}" style="color:#2563eb;">${ord.phone}</a></td>
                 <td>${ord.address || ord.shippingAddress}</td>
                 <td>${ord.productName || ord.productDetails}</td>
                 <td><strong>₹${ord.price || ord.totalAmount}</strong></td>
-                <td><button class="btn-delete" onclick="deleteOrder('${ord.id}')">હટાવો</button></td>
+                <td>
+                    <button class="btn-delete" onclick="deleteOrder('${ord.id}')">ડીલીટ</button>
+                </td>
             </tr>
         `).join('');
+    } catch (error) {
+        console.error('Error fetching orders:', error);
     }
+}
 
-    function deleteOrder(orderId) {
-        if (confirm("શું તમે આ ઓર્ડર લિસ્ટમાંથી હટાવવા માંગો છો?")) {
-            let savedOrders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
-            savedOrders = savedOrders.filter(o => o.id !== orderId);
-            localStorage.setItem(ORDERS_KEY, JSON.stringify(savedOrders));
+async function deleteOrder(orderId) {
+    if (confirm("શું તમે ખરેખર આ ઓર્ડર ડીલીટ કરવા માંગો છો?")) {
+        try {
+            await fetch('/api/orders/delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: orderId })
+            });
             renderAdminOrders();
-            showToast("ઓર્ડર હટાવવામાં આવ્યો.");
+            showToast("ઓર્ડર ડીલીટ કરવામાં આવ્યો.");
+        } catch (error) {
+            console.error('Error deleting order:', error);
         }
     }
+}
 
-    function clearAllOrders() {
-        if (confirm("શું તમે બધા ઓર્ડર ક્લિયર કરવા માંગો છો?")) {
-            localStorage.removeItem(ORDERS_KEY);
+async function clearAllOrders() {
+    if (confirm("ચેતવણી: બધા ઓર્ડર સાફ થઈ જશે.")) {
+        try {
+            await fetch('/api/orders/clear', { method: 'POST' });
             renderAdminOrders();
             showToast("બધા ઓર્ડર સાફ થઈ ગયા.");
+        } catch (error) {
+            console.error('Error clearing orders:', error);
         }
     }
+}
+
 
     function showToast(message) {
         const toast = document.getElementById('toast');

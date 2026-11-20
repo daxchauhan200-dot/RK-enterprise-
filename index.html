@@ -1168,13 +1168,16 @@
                     status: 'pending'
                 };
 
-                try {
-                    const existingOrders = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]');
-                    existingOrders.unshift(newOrder);
-                    localStorage.setItem(ORDERS_KEY, JSON.stringify(existingOrders));
-                } catch (err) {
-                    console.error('Order Save Error:', err);
-                }
+ try {
+    await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newOrder)
+    });
+} catch (err) {
+    console.error('Order Save Error:', err);
+}
+
 
                 const waMessage = 
                     `*નવો ઓર્ડર - RK Enterprise / શ્રી શિવ શક્તિ જ્વેલરી*\n` +

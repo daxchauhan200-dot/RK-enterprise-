@@ -539,6 +539,13 @@
     </footer> 
     
     <script>
+        window.addEventListener('storage', (e) => {
+    if (e.key === STORAGE_KEY || e.key === ORDERS_KEY) {
+        renderAdminProducts();
+        renderAdminOrders();
+    }
+});
+        
     /**
      * ============================================================================
      * SHREE SHIV SHAKTI JEWELLERY & RK ENTERPRISE - CORE ENGINE (v4.5)

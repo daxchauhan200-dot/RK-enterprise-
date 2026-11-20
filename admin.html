@@ -413,6 +413,13 @@
 
     <div id="toast" class="toast">✅ સફળતાપૂર્વક પૂર્ણ થયું!</div>
 <script>
+    window.addEventListener('storage', (e) => {
+    if (e.key === STORAGE_KEY || e.key === ORDERS_KEY) {
+        renderAdminProducts();
+        renderAdminOrders();
+    }
+});
+    
     /**
      * ============================================================================
      * RK ENTERPRISE - ADMIN CORE ENGINE
